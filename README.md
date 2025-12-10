@@ -22,9 +22,12 @@ Design hardware professionale:
 ## Funzionalita'
 
 ### Modulo DRUMMER
-- **8 generi musicali** con **64 pattern totali** (8 per genere)
-- Visualizzazione pattern step sequencer (16 step con LED)
+- **8 generi musicali** con **64+ pattern totali**
+- **Pattern multi-battuta**: supporto per 1, 2 o 4 battute con variazioni e fill
+- **Tempi composti**: supporto nativo per 12/8 e 6/8 (terzine vere!)
+- Visualizzazione pattern step sequencer (griglia dinamica)
 - Beat counter visivo (1-2-3-4)
+- **Bar indicator**: LED che mostrano la battuta corrente nei pattern multi-bar
 - Shortcut tastiera: Spazio per Play/Pause
 - Bottone play con LED di stato
 
@@ -60,16 +63,16 @@ Design hardware professionale:
 
 ## Generi e Pattern
 
-| Genere | Pattern |
-|--------|---------|
-| **Rock** | Basic, Hard, Pop, Half-Time, Shuffle, Punk, Ballad, Stadium |
-| **Pop** | Basic, Dance, Ballad, Upbeat, Motown, Synthpop, Funk, Modern |
-| **Funk** | Basic, JB-Style, FunkyDr., BoomBap, Trap, Lo-Fi, N.Orleans, Breakbeat |
-| **Blues** | Shuffle, Slow, Chicago, Texas, 12/8Feel, Jump, Rock, Train |
-| **Drill** | 4ths, 8ths, 16ths, Shuffle, Accent, 2&4, Offbeat, Mixed |
-| **Latin** | Bossa, Samba, Salsa, Cha-Cha, AfroCuban, Mambo, Songo, BossaSl. |
-| **Reggae** | OneDrop, Rockers, Steppers, Ska, Dub, RootsSl., Dancehall, StepFast |
-| **Electro** | Massive, Tricky, Fugees, DeLa, Slim, Portis, Morch, Hip-Hop |
+| Genere | Pattern | Note |
+|--------|---------|------|
+| **Rock** | Basic*, Hard, Pop, Half-Time, Shuffle, Punk, Ballad, Fill** | *2 bars, **4 bars con fill |
+| **Pop** | Basic, Dance, Ballad, Upbeat, Motown, Synthpop, Funk, Modern | |
+| **Funk** | Basic*, JB-Style, FunkyDr., BoomBap, Trap, Lo-Fi, N.Orleans, Breakbeat | *2 bars |
+| **Blues** | Shuffle, Slow*†, Chicago, Texas, 12/8†, Jump, Rock, Train | *2 bars, †12/8 |
+| **Drill** | 4ths, 8ths, 16ths, Shuffle, Accent, 2&4, Offbeat, Mixed | Metronomo |
+| **Latin** | Bossa, Samba, Salsa, Cha-Cha, AfroCuban, Mambo, Songo, BossaSl. | |
+| **Reggae** | OneDrop, Rockers, Steppers, Ska, Dub, RootsSl., Dancehall, StepFast | |
+| **Electro** | Massive, Tricky, Fugees, DeLa, Slim, Portis, Morch, Hip-Hop | Trip-Hop |
 
 ### Categoria DRILL
 
@@ -123,15 +126,34 @@ DRUMMER/
 ## Note Tecniche
 
 ### Pattern
-I pattern sono array di 16 step (sedicesimi in 4/4):
-- `1` = colpo
-- `0` = silenzio
+I pattern sono array di step (`1` = colpo, `0` = silenzio):
 
+**4/4 standard** - 16 step per battuta (sedicesimi):
 ```javascript
 {
     kick:  [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0],
     snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
     hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0]
+}
+```
+
+**12/8 (terzine native)** - 12 step per battuta (4 beat × 3):
+```javascript
+{
+    timeSignature: '12/8',
+    kick:  [1,0,0, 0,0,0, 1,0,0, 0,0,0],
+    snare: [0,0,0, 1,0,0, 0,0,0, 1,0,0],
+    hihat: [1,0,1, 1,0,1, 1,0,1, 1,0,1]  // true shuffle!
+}
+```
+
+**Multi-battuta** - 2 o 4 bars con variazioni:
+```javascript
+{
+    bars: 2,
+    kick:  [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0,   // bar 1
+            1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,0,0],  // bar 2 (variazione)
+    ...
 }
 ```
 

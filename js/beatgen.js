@@ -138,6 +138,11 @@ class BeatGenerator {
         this.currentStep = 0;
         this.bpm = 120;
 
+        // Multi-bar support
+        this.totalBars = 1;
+        this.currentBar = 0;
+        this.stepsPerBar = 16;
+
         // Current sound types
         this.kickType = 'deep';
         this.snareType = 'tight';
@@ -180,6 +185,9 @@ class BeatGenerator {
         this.kickPatternEl = document.getElementById('kickPattern');
         this.snarePatternEl = document.getElementById('snarePattern');
         this.hihatPatternEl = document.getElementById('hihatPattern');
+
+        // Bar indicator
+        this.barIndicator = document.getElementById('barIndicator');
 
         // Audio controls
         this.autoModeBtn = document.getElementById('autoModeBtn');
@@ -605,15 +613,31 @@ class BeatGenerator {
         this.bpmDisplay.value = String(this.bpm).padStart(3, '0');
     }
 
-    createPatternDisplay() {
+    createPatternDisplay(timeSignature = '4/4') {
+        // Determine grid structure based on time signature
+        let beatsPerBar, stepsPerBeat;
+        if (timeSignature === '12/8') {
+            beatsPerBar = 4;
+            stepsPerBeat = 3;
+        } else if (timeSignature === '6/8') {
+            beatsPerBar = 2;
+            stepsPerBeat = 3;
+        } else {
+            beatsPerBar = 4;
+            stepsPerBeat = 4;
+        }
+
         [this.kickPatternEl, this.snarePatternEl, this.hihatPatternEl].forEach(row => {
             row.innerHTML = '';
-            // Create 4 beat groups
-            for (let beat = 0; beat < 4; beat++) {
+            for (let beat = 0; beat < beatsPerBar; beat++) {
                 const beatGroup = document.createElement('div');
                 beatGroup.className = 'beat-group-steps';
-                for (let s = 0; s < 4; s++) {
-                    const stepIndex = beat * 4 + s;
+                // For 12/8, add a class to adjust CSS grid
+                if (stepsPerBeat === 3) {
+                    beatGroup.classList.add('triplet');
+                }
+                for (let s = 0; s < stepsPerBeat; s++) {
+                    const stepIndex = beat * stepsPerBeat + s;
                     const step = document.createElement('div');
                     step.className = 'step';
                     step.dataset.step = stepIndex;
@@ -622,6 +646,46 @@ class BeatGenerator {
                 row.appendChild(beatGroup);
             }
         });
+
+        // Update beat row for time signature
+        this.createBeatRow(timeSignature);
+    }
+
+    createBeatRow(timeSignature = '4/4') {
+        const beatRow = document.querySelector('.beat-row');
+        if (!beatRow) return;
+
+        let beatsPerBar, dotsPerBeat;
+        if (timeSignature === '12/8') {
+            beatsPerBar = 4;
+            dotsPerBeat = 2;  // 1 · · for triplet feel
+        } else if (timeSignature === '6/8') {
+            beatsPerBar = 2;
+            dotsPerBeat = 2;
+        } else {
+            beatsPerBar = 4;
+            dotsPerBeat = 3;  // 1 · · · for 16ths
+        }
+
+        beatRow.innerHTML = '';
+        for (let beat = 1; beat <= beatsPerBar; beat++) {
+            const group = document.createElement('div');
+            group.className = 'beat-group';
+
+            const beatNum = document.createElement('span');
+            beatNum.className = 'beat-num';
+            beatNum.dataset.beat = beat;
+            beatNum.textContent = beat;
+            group.appendChild(beatNum);
+
+            for (let d = 0; d < dotsPerBeat; d++) {
+                const dot = document.createElement('span');
+                dot.className = 'beat-dot';
+                dot.textContent = '·';
+                group.appendChild(dot);
+            }
+            beatRow.appendChild(group);
+        }
     }
 
     updatePatternDisplay() {
@@ -675,10 +739,22 @@ class BeatGenerator {
 
         this.currentPattern = patternName;
         const pattern = PATTERNS[patternName];
+        const timeSignature = pattern.timeSignature || '4/4';
 
         this.variationButtonsContainer.querySelectorAll('.variation-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.pattern === patternName);
         });
+
+        // Update multi-bar state
+        this.stepsPerBar = this.getStepsPerBar(timeSignature);
+        this.totalBars = pattern.bars || 1;
+        this.currentBar = 0;
+
+        // Render bar indicator
+        this.renderBarIndicator(this.totalBars);
+
+        // Recreate pattern display for time signature
+        this.createPatternDisplay(timeSignature);
 
         this.setBPM(pattern.bpm);
         this.updatePatternDisplay();
@@ -725,10 +801,25 @@ class BeatGenerator {
 
     startSequence() {
         const pattern = PATTERNS[this.currentPattern];
+        const timeSignature = pattern.timeSignature || '4/4';
         Tone.Transport.bpm.value = this.bpm;
+
+        // Calculate total steps based on bars and time signature
+        this.stepsPerBar = this.getStepsPerBar(timeSignature);
+        this.totalBars = pattern.bars || 1;
+        const totalSteps = this.totalBars * this.stepsPerBar;
+
+        // Note duration based on time signature
+        // 4/4: 16th notes, 12/8 and 6/8: 8th note triplets
+        const noteDuration = (timeSignature === '12/8' || timeSignature === '6/8') ? '8t' : '16n';
+
+        // Render bar indicator
+        this.renderBarIndicator(this.totalBars);
 
         this.sequence = new Tone.Sequence((time, step) => {
             this.currentStep = step;
+            this.currentBar = Math.floor(step / this.stepsPerBar);
+            const stepInBar = step % this.stepsPerBar;
 
             if (pattern.kick[step]) {
                 this.kick.triggerAttackRelease('C1', '8n', time);
@@ -742,18 +833,25 @@ class BeatGenerator {
             }
 
             Tone.Draw.schedule(() => {
-                this.highlightStep(step);
-                this.updateBeatCounter(step);
+                this.highlightStep(stepInBar);
+                this.updateBeatCounter(stepInBar);
+                this.updateBarIndicator(this.currentBar);
+                this.updatePatternDisplayForBar(this.currentBar);
             }, time);
 
-        }, [...Array(16).keys()], '16n');
+        }, [...Array(totalSteps).keys()], noteDuration);
 
         this.sequence.start(0);
         Tone.Transport.start();
     }
 
     updateBeatCounter(step) {
-        const beat = Math.floor(step / 4) + 1;
+        // Calculate beat based on time signature
+        const pattern = PATTERNS[this.currentPattern];
+        const timeSignature = pattern?.timeSignature || '4/4';
+        const stepsPerBeat = (timeSignature === '12/8' || timeSignature === '6/8') ? 3 : 4;
+
+        const beat = Math.floor(step / stepsPerBeat) + 1;
 
         document.querySelectorAll('.beat-num').forEach(beatEl => {
             const beatNum = parseInt(beatEl.dataset.beat);
@@ -781,6 +879,63 @@ class BeatGenerator {
             this.sequence = null;
         }
         Tone.Transport.stop();
+    }
+
+    // Multi-bar helper methods
+    getStepsPerBar(timeSignature) {
+        switch(timeSignature) {
+            case '12/8': return 12;  // 4 beat × 3 subdivisions
+            case '6/8': return 6;    // 2 beat × 3 subdivisions
+            default: return 16;      // 4/4: 4 beat × 4 subdivisions
+        }
+    }
+
+    renderBarIndicator(numBars) {
+        if (!this.barIndicator) return;
+
+        // Hide if only 1 bar
+        if (numBars <= 1) {
+            this.barIndicator.style.display = 'none';
+            return;
+        }
+
+        this.barIndicator.style.display = 'flex';
+        this.barIndicator.innerHTML = '';
+        for (let i = 0; i < numBars; i++) {
+            const led = document.createElement('span');
+            led.className = 'bar-led';
+            led.dataset.bar = i;
+            if (i === 0) led.classList.add('active');
+            this.barIndicator.appendChild(led);
+        }
+    }
+
+    updateBarIndicator(bar) {
+        if (!this.barIndicator) return;
+        this.barIndicator.querySelectorAll('.bar-led').forEach((led, i) => {
+            led.classList.toggle('active', i === bar);
+        });
+    }
+
+    updatePatternDisplayForBar(bar) {
+        if (!this.currentPattern) return;
+        const pattern = PATTERNS[this.currentPattern];
+
+        // Only update if multi-bar pattern
+        if (!pattern.bars || pattern.bars <= 1) return;
+
+        const startStep = bar * this.stepsPerBar;
+
+        const updateRow = (row, data) => {
+            row.querySelectorAll('.step').forEach((step, i) => {
+                const absoluteStep = startStep + i;
+                step.classList.toggle('active', data[absoluteStep] === 1);
+            });
+        };
+
+        updateRow(this.kickPatternEl, pattern.kick);
+        updateRow(this.snarePatternEl, pattern.snare);
+        updateRow(this.hihatPatternEl, pattern.hihat);
     }
 }
 
