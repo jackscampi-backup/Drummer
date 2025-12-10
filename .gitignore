@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Reference materials (personal tabs/PDFs)
+tabs/*.pdf
+
+# Editor
+*.swp
+*.swo
+*~
+
+# Node (for live-server)
+node_modules/

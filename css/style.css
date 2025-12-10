@@ -3,7 +3,7 @@
 /* Fonts */
 @font-face {
     font-family: 'Dymo';
-    src: url('../dymo/Dymo.ttf') format('truetype');
+    src: url('../fonts/Dymo.ttf') format('truetype');
 }
 
 @font-face {
