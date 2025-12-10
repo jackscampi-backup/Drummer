@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRUMMER - Beat Generator per Bassisti</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="rack-unit">
+        <!-- Viti angolari -->
+        <div class="rack-screw top-left"></div>
+        <div class="rack-screw top-right"></div>
+        <div class="rack-screw bottom-left"></div>
+        <div class="rack-screw bottom-right"></div>
+
+        <!-- Header Panel -->
+        <header class="rack-header">
+            <button class="header-play-btn" id="beatPlayBtn">
+                <span class="play-led"></span>
+                <span class="play-icon" id="beatPlayIcon">▶</span>
+            </button>
+            <div class="logo-display">DRUMMER</div>
+            <div class="header-bpm">
+                <input type="text" class="bpm-input" id="bpmDisplay" value="120" maxlength="3">
+                <span class="bpm-unit">BPM</span>
+            </div>
+        </header>
+
+        <!-- Main Panel -->
+        <main class="rack-panel">
+
+            <!-- Genre Section -->
+            <section class="panel-section">
+                <div class="section-label">GENRE</div>
+                <div class="button-grid" id="genreButtons">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Pattern Section -->
+            <section class="panel-section">
+                <div class="section-label">PATTERN</div>
+                <div class="button-grid" id="variationButtons">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+
+            <!-- Pattern Display -->
+            <section class="pattern-section">
+                <div class="pattern-grid">
+                    <!-- Beat Counter Row -->
+                    <div class="beat-row">
+                        <div class="beat-group">
+                            <span class="beat-num" data-beat="1">1</span>
+                            <span class="beat-dot">·</span>
+                            <span class="beat-dot">·</span>
+                            <span class="beat-dot">·</span>
+                        </div>
+                        <div class="beat-group">
+                            <span class="beat-num" data-beat="2">2</span>
+                            <span class="beat-dot">·</span>
+                            <span class="beat-dot">·</span>
+                            <span class="beat-dot">·</span>
+                        </div>
+                        <div class="beat-group">
+                            <span class="beat-num" data-beat="3">3</span>
+                            <span class="beat-dot">·</span>
+                            <span class="beat-dot">·</span>
+                            <span class="beat-dot">·</span>
+                        </div>
+                        <div class="beat-group">
+                            <span class="beat-num" data-beat="4">4</span>
+                            <span class="beat-dot">·</span>
+                            <span class="beat-dot">·</span>
+                            <span class="beat-dot">·</span>
+                        </div>
+                    </div>
+
+                    <!-- Kick Row -->
+                    <div class="step-row" id="kickPattern"></div>
+
+                    <!-- Snare Row -->
+                    <div class="step-row" id="snarePattern"></div>
+
+                    <!-- Hi-Hat Row -->
+                    <div class="step-row" id="hihatPattern"></div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="rack-footer">
+            <span class="footer-text">SPACE = PLAY/STOP</span>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="js/patterns.js"></script>
+    <script src="js/beatgen.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

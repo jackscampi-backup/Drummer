@@ -1,0 +1,458 @@
+/* DRUMMER - Rack Unit / Flycase Style */
+
+/* Fonts */
+@font-face {
+    font-family: 'Dymo';
+    src: url('../dymo/Dymo.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DSEG7';
+    src: url('../fonts/DSEG7Classic-Bold.ttf') format('truetype');
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Share+Tech+Mono&display=swap');
+
+/* ===== VARIABLES ===== */
+:root {
+    --rack-bg: #1a1a1a;
+    --panel-bg: #0d0d0d;
+    --panel-surface: #151515;
+
+    --led-red: #ff3333;
+    --led-red-dim: #4a1a1a;
+    --led-green: #33ff33;
+    --led-green-dim: #1a4a1a;
+    --led-amber: #ffaa00;
+    --led-amber-dim: #4a3a1a;
+
+    --display-orange: #ff6600;
+    --display-glow: rgba(255, 102, 0, 0.6);
+
+    --text-light: #999;
+    --text-dim: #555;
+    --screw-color: #3a3a3a;
+}
+
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background: #111;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* ===== RACK UNIT CONTAINER ===== */
+.rack-unit {
+    width: 100%;
+    max-width: 800px;
+    background: var(--panel-bg);
+    border-radius: 8px;
+    position: relative;
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.8),
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        inset 0 -1px 0 rgba(0,0,0,0.5);
+    border: 3px solid #2a2a2a;
+}
+
+/* ===== RACK SCREWS ===== */
+.rack-screw {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background:
+        radial-gradient(circle at 30% 30%, #555 0%, #333 40%, #222 100%);
+    border-radius: 50%;
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.8),
+        0 1px 0 rgba(255,255,255,0.1);
+    z-index: 10;
+}
+
+.rack-screw::after {
+    content: '+';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: bold;
+    color: #222;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.rack-screw.top-left { top: 12px; left: 12px; }
+.rack-screw.top-right { top: 12px; right: 12px; }
+.rack-screw.bottom-left { bottom: 12px; left: 12px; }
+.rack-screw.bottom-right { bottom: 12px; right: 12px; }
+
+/* ===== HEADER ===== */
+.rack-header {
+    padding: 15px 40px;
+    border-bottom: 2px solid #2a2a2a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.logo-display {
+    font-family: 'DSEG7', monospace;
+    font-size: 2.5rem;
+    color: var(--display-orange);
+    text-shadow:
+        0 0 20px var(--display-glow),
+        0 0 40px var(--display-glow);
+    letter-spacing: 4px;
+}
+
+/* Header Play Button - positioned left */
+.header-play-btn {
+    position: absolute;
+    left: 40px;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #4a4a4a 0%, #333 30%, #222 70%, #1a1a1a 100%);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    border: 2px solid #555;
+    box-shadow:
+        0 4px 8px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: all 0.1s ease;
+}
+
+.header-play-btn:hover {
+    background: linear-gradient(180deg, #555 0%, #3a3a3a 30%, #2a2a2a 70%, #222 100%);
+}
+
+.header-play-btn:active {
+    transform: scale(0.95);
+}
+
+.header-play-btn .play-led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--led-red-dim);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.header-play-btn .play-icon {
+    font-size: 1rem;
+    color: #999;
+}
+
+.header-play-btn.active {
+    background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 30%, #1a1a1a 70%, #111 100%);
+}
+
+.header-play-btn.active .play-led {
+    background: var(--led-green);
+    box-shadow:
+        0 0 10px var(--led-green),
+        0 0 20px rgba(51,255,51,0.5);
+}
+
+.header-play-btn.active .play-icon {
+    color: var(--led-green);
+}
+
+/* Header BPM Controls - positioned right */
+.header-bpm {
+    position: absolute;
+    right: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bpm-input {
+    width: 90px;
+    background: #0a0a0a;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 2px solid #333;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+    font-family: 'DSEG7', monospace;
+    font-size: 1.6rem;
+    color: var(--display-orange);
+    text-shadow: 0 0 15px var(--display-glow);
+    text-align: center;
+    outline: none;
+}
+
+.bpm-input:focus {
+    border-color: var(--display-orange);
+    box-shadow:
+        inset 0 2px 8px rgba(0,0,0,0.8),
+        0 0 10px var(--display-glow);
+}
+
+.bpm-unit {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+}
+
+/* ===== MAIN PANEL ===== */
+.rack-panel {
+    padding: 25px 30px;
+}
+
+/* ===== SECTION LABELS ===== */
+.section-label,
+.control-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+/* ===== PANEL SECTIONS ===== */
+.panel-section {
+    margin-bottom: 20px;
+}
+
+/* ===== BUTTON GRID (Genre & Pattern) ===== */
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+/* Industrial rack buttons */
+.genre-btn,
+.variation-btn {
+    position: relative;
+    padding: 12px 8px 10px;
+    border: none;
+    background: linear-gradient(180deg, #3a3a3a 0%, #252525 50%, #1a1a1a 100%);
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #444;
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: all 0.1s ease;
+}
+
+/* Dymo label style text inside buttons */
+.genre-btn .dymo-label,
+.variation-btn .dymo-label {
+    font-family: 'Dymo', sans-serif;
+    font-size: 2.2rem;
+    color: #000;
+    background: #fff;
+    padding: 0;
+    border-radius: 1px;
+    letter-spacing: -1px;
+    line-height: 0.6;
+    overflow: hidden;
+}
+
+.genre-btn:hover,
+.variation-btn:hover {
+    background: linear-gradient(180deg, #454545 0%, #303030 50%, #252525 100%);
+}
+
+.genre-btn:active,
+.variation-btn:active {
+    transform: translateY(1px);
+    box-shadow:
+        0 1px 3px rgba(0,0,0,0.5),
+        inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.genre-btn.active,
+.variation-btn.active {
+    background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 50%, #0d0d0d 100%);
+    border-color: #555;
+    box-shadow:
+        inset 0 2px 6px rgba(0,0,0,0.5);
+}
+
+/* LED indicator above button text */
+.genre-led,
+.variation-led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--led-green-dim);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.genre-btn.active .genre-led,
+.variation-btn.active .variation-led {
+    background: var(--led-green);
+    box-shadow:
+        0 0 8px var(--led-green),
+        0 0 16px rgba(51,255,51,0.4);
+}
+
+
+/* ===== PATTERN SECTION ===== */
+.pattern-section {
+    background: var(--panel-surface);
+    border-radius: 6px;
+    padding: 15px 0;
+    border: 1px solid #252525;
+}
+
+.pattern-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Beat indicators row */
+.beat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.beat-group {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 4px;
+}
+
+.beat-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    transition: all 0.1s ease;
+}
+
+.beat-num.active {
+    color: var(--led-amber);
+    text-shadow: 0 0 10px var(--led-amber);
+}
+
+.beat-num.downbeat.active {
+    color: var(--led-green);
+    text-shadow: 0 0 10px var(--led-green);
+}
+
+.beat-dot {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+}
+
+/* Step Row - 16 steps in 4 groups aligned with buttons */
+.step-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.beat-group-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+}
+
+.step {
+    height: 22px;
+    background: #0a0a0a;
+    border-radius: 2px;
+    border: 1px solid #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* LED inside step */
+.step::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.05s ease;
+}
+
+.step.active::after {
+    background: var(--led-green-dim);
+}
+
+.step.playing::after {
+    background: var(--led-green);
+    box-shadow: 0 0 8px var(--led-green);
+}
+
+.step.active.playing::after {
+    background: var(--led-green);
+    box-shadow:
+        0 0 10px var(--led-green),
+        0 0 20px rgba(51,255,51,0.5);
+    transform: scale(1.2);
+}
+
+/* ===== FOOTER ===== */
+.rack-footer {
+    padding: 12px 40px;
+    border-top: 2px solid #2a2a2a;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.footer-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+    .button-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .control-section {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .transport-buttons {
+        justify-content: center;
+    }
+
+    .logo-display {
+        font-size: 2rem;
+    }
+}
