@@ -700,6 +700,11 @@ class BeatGenerator {
 
         this.currentPattern = patternName;
         const pattern = PATTERNS[patternName];
+
+        // Dispatch event for BASSIST auto-resync
+        window.dispatchEvent(new CustomEvent('drummerPatternChange', {
+            detail: { pattern: patternName }
+        }));
         const timeSignature = pattern.timeSignature || '4/4';
 
         this.variationButtonsContainer.querySelectorAll('.variation-btn').forEach(btn => {

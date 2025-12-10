@@ -52,6 +52,15 @@ class Fretboard {
         if (toggleBtn) {
             toggleBtn.classList.add('active');
         }
+
+        // Listen for DRUMMER pattern changes to auto-resync
+        window.addEventListener('drummerPatternChange', (e) => {
+            if (this.isPlaying) {
+                console.log('BASSIST: Auto-resync to pattern:', e.detail.pattern);
+                this.stopPlay();
+                this.startPlay();
+            }
+        });
     }
 
     // Get note display name based on notation setting
@@ -176,6 +185,7 @@ class Fretboard {
         });
 
         this.updateDisplay();
+        this.resyncIfPlaying();
     }
 
     selectScale(scaleKey) {
@@ -187,6 +197,7 @@ class Fretboard {
         });
 
         this.updateDisplay();
+        this.resyncIfPlaying();
     }
 
     updateDisplay() {
@@ -284,11 +295,24 @@ class Fretboard {
     toggleShape() {
         this.showShape = !this.showShape;
         this.updateDisplay();
+        this.resyncIfPlaying();
     }
 
     toggleArpeggio() {
         this.showArpeggio = !this.showArpeggio;
         this.updateDisplay();
+        this.resyncIfPlaying();
+    }
+
+    /**
+     * Resync autoplay if currently playing (when scale/root/options change)
+     */
+    resyncIfPlaying() {
+        if (this.isPlaying) {
+            console.log('BASSIST: Resync due to scale/option change');
+            this.stopPlay();
+            this.startPlay();
+        }
     }
 
     /**
@@ -305,8 +329,8 @@ class Fretboard {
     }
 
     /**
-     * Build array of scale notes to play (ascending on E string, then loop)
-     * Returns array of {string, fret, note} objects
+     * Build array of scale notes to play across all 4 strings in box position
+     * Returns array of {string, fret, note} objects ordered low to high
      */
     buildScaleNotes() {
         const notes = [];
@@ -314,21 +338,35 @@ class Fretboard {
             ? getArpeggioNotes(this.rootNote, this.currentScale)
             : getScaleNotes(this.rootNote, this.currentScale);
 
-        // Build ascending scale on E string (simplest approach)
-        // Find each scale note's fret position on E string
-        for (let fret = 0; fret <= this.numFrets; fret++) {
-            const noteAtFret = getNoteAtFret('E', fret);
-            if (scaleNotes.includes(noteAtFret)) {
-                // If shape mode is on, only include notes in shape
-                if (this.isInShape(fret)) {
+        // Strings from low to high
+        const strings = ['E', 'A', 'D', 'G'];
+
+        // Always use box position for playback (realistic fingering)
+        const rootFret = this.getRootFret();
+        const boxStart = Math.max(0, rootFret - 1);
+        const boxEnd = boxStart + this.shapeWidth;
+
+        // Traverse all strings, collecting scale notes within box
+        for (const string of strings) {
+            for (let fret = boxStart; fret <= boxEnd; fret++) {
+                const noteAtFret = getNoteAtFret(string, fret);
+                if (scaleNotes.includes(noteAtFret)) {
                     notes.push({
-                        string: 'E',
+                        string: string,
                         fret: fret,
                         note: noteAtFret
                     });
                 }
             }
         }
+
+        // Sort by pitch (string index * 5 semitones + fret)
+        const stringIndex = { 'E': 0, 'A': 5, 'D': 10, 'G': 15 };
+        notes.sort((a, b) => {
+            const pitchA = stringIndex[a.string] + a.fret;
+            const pitchB = stringIndex[b.string] + b.fret;
+            return pitchA - pitchB;
+        });
 
         return notes;
     }
