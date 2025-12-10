@@ -89,7 +89,13 @@ Visualizzatore interattivo per tastiera basso 4 corde (12 tasti).
   - **INT** - Mostra intervalli (R, b3, 5, b7) invece dei nomi note
   - **ARP** - Mostra solo arpeggio (note dell'accordo: R, 3, 5, 7)
   - **BOX** - Mostra solo la "box shape" (4-5 tasti) per posizione fissa
+  - **PLAY** - Autoplay scala sincronizzato col kick di DRUMMER
 - **Header** - Toggle **ITA** per notazione italiana (Do, Re, Mi)
+
+**Audio:**
+- **Click sulle note** - Clicca su qualsiasi nota evidenziata per sentirla
+- **Autoplay (PLAY)** - Suona la scala automaticamente in sync col kick del pattern DRUMMER
+- Suono basso sintetizzato con Tone.js (MonoSynth FM)
 
 **Scale disponibili (ordinate per utilita' basso):**
 1. **Penta Min** - La regina del rock/blues/funk
@@ -141,13 +147,22 @@ Pattern da metronomo per esercizi tecnici:
 1. Scegli una **ROOT** (nota fondamentale) - es. E, A, G
 2. Scegli una **SCALE** - inizia con Penta Min
 3. Suona sul basso le note evidenziate (arancione = root, verde = scala)
-4. Usa i toggle per personalizzare la visualizzazione:
+4. **Clicca sulle note** per sentire il suono
+5. Usa i toggle per personalizzare la visualizzazione:
    - **INT** on → vedi gli intervalli (R, b3, 4, 5, b7)
    - **ARP** on → vedi solo le note dell'accordo (essenziali!)
    - **BOX** on → limita a 4-5 tasti (una posizione della mano)
    - **ITA** on → notazione italiana
 
-**Consiglio pratico:** Avvia un beat in DRUMMER, poi usa BASSIST per vedere quali note suonare. Le note evidenziate funzionano sempre!
+### Autoplay Scala (PLAY)
+
+1. Seleziona un **genere** e **pattern** in DRUMMER
+2. Seleziona **ROOT** e **SCALE** in BASSIST
+3. Premi **PLAY** in BASSIST → la scala suona in sync col kick!
+4. La nota corrente si illumina sulla tastiera
+5. Premi di nuovo PLAY per fermare
+
+**Consiglio pratico:** Usa i pattern **DRILL** per esercizi con metronomo semplice. Ogni pattern ha un kick diverso - la scala seguira' quel ritmo!
 
 ## Struttura
 
@@ -161,12 +176,14 @@ DRUMMER/
 │   └── Dymo.ttf        # Font Dymo per etichette
 ├── audio/
 │   └── vinyl-crackle.mp3  # Loop vinyl per effetto lo-fi
+├── SBL/                # PDF di Scott's Bass Lessons (riff futuri)
 └── js/
     ├── app.js          # Inizializzazione
     ├── beatgen.js      # DRUMMER - Generatore beat (Tone.js)
     ├── patterns.js     # DRUMMER - 64 pattern di batteria
     ├── scales.js       # BASSIST - Scale e arpeggi
-    └── fretboard.js    # BASSIST - Visualizzatore tastiera
+    ├── sounds.js       # BASSIST - Sintetizzatore basso
+    └── fretboard.js    # BASSIST - Visualizzatore tastiera + autoplay
 ```
 
 ## Tecnologie
@@ -222,6 +239,18 @@ Ogni genere ha un preset audio associato che include:
 - Tipo di suono per ogni strumento
 - Livelli di volume
 - Quantita' di vinyl crackle
+
+### Sintetizzatore Basso (BASSIST)
+Suono basso generato con Tone.js MonoSynth:
+- **Oscillatore**: FM sine per calore
+- **Envelope**: Attack veloce (0.01s) per effetto pluck
+- **Filtro**: Lowpass con envelope per tono naturale
+- **Frequenze**: E1 (41Hz) - G3 (196Hz)
+
+### Sync DRUMMER ↔ BASSIST
+- BASSIST legge il pattern corrente di DRUMMER (`window.beatGen.currentPattern`)
+- Suona una nota della scala ogni volta che c'e' un kick (`kick[i] === 1`)
+- Usa lo stesso `Tone.Transport` per sincronizzazione perfetta
 
 ## Licenza
 

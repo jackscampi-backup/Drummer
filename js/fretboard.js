@@ -12,6 +12,11 @@ class Fretboard {
         this.shapeWidth = 4;  // Shape covers 4 frets (e.g., frets 0-3, or 5-8)
         this.showArpeggio = false;  // Show only chord tones (R, 3, 5, 7)
 
+        // Autoplay state
+        this.isPlaying = false;
+        this.scaleSequence = null;
+        this.currentNoteIndex = 0;
+
         this.init();
     }
 
@@ -133,6 +138,9 @@ class Fretboard {
                 noteDiv.dataset.string = stringNote;
                 noteDiv.dataset.fret = fret;
                 noteDiv.textContent = note;
+
+                // Click to play sound
+                noteDiv.addEventListener('click', () => this.playNote(stringNote, fret));
 
                 fretDiv.appendChild(noteDiv);
                 fretsContainer.appendChild(fretDiv);
@@ -281,6 +289,195 @@ class Fretboard {
     toggleArpeggio() {
         this.showArpeggio = !this.showArpeggio;
         this.updateDisplay();
+    }
+
+    /**
+     * Play a note on the bass
+     * @param {string} stringNote - Which string (E, A, D, G)
+     * @param {number} fret - Fret number
+     */
+    async playNote(stringNote, fret) {
+        // Initialize sound on first click (required by browsers)
+        if (!bassSound.isReady) {
+            await bassSound.init();
+        }
+        bassSound.play(null, stringNote, fret, '8n');
+    }
+
+    /**
+     * Build array of scale notes to play (ascending on E string, then loop)
+     * Returns array of {string, fret, note} objects
+     */
+    buildScaleNotes() {
+        const notes = [];
+        const scaleNotes = this.showArpeggio
+            ? getArpeggioNotes(this.rootNote, this.currentScale)
+            : getScaleNotes(this.rootNote, this.currentScale);
+
+        // Build ascending scale on E string (simplest approach)
+        // Find each scale note's fret position on E string
+        for (let fret = 0; fret <= this.numFrets; fret++) {
+            const noteAtFret = getNoteAtFret('E', fret);
+            if (scaleNotes.includes(noteAtFret)) {
+                // If shape mode is on, only include notes in shape
+                if (this.isInShape(fret)) {
+                    notes.push({
+                        string: 'E',
+                        fret: fret,
+                        note: noteAtFret
+                    });
+                }
+            }
+        }
+
+        return notes;
+    }
+
+    /**
+     * Highlight a note on the fretboard during playback
+     */
+    highlightPlayingNote(noteInfo) {
+        // Remove previous highlight
+        document.querySelectorAll('.note.playing').forEach(el => {
+            el.classList.remove('playing');
+        });
+
+        if (noteInfo) {
+            // Find and highlight the current note
+            const noteEl = document.querySelector(
+                `.note[data-string="${noteInfo.string}"][data-fret="${noteInfo.fret}"]`
+            );
+            if (noteEl) {
+                noteEl.classList.add('playing');
+            }
+        }
+    }
+
+    /**
+     * Toggle scale autoplay
+     */
+    async togglePlay() {
+        // Initialize sound if needed
+        if (!bassSound.isReady) {
+            await bassSound.init();
+        }
+
+        if (this.isPlaying) {
+            // Stop playback
+            this.stopPlay();
+        } else {
+            // Start playback
+            this.startPlay();
+        }
+    }
+
+    startPlay() {
+        console.log('BASSIST: startPlay() called');
+
+        const scaleNotes = this.buildScaleNotes();
+        console.log('BASSIST: scaleNotes =', scaleNotes);
+        if (scaleNotes.length === 0) {
+            console.warn('BASSIST: No scale notes to play!');
+            alert('Seleziona una scala prima!');
+            return;
+        }
+
+        // Get current DRUMMER pattern for kick sync
+        console.log('BASSIST: window.beatGen =', window.beatGen);
+        console.log('BASSIST: typeof window.beatGen =', typeof window.beatGen);
+        if (window.beatGen) {
+            console.log('BASSIST: beatGen.currentPattern =', window.beatGen.currentPattern);
+            console.log('BASSIST: beatGen keys =', Object.keys(window.beatGen));
+        }
+
+        if (!window.beatGen) {
+            console.warn('BASSIST: beatGen not found on window');
+            alert('Errore: beatGen non trovato!');
+            return;
+        }
+
+        if (!window.beatGen.currentPattern) {
+            console.warn('BASSIST: No DRUMMER pattern selected');
+            alert('Seleziona un pattern in DRUMMER prima!\n(currentPattern = ' + window.beatGen.currentPattern + ')');
+            return;
+        }
+
+        const pattern = PATTERNS[window.beatGen.currentPattern];
+        console.log('BASSIST: pattern =', pattern);
+
+        if (!pattern || !pattern.kick) {
+            console.warn('BASSIST: Pattern has no kick array');
+            alert('Pattern senza kick!');
+            return;
+        }
+
+        this.isPlaying = true;
+        this.currentNoteIndex = 0;
+
+        // Update button state
+        const btn = document.getElementById('scalePlayBtn');
+        if (btn) btn.classList.add('active');
+
+        // Determine step duration based on time signature
+        const timeSignature = pattern.timeSignature || '4/4';
+        let stepDuration = '16n';  // Default: 16th notes for 4/4
+        if (timeSignature === '12/8') stepDuration = '8t';  // Triplet 8ths
+        if (timeSignature === '6/8') stepDuration = '8n';
+
+        // Get total steps (handle multi-bar patterns)
+        const bars = pattern.bars || 1;
+        const kickArray = pattern.kick;
+        const totalSteps = kickArray.length;
+
+        // Create sequence synced with kick pattern
+        this.scaleSequence = new Tone.Sequence(
+            (time, step) => {
+                // Check if kick hits on this step
+                if (kickArray[step] === 1) {
+                    const noteInfo = scaleNotes[this.currentNoteIndex % scaleNotes.length];
+
+                    // Play the note
+                    bassSound.play(null, noteInfo.string, noteInfo.fret, '8n');
+
+                    // Highlight on the UI (use Draw for visual sync)
+                    Tone.Draw.schedule(() => {
+                        this.highlightPlayingNote(noteInfo);
+                    }, time);
+
+                    // Advance to next scale note
+                    this.currentNoteIndex++;
+                }
+            },
+            // Array of step indices
+            [...Array(totalSteps).keys()],
+            stepDuration
+        );
+
+        this.scaleSequence.loop = true;
+        this.scaleSequence.start(0);
+
+        // Start transport if not already running
+        if (Tone.Transport.state !== 'started') {
+            Tone.Transport.start();
+        }
+    }
+
+    stopPlay() {
+        this.isPlaying = false;
+
+        // Update button state
+        const btn = document.getElementById('scalePlayBtn');
+        if (btn) btn.classList.remove('active');
+
+        // Stop and dispose sequence
+        if (this.scaleSequence) {
+            this.scaleSequence.stop();
+            this.scaleSequence.dispose();
+            this.scaleSequence = null;
+        }
+
+        // Clear highlight
+        this.highlightPlayingNote(null);
     }
 }
 

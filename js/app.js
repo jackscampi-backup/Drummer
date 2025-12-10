@@ -8,13 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const beatGen = new BeatGenerator();
     console.log('Beat Generator inizializzato');
 
-    // Inizializza il practice mode
-    const practiceMode = new PracticeMode(beatGen);
-    console.log('Practice Mode inizializzato');
-
-    // Esponi globalmente per debug
+    // Esponi globalmente per BASSIST sync
     window.beatGen = beatGen;
-    window.practiceMode = practiceMode;
 
     // Keyboard shortcut per play/pause
     document.addEventListener('keydown', (e) => {
@@ -26,5 +21,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('App pronta!');
     console.log('Scegli un genere e una variazione, poi premi Play');
-    console.log('Usa Practice per esercitarti sulle bass lines disco famose!');
 });
