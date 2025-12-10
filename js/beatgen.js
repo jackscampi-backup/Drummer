@@ -30,6 +30,8 @@ class BeatGenerator {
 
         // BPM controls
         this.bpmDisplay = document.getElementById('bpmDisplay');
+        this.bpmMinus = document.getElementById('bpmMinus');
+        this.bpmPlus = document.getElementById('bpmPlus');
 
         // Pattern display
         this.kickPatternEl = document.getElementById('kickPattern');
@@ -150,6 +152,10 @@ class BeatGenerator {
             }
         });
 
+        // BPM buttons with long press
+        this.setupBpmButton(this.bpmMinus, -1);
+        this.setupBpmButton(this.bpmPlus, 1);
+
         // Keyboard shortcut
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
@@ -164,6 +170,49 @@ class BeatGenerator {
         if (isNaN(value)) value = 120;
         value = Math.max(40, Math.min(220, value));
         this.setBPM(value);
+    }
+
+    setupBpmButton(btn, delta) {
+        let interval = null;
+        let timeout = null;
+        let speed = 150; // Starting speed in ms
+
+        const startPress = () => {
+            this.adjustBpm(delta); // First click
+            speed = 150;
+            timeout = setTimeout(() => {
+                interval = setInterval(() => {
+                    this.adjustBpm(delta);
+                    // Accelerate
+                    if (speed > 30) {
+                        speed -= 20;
+                        clearInterval(interval);
+                        interval = setInterval(() => this.adjustBpm(delta), speed);
+                    }
+                }, speed);
+            }, 400); // Wait before long press kicks in
+        };
+
+        const endPress = () => {
+            clearTimeout(timeout);
+            clearInterval(interval);
+        };
+
+        // Mouse
+        btn.addEventListener('mousedown', startPress);
+        btn.addEventListener('mouseup', endPress);
+        btn.addEventListener('mouseleave', endPress);
+
+        // Touch
+        btn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startPress();
+        });
+        btn.addEventListener('touchend', endPress);
+    }
+
+    adjustBpm(delta) {
+        this.setBPM(Math.max(40, Math.min(220, this.bpm + delta)));
     }
 
     updateBpmDisplay() {
