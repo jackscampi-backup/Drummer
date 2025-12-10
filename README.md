@@ -66,7 +66,7 @@ Design hardware professionale:
 | **Pop** | Basic, Dance, Ballad, Upbeat, Motown, Synthpop, Funk, Modern |
 | **Funk** | Basic, JB-Style, FunkyDr., BoomBap, Trap, Lo-Fi, N.Orleans, Breakbeat |
 | **Blues** | Shuffle, Slow, Chicago, Texas, 12/8Feel, Jump, Rock, Train |
-| **Drill** | 4ths, 8ths, 16ths, Triplet, Accent, 2&4, Offbeat, Mixed |
+| **Drill** | 4ths, 8ths, 16ths, Shuffle, Accent, 2&4, Offbeat, Mixed |
 | **Latin** | Bossa, Samba, Salsa, Cha-Cha, AfroCuban, Mambo, Songo, BossaSl. |
 | **Reggae** | OneDrop, Rockers, Steppers, Ska, Dub, RootsSl., Dancehall, StepFast |
 | **Electro** | Massive, Tricky, Fugees, DeLa, Slim, Portis, Morch, Hip-Hop |
