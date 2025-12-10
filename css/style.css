@@ -884,7 +884,7 @@ body {
 
 .display-toggle .toggle-label {
     font-family: 'Oswald', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: 500;
     letter-spacing: 1px;
     color: #666;
@@ -918,32 +918,42 @@ body {
     gap: 8px;
 }
 
-/* View toggle grid - 4 buttons */
+/* View toggle grid - 5 buttons */
 .view-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 8px;
 }
 
-/* Groove categories */
+/* Groove section */
+.groove-section {
+    margin-top: 10px;
+}
+
+/* Groove categories - full width buttons in a row */
 .groove-categories {
     display: flex;
     gap: 6px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
+    margin-bottom: 12px;
 }
 
 .groove-cat-btn {
-    padding: 6px 10px;
+    flex: 1;
+    padding: 10px 6px;
     border: 1px solid #444;
-    background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+    background: linear-gradient(180deg, #3a3a3a 0%, #252525 50%, #1a1a1a 100%);
     color: #888;
     border-radius: 4px;
     font-family: 'Oswald', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: 500;
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.1s ease;
+    text-transform: uppercase;
+    text-align: center;
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 .groove-cat-btn:hover {
@@ -953,88 +963,55 @@ body {
 
 .groove-cat-btn.active {
     color: #fff;
-    border-color: var(--cat-color, #ff6600);
-    box-shadow: 0 0 8px var(--cat-color, #ff6600);
+    border-color: var(--led-green);
+    box-shadow: 0 0 8px rgba(51, 255, 51, 0.4);
 }
 
-/* Groove controls */
-.groove-controls {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.groove-select {
-    flex: 1;
-    padding: 10px 12px;
-    background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
-    color: #ff8c00;
-    border: 1px solid #444;
+/* Groove select - full width, same style as AUDIO dropdowns */
+.groove-select-full {
+    width: 100%;
+    padding: 8px 12px;
+    background: #0a0a0a;
+    border: 2px solid var(--display-orange);
     border-radius: 4px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.85rem;
-    cursor: pointer;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
-}
-
-.groove-select:focus {
-    outline: none;
-    border-color: #ff8c00;
-}
-
-.groove-select option {
-    background: #1a1a1a;
-    color: #ccc;
-}
-
-.groove-random-btn {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #444;
-    background: linear-gradient(180deg, #3a3a3a 0%, #252525 50%, #1a1a1a 100%);
-    border-radius: 4px;
-    cursor: pointer;
+    color: var(--display-orange);
+    font-family: 'Share Tech Mono', monospace;
     font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.1s ease;
+    cursor: pointer;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+    margin-bottom: 8px;
+    text-transform: uppercase;
 }
 
-.groove-random-btn:hover {
-    background: linear-gradient(180deg, #454545 0%, #303030 50%, #252525 100%);
-    border-color: #666;
+.groove-select-full option {
+    background: #1a1a1a;
+    color: var(--display-orange);
 }
 
-.groove-random-btn:active {
-    transform: scale(0.95);
-}
-
-/* Groove info */
+/* Groove info - single line, same font as buttons */
 .groove-info {
     margin-top: 8px;
     padding: 8px 10px;
     background: rgba(0,0,0,0.3);
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 1px;
     color: #888;
-    min-height: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .groove-info .groove-desc {
-    color: #aaa;
+    flex: 1;
+    color: #777;
 }
 
 .groove-info .groove-difficulty {
-    float: right;
     color: #ff8c00;
-}
-
-.groove-info .groove-hint {
-    margin-top: 4px;
-    font-size: 0.75rem;
-    color: #666;
-    font-style: italic;
+    letter-spacing: 2px;
 }
 
 /* Root and Scale buttons */
@@ -1259,10 +1236,14 @@ body {
     z-index: 10;
 }
 
-/* Riff notes - magenta/purple highlight */
+/* Groove notes - orange like root */
 .note.riff-note {
-    background: radial-gradient(circle, #ff00ff 0%, #cc00cc 70%, #990099 100%);
-    border-color: #ff66ff;
+    background: var(--display-orange);
+    color: #000;
+    border: 2px solid #ffaa00;
+    box-shadow:
+        0 0 8px var(--display-glow),
+        inset 0 1px 0 rgba(255,255,255,0.2);
     cursor: pointer;
 }
 

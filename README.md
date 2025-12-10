@@ -89,7 +89,8 @@ Visualizzatore interattivo per tastiera basso 4 corde (12 tasti).
   - **INT** - Mostra intervalli (R, b3, 5, b7) invece dei nomi note
   - **ARP** - Mostra solo arpeggio (note dell'accordo: R, 3, 5, 7)
   - **BOX** - Mostra solo la "box shape" (4-5 tasti) per posizione fissa
-  - **PLAY** - Autoplay scala sincronizzato col kick di DRUMMER
+  - **GROOVE** - Attiva la modalità groove (PLAY suona il groove invece della scala)
+  - **PLAY** - Autoplay scala/groove sincronizzato col kick di DRUMMER
 - **Header** - Toggle **ITA** per notazione italiana (Do, Re, Mi)
 
 **Audio:**
@@ -114,20 +115,19 @@ Visualizzatore interattivo per tastiera basso 4 corde (12 tasti).
 | Penta Maj | Maj | R, 3, 5 |
 
 **Colori:**
-- **Arancione** - Root (nota fondamentale)
+- **Arancione** - Root (nota fondamentale) e note dei groove
 - **Verde** - Note della scala
 - **Ciano** - Note dell'arpeggio (quando ARP attivo)
 - **Grigio tratteggiato** - Note fuori dal box (quando BOX attivo)
-- **Magenta** - Note dei groove (quando GROOVE attivo)
 
 ### Sezione GROOVES (BASSIST)
 
 15 pattern di basso originali per esercitarsi con loop:
 
-- **Filtri categoria**: ALL, ROOT, OCTAVE, PENTA, WALKING, FUNK
-- **Selezione**: Dropdown con difficolta' (⭐)
-- **🎲 Random**: Pesca un groove casuale
-- **PLAY**: Loop groove in sync col BPM di DRUMMER (se attivo)
+- **Filtri categoria**: ALL, ROOT LOCK, OCTAVE, PENTA, WALKING, FUNK
+- **Selezione**: Dropdown stile audio panel con difficolta' (★)
+- **Trasposizione automatica**: I groove si adattano alla ROOT selezionata!
+- **Drum accompaniment**: Beat semplice automatico quando DRUMMER e' fermo
 
 ### Categoria DRILL
 
@@ -176,16 +176,17 @@ Pattern da metronomo per esercizi tecnici:
 
 ### Come Usare GROOVES
 
-1. Seleziona una **categoria** o lascia ALL
-2. Scegli un **groove** dal dropdown (⭐ = difficolta')
-3. Premi **🎲** per un groove random
-4. Premi **PLAY** per far partire il loop
-5. Le note del groove si illuminano sulla tastiera
-6. Suona insieme sul basso seguendo le note!
+1. Seleziona una **ROOT** (il groove si trasporta automaticamente!)
+2. Seleziona una **categoria** o lascia ALL
+3. Scegli un **groove** dal dropdown (★ = difficolta')
+4. Attiva **GROOVE** nella sezione VIEW
+5. Premi **PLAY** per far partire il loop
+6. Le note del groove si illuminano sulla tastiera
+7. Suona insieme sul basso seguendo le note!
 
 **Sync con DRUMMER:**
 - Se DRUMMER sta suonando → il groove usa lo stesso BPM
-- Se DRUMMER e' fermo → il groove usa il suo BPM predefinito
+- Se DRUMMER e' fermo → parte un beat semplice di accompagnamento (kick 1-3, snare 2-4)
 
 ## Struttura
 
@@ -281,13 +282,13 @@ Suono basso generato con Tone.js MonoSynth:
 Libreria di pattern originali per esercitarsi. 15 grooves in 5 categorie:
 
 **Categorie:**
-| Categoria | Descrizione | Colore |
-|-----------|-------------|--------|
-| ROOT LOCK | Pattern sulla root - focus sul timing | Arancione |
-| OCTAVE | Salti di ottava stile disco | Magenta |
-| PENTA | Pattern pentatonici nel box | Verde |
-| WALKING | Walking bass jazz | Ciano |
-| FUNK | Sincope e ghost notes | Giallo |
+| Categoria | Descrizione |
+|-----------|-------------|
+| ROOT LOCK | Pattern sulla root - focus sul timing |
+| OCTAVE | Salti di ottava stile disco |
+| PENTA | Pattern pentatonici nel box |
+| WALKING | Walking bass jazz |
+| FUNK | Sincope e ghost notes |
 
 **Grooves disponibili:**
 - Root Quarters, Root Eighths, Root & Fifth
@@ -299,18 +300,6 @@ Libreria di pattern originali per esercitarsi. 15 grooves in 5 categorie:
 **Sync BPM:**
 - Se DRUMMER sta suonando → groove segue il BPM di DRUMMER
 - Se DRUMMER e' fermo → groove usa il suo BPM predefinito
-
----
-
-## TODO (prossima sessione)
-
-Miglioramenti UI per sezione GROOVES:
-
-- [ ] **Posizione**: Spostare GROOVES sotto la tastiera del basso (ora e' sopra)
-- [ ] **Colore note**: Cambiare il magenta delle note groove (troppo acceso)
-- [ ] **Filtri**: Allargare disposizione bottoni categoria (ora troppo stretti)
-- [ ] **UI Selezione**: Ripensare dropdown groove - forse bottoni invece di select?
-- [ ] **Info groove**: Mostrare BPM e bars in modo piu' chiaro
 
 ---
 

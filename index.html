@@ -244,6 +244,10 @@
                         <span class="toggle-led"></span>
                         <span class="toggle-label">BOX</span>
                     </button>
+                    <button class="display-toggle" id="grooveToggle" onclick="fretboard.toggleGrooveMode()">
+                        <span class="toggle-led"></span>
+                        <span class="toggle-label">GROOVE</span>
+                    </button>
                     <button class="display-toggle play-toggle" id="scalePlayBtn" onclick="fretboard.togglePlay()">
                         <span class="toggle-led"></span>
                         <span class="toggle-label">PLAY</span>
@@ -252,23 +256,14 @@
             </section>
 
             <!-- Grooves Selection -->
-            <section class="panel-section">
+            <section class="panel-section groove-section">
                 <div class="section-label">GROOVES</div>
                 <div class="groove-categories" id="grooveCategories">
                     <!-- Populated by JS -->
                 </div>
-                <div class="groove-controls">
-                    <select id="grooveSelect" class="groove-select" onchange="fretboard.selectGroove(this.value)">
-                        <option value="">-- Seleziona Groove --</option>
-                    </select>
-                    <button class="groove-random-btn" onclick="fretboard.randomGroove()" title="Random">
-                        <span>🎲</span>
-                    </button>
-                    <button class="display-toggle play-toggle" id="groovePlayBtn" onclick="fretboard.toggleGroovePlay()">
-                        <span class="toggle-led"></span>
-                        <span class="toggle-label">PLAY</span>
-                    </button>
-                </div>
+                <select class="audio-select groove-select-full" id="grooveSelect" onchange="fretboard.selectGroove(this.value)">
+                    <option value="">-- Select --</option>
+                </select>
                 <div class="groove-info" id="grooveInfo">
                     <!-- Shows description when groove selected -->
                 </div>

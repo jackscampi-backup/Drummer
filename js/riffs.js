@@ -23,7 +23,7 @@ const GROOVES = {
         difficulty: 1,
         bpm: 100,
         bars: 1,
-        description: 'Una nota per beat - il fondamento',
+        description: 'Quarter notes on root',
         drummerMatch: ['rock_basic', 'rock_steady'],
         steps: [
             // Beat 1, 2, 3, 4 - quarter notes on E root
@@ -42,7 +42,7 @@ const GROOVES = {
         difficulty: 1,
         bpm: 110,
         bars: 1,
-        description: 'Due note per beat - più drive',
+        description: 'Eighth notes drive',
         drummerMatch: ['rock_basic', 'rock_driving'],
         steps: [
             {s:'E',f:0}, null, {s:'E',f:0}, null,
@@ -60,7 +60,7 @@ const GROOVES = {
         difficulty: 2,
         bpm: 120,
         bars: 1,
-        description: 'Root + quinta - classico rock',
+        description: 'Root to fifth, classic rock',
         drummerMatch: ['rock_basic', 'rock_steady'],
         steps: [
             {s:'E',f:0}, null, null, null,
@@ -81,7 +81,7 @@ const GROOVES = {
         difficulty: 2,
         bpm: 115,
         bars: 1,
-        description: 'Ottava semplice - stile disco',
+        description: 'Simple octave disco style',
         drummerMatch: ['disco_classic', 'disco_basic'],
         steps: [
             {s:'E',f:0}, null, {s:'D',f:2}, null,
@@ -99,7 +99,7 @@ const GROOVES = {
         difficulty: 2,
         bpm: 120,
         bars: 2,
-        description: 'Pump disco classico con variazione',
+        description: 'Classic disco pump with variation',
         drummerMatch: ['disco_classic', 'disco_hihat'],
         steps: [
             // Bar 1
@@ -123,7 +123,7 @@ const GROOVES = {
         difficulty: 3,
         bpm: 118,
         bars: 1,
-        description: 'Ottave sincropate - anticipo sul 4',
+        description: 'Syncopated octaves',
         drummerMatch: ['disco_classic', 'funk_basic'],
         steps: [
             {s:'E',f:0}, null, {s:'D',f:2}, null,
@@ -144,7 +144,7 @@ const GROOVES = {
         difficulty: 2,
         bpm: 90,
         bars: 2,
-        description: 'Salita pentatonica minore - box E',
+        description: 'Minor pentatonic climb, E box',
         drummerMatch: ['blues_shuffle', 'blues_slow'],
         steps: [
             // Bar 1 - climb up
@@ -168,7 +168,7 @@ const GROOVES = {
         difficulty: 2,
         bpm: 100,
         bars: 1,
-        description: 'Pattern nel box - 4 note loop',
+        description: '4 note box loop',
         drummerMatch: ['rock_basic', 'blues_rock'],
         steps: [
             {s:'E',f:0}, null, {s:'E',f:3}, null,
@@ -186,7 +186,7 @@ const GROOVES = {
         difficulty: 3,
         bpm: 105,
         bars: 2,
-        description: 'Groove rock con pentatonica',
+        description: 'Rock groove with pentatonic',
         drummerMatch: ['rock_driving', 'rock_heavy'],
         steps: [
             // Bar 1
@@ -213,7 +213,7 @@ const GROOVES = {
         difficulty: 2,
         bpm: 100,
         bars: 2,
-        description: 'Walking bass semplice - 1 nota per beat',
+        description: 'Simple walking, one per beat',
         drummerMatch: ['jazz_swing', 'jazz_brushes'],
         steps: [
             // Bar 1 - C chord area (on A string)
@@ -237,7 +237,7 @@ const GROOVES = {
         difficulty: 3,
         bpm: 110,
         bars: 2,
-        description: 'Note di approccio cromatico',
+        description: 'Chromatic approach notes',
         drummerMatch: ['jazz_swing', 'jazz_medium'],
         steps: [
             // Bar 1
@@ -264,7 +264,7 @@ const GROOVES = {
         difficulty: 2,
         bpm: 95,
         bars: 1,
-        description: 'Groove funk base - sedicesimi',
+        description: 'Basic funk 16ths groove',
         drummerMatch: ['funk_basic', 'funk_tight'],
         steps: [
             {s:'E',f:0}, null, {s:'E',f:0}, null,
@@ -282,7 +282,7 @@ const GROOVES = {
         difficulty: 3,
         bpm: 92,
         bars: 2,
-        description: 'Nel pocket - spazio tra le note',
+        description: 'Deep in the pocket',
         drummerMatch: ['funk_basic', 'funk_groove'],
         steps: [
             // Bar 1
@@ -306,7 +306,7 @@ const GROOVES = {
         difficulty: 4,
         bpm: 88,
         bars: 1,
-        description: 'Sedicesimi funk - impegnativo!',
+        description: 'Busy 16ths funk',
         drummerMatch: ['funk_tight', 'funk_groove'],
         steps: [
             {s:'E',f:0}, {s:'E',f:0}, null, {s:'E',f:3},

@@ -3,10 +3,10 @@
 class Fretboard {
     constructor() {
         this.rootNote = 'E';
-        this.currentScale = 'pentatonic_minor';
+        this.currentScale = null;  // No scale selected initially
         this.numFrets = 12;
         this.fretMarkers = [3, 5, 7, 9, 12];  // Standard bass markers
-        this.showIntervals = true;  // Show intervals by default (R, 3, 5, etc.)
+        this.showIntervals = false;  // Show note names by default
         this.useItalianNotes = false;  // Use English notation by default
         this.showShape = false;  // Show only box shape when enabled
         this.shapeWidth = 4;  // Shape covers 4 frets (e.g., frets 0-3, or 5-8)
@@ -21,7 +21,9 @@ class Fretboard {
         this.currentGroove = null;
         this.isPlayingGroove = false;
         this.grooveSequence = null;
+        this.drumSequence = null;  // Simple drum accompaniment
         this.selectedCategory = null;  // null = all categories
+        this.grooveModeActive = false;  // Whether groove panel is visible
 
         this.init();
     }
@@ -33,6 +35,48 @@ class Fretboard {
         // Calculate fret on E string where root appears
         let fret = (rootIndex - eIndex + 12) % 12;
         return fret;
+    }
+
+    // Calculate semitone offset from E to current root
+    getRootOffset() {
+        const rootIndex = NOTES.indexOf(this.rootNote);
+        const eIndex = NOTES.indexOf('E');
+        return (rootIndex - eIndex + 12) % 12;
+    }
+
+    // Transpose a groove step by semitones
+    transposeStep(step, semitones) {
+        if (!step) return null;
+
+        const stringPitches = { 'E': 0, 'A': 5, 'D': 10, 'G': 15 };
+        const strings = ['E', 'A', 'D', 'G'];
+
+        // Calculate current absolute pitch
+        const currentPitch = stringPitches[step.s] + step.f;
+
+        // Add offset
+        const newPitch = currentPitch + semitones;
+
+        // Find best string/fret combination (prefer staying within frets 0-12)
+        for (let i = strings.length - 1; i >= 0; i--) {
+            const stringPitch = stringPitches[strings[i]];
+            const fret = newPitch - stringPitch;
+            if (fret >= 0 && fret <= 12) {
+                return { s: strings[i], f: fret };
+            }
+        }
+
+        // Fallback: use E string
+        const fret = Math.max(0, Math.min(12, newPitch));
+        return { s: 'E', f: fret };
+    }
+
+    // Get transposed groove steps based on current root
+    getTransposedGrooveSteps() {
+        if (!this.currentGroove) return [];
+
+        const offset = this.getRootOffset();
+        return this.currentGroove.steps.map(step => this.transposeStep(step, offset));
     }
 
     // Check if a fret is within the current shape
@@ -54,12 +98,6 @@ class Fretboard {
         this.renderGrooveCategories();
         this.renderGrooveSelect();
         this.updateDisplay();
-
-        // Set initial toggle button state
-        const toggleBtn = document.getElementById('displayToggle');
-        if (toggleBtn) {
-            toggleBtn.classList.add('active');
-        }
 
         // Listen for DRUMMER pattern changes to auto-resync
         window.addEventListener('drummerPatternChange', (e) => {
@@ -193,15 +231,26 @@ class Fretboard {
         });
 
         this.updateDisplay();
+
+        // Update groove display if one is selected
+        if (this.currentGroove) {
+            this.displayGroove();
+        }
+
         this.resyncIfPlaying();
     }
 
     selectScale(scaleKey) {
-        this.currentScale = scaleKey;
+        // Toggle: if clicking same scale, deselect it
+        if (this.currentScale === scaleKey) {
+            this.currentScale = null;
+        } else {
+            this.currentScale = scaleKey;
+        }
 
         // Update button states
         document.querySelectorAll('.scale-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.scale === scaleKey);
+            btn.classList.toggle('active', btn.dataset.scale === this.currentScale);
         });
 
         this.updateDisplay();
@@ -209,10 +258,12 @@ class Fretboard {
     }
 
     updateDisplay() {
-        // Get notes to display based on arpeggio mode
-        const scaleNotes = this.showArpeggio
-            ? getArpeggioNotes(this.rootNote, this.currentScale)
-            : getScaleNotes(this.rootNote, this.currentScale);
+        // Get notes to display based on arpeggio mode (empty if no scale selected)
+        const scaleNotes = this.currentScale
+            ? (this.showArpeggio
+                ? getArpeggioNotes(this.rootNote, this.currentScale)
+                : getScaleNotes(this.rootNote, this.currentScale))
+            : [];
 
         document.querySelectorAll('.note').forEach(noteDiv => {
             const note = noteDiv.dataset.note;
@@ -221,6 +272,12 @@ class Fretboard {
 
             // Reset classes
             noteDiv.classList.remove('in-scale', 'root', 'out-of-shape', 'in-arpeggio');
+
+            // If no scale selected, show nothing
+            if (!this.currentScale) {
+                noteDiv.textContent = this.getDisplayNote(note);
+                return;
+            }
 
             // Check if note is in scale/arpeggio AND in shape (if shape mode is on)
             const isNoteRoot = isRoot(note, this.rootNote);
@@ -313,6 +370,35 @@ class Fretboard {
     }
 
     /**
+     * Toggle groove mode (switches PLAY button behavior)
+     */
+    toggleGrooveMode() {
+        this.grooveModeActive = !this.grooveModeActive;
+
+        const grooveToggle = document.getElementById('grooveToggle');
+        if (grooveToggle) {
+            grooveToggle.classList.toggle('active', this.grooveModeActive);
+        }
+
+        // If deactivating groove mode and playing groove, stop it
+        if (!this.grooveModeActive && this.isPlayingGroove) {
+            this.stopGroovePlay();
+        }
+
+        // Clear groove selection and reset select when deactivating
+        if (!this.grooveModeActive) {
+            this.currentGroove = null;
+            const select = document.getElementById('grooveSelect');
+            if (select) select.value = '';
+            // Clear groove notes from fretboard
+            document.querySelectorAll('.note.riff-note').forEach(n => {
+                n.classList.remove('riff-note');
+            });
+            this.updateDisplay();
+        }
+    }
+
+    /**
      * Resync autoplay if currently playing (when scale/root/options change)
      */
     resyncIfPlaying() {
@@ -341,6 +427,8 @@ class Fretboard {
      * Returns array of {string, fret, note} objects ordered low to high
      */
     buildScaleNotes() {
+        if (!this.currentScale) return [];  // No scale selected
+
         const notes = [];
         const scaleNotes = this.showArpeggio
             ? getArpeggioNotes(this.rootNote, this.currentScale)
@@ -400,7 +488,7 @@ class Fretboard {
     }
 
     /**
-     * Toggle scale autoplay
+     * Toggle autoplay (scale or groove depending on mode)
      */
     async togglePlay() {
         // Initialize sound if needed
@@ -408,12 +496,20 @@ class Fretboard {
             await bassSound.init();
         }
 
-        if (this.isPlaying) {
-            // Stop playback
-            this.stopPlay();
+        // If groove mode active and a groove is selected, play groove
+        if (this.grooveModeActive && this.currentGroove) {
+            if (this.isPlayingGroove) {
+                this.stopGroovePlay();
+            } else {
+                this.startGroovePlay();
+            }
         } else {
-            // Start playback
-            this.startPlay();
+            // Otherwise play scale
+            if (this.isPlaying) {
+                this.stopPlay();
+            } else {
+                this.startPlay();
+            }
         }
     }
 
@@ -424,7 +520,7 @@ class Fretboard {
         console.log('BASSIST: scaleNotes =', scaleNotes);
         if (scaleNotes.length === 0) {
             console.warn('BASSIST: No scale notes to play!');
-            alert('Seleziona una scala prima!');
+            alert('Select a scale first!');
             return;
         }
 
@@ -541,7 +637,6 @@ class Fretboard {
         const allBtn = document.createElement('button');
         allBtn.className = 'groove-cat-btn active';
         allBtn.textContent = 'ALL';
-        allBtn.style.setProperty('--cat-color', '#ff6600');
         allBtn.onclick = () => this.filterByCategory(null);
         container.appendChild(allBtn);
 
@@ -551,7 +646,6 @@ class Fretboard {
             btn.className = 'groove-cat-btn';
             btn.textContent = cat.name;
             btn.dataset.category = key;
-            btn.style.setProperty('--cat-color', cat.color);
             btn.onclick = () => this.filterByCategory(key);
             container.appendChild(btn);
         });
@@ -570,7 +664,7 @@ class Fretboard {
             btn.classList.toggle('active', isMatch);
         });
 
-        // Re-render dropdown
+        // Re-render select
         this.renderGrooveSelect();
     }
 
@@ -581,7 +675,7 @@ class Fretboard {
         const select = document.getElementById('grooveSelect');
         if (!select) return;
 
-        select.innerHTML = '<option value="">-- Seleziona Groove --</option>';
+        select.innerHTML = '<option value="">-- Select --</option>';
 
         const grooves = this.selectedCategory
             ? getGroovesByCategory(this.selectedCategory)
@@ -590,7 +684,7 @@ class Fretboard {
         grooves.forEach(groove => {
             const option = document.createElement('option');
             option.value = groove.id;
-            const stars = '⭐'.repeat(groove.difficulty);
+            const stars = '★'.repeat(groove.difficulty);
             option.textContent = `${groove.name} ${stars}`;
             select.appendChild(option);
         });
@@ -612,6 +706,13 @@ class Fretboard {
             console.log('BASSIST: Selected groove:', this.currentGroove.name);
             this.displayGroove();
             this.updateGrooveInfo();
+
+            // Activate groove mode when a groove is selected
+            if (!this.grooveModeActive) {
+                this.grooveModeActive = true;
+                const grooveToggle = document.getElementById('grooveToggle');
+                if (grooveToggle) grooveToggle.classList.add('active');
+            }
         }
     }
 
@@ -621,7 +722,8 @@ class Fretboard {
     randomGroove() {
         const groove = getRandomGroove(this.selectedCategory);
         if (groove) {
-            document.getElementById('grooveSelect').value = groove.id;
+            const select = document.getElementById('grooveSelect');
+            if (select) select.value = groove.id;
             this.selectGroove(groove.id);
         }
     }
@@ -639,16 +741,15 @@ class Fretboard {
         }
 
         const g = this.currentGroove;
-        const stars = '⭐'.repeat(g.difficulty);
+        const stars = '★'.repeat(g.difficulty);
         info.innerHTML = `
+            <span class="groove-desc">${g.description} - ${g.bpm} BPM - ${g.bars} bar${g.bars > 1 ? 's' : ''}</span>
             <span class="groove-difficulty">${stars}</span>
-            <span class="groove-desc">${g.description}</span>
-            <div class="groove-hint">💡 ${g.bpm} BPM • ${g.bars} bar${g.bars > 1 ? 's' : ''} • ${g.genre}</div>
         `;
     }
 
     /**
-     * Display groove notes on fretboard
+     * Display groove notes on fretboard (transposed to current root)
      */
     displayGroove() {
         if (!this.currentGroove) return;
@@ -658,9 +759,12 @@ class Fretboard {
             n.classList.remove('in-scale', 'root', 'in-arpeggio', 'riff-note');
         });
 
+        // Get transposed steps
+        const transposedSteps = this.getTransposedGrooveSteps();
+
         // Highlight all notes used in this groove
         const usedNotes = new Set();
-        this.currentGroove.steps.forEach(step => {
+        transposedSteps.forEach(step => {
             if (step) {
                 usedNotes.add(`${step.s}-${step.f}`);
             }
@@ -676,32 +780,17 @@ class Fretboard {
     }
 
     /**
-     * Toggle groove playback
-     */
-    async toggleGroovePlay() {
-        if (!bassSound.isReady) {
-            await bassSound.init();
-        }
-
-        if (this.isPlayingGroove) {
-            this.stopGroovePlay();
-        } else {
-            this.startGroovePlay();
-        }
-    }
-
-    /**
      * Start playing current groove
      */
     startGroovePlay() {
         if (!this.currentGroove) {
-            alert('Seleziona un groove prima!');
+            alert('Select a groove first!');
             return;
         }
 
         this.isPlayingGroove = true;
 
-        const btn = document.getElementById('groovePlayBtn');
+        const btn = document.getElementById('scalePlayBtn');
         if (btn) btn.classList.add('active');
 
         // Sync with DRUMMER if playing, otherwise use groove's BPM
@@ -714,7 +803,8 @@ class Fretboard {
             console.log('BASSIST: Using groove BPM:', this.currentGroove.bpm);
         }
 
-        const steps = this.currentGroove.steps;
+        // Get transposed steps based on current root
+        const steps = this.getTransposedGrooveSteps();
         const totalSteps = steps.length;
 
         this.grooveSequence = new Tone.Sequence(
@@ -738,9 +828,60 @@ class Fretboard {
         this.grooveSequence.loop = true;
         this.grooveSequence.start(0);
 
+        // Add simple drum accompaniment if DRUMMER not playing
+        if (!window.beatGen || !window.beatGen.isPlaying) {
+            this.startDrumAccompaniment();
+        }
+
         if (Tone.Transport.state !== 'started') {
             Tone.Transport.start();
         }
+    }
+
+    /**
+     * Start simple drum accompaniment for groove
+     * Basic beat: kick on 1,3 - snare on 2,4 - hihat on 8ths
+     */
+    async startDrumAccompaniment() {
+        // Make sure Tone.js is started
+        await Tone.start();
+
+        // Use beatGen's synths if available
+        if (!window.beatGen) return;
+        if (!window.beatGen.kick) return;
+
+        console.log('BASSIST: Starting drum accompaniment');
+
+        // Simple 16-step pattern (1 bar of 16th notes)
+        // Kick: 1 and 3 (steps 0, 8)
+        // Snare: 2 and 4 (steps 4, 12)
+        // Hihat: every 8th (steps 0, 2, 4, 6, 8, 10, 12, 14)
+        const pattern = {
+            kick:  [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0],
+            snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
+            hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0]
+        };
+
+        const bg = window.beatGen;
+
+        this.drumSequence = new Tone.Sequence(
+            (time, step) => {
+                if (pattern.kick[step] && bg.kick) {
+                    bg.kick.triggerAttackRelease('C1', '8n', time);
+                }
+                if (pattern.snare[step] && bg.snare) {
+                    bg.snare.triggerAttackRelease('8n', time);
+                }
+                if (pattern.hihat[step] && bg.hihat) {
+                    bg.hihat.triggerAttackRelease('16n', time);
+                }
+            },
+            [...Array(16).keys()],
+            '16n'
+        );
+
+        this.drumSequence.loop = true;
+        this.drumSequence.start(0);
     }
 
     /**
@@ -749,13 +890,20 @@ class Fretboard {
     stopGroovePlay() {
         this.isPlayingGroove = false;
 
-        const btn = document.getElementById('groovePlayBtn');
+        const btn = document.getElementById('scalePlayBtn');
         if (btn) btn.classList.remove('active');
 
         if (this.grooveSequence) {
             this.grooveSequence.stop();
             this.grooveSequence.dispose();
             this.grooveSequence = null;
+        }
+
+        // Stop drum accompaniment
+        if (this.drumSequence) {
+            this.drumSequence.stop();
+            this.drumSequence.dispose();
+            this.drumSequence = null;
         }
 
         this.highlightGrooveNote(null);
