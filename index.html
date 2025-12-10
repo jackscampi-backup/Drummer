@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="rack-wrapper">
     <div class="rack-container">
     <!-- DRUMMER Unit -->
     <div class="rack-unit rack-main">
@@ -190,9 +191,82 @@
     </div>
     </div><!-- /rack-container -->
 
+    <!-- BASSIST Unit -->
+    <div class="rack-unit rack-bassist">
+        <!-- Viti angolari -->
+        <div class="rack-screw top-left"></div>
+        <div class="rack-screw top-right"></div>
+        <div class="rack-screw bottom-left"></div>
+        <div class="rack-screw bottom-right"></div>
+
+        <!-- Header -->
+        <header class="rack-header">
+            <div class="logo-display">BASSIST</div>
+            <div class="header-toggles-right">
+                <button class="display-toggle" id="notationToggle" onclick="fretboard.toggleNotation()">
+                    <span class="toggle-led"></span>
+                    <span class="toggle-label">ITA</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Panel -->
+        <main class="rack-panel bassist-panel">
+            <!-- Root Note Selection -->
+            <section class="panel-section">
+                <div class="section-label">ROOT</div>
+                <div class="button-grid root-grid" id="rootButtons">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Scale Selection -->
+            <section class="panel-section">
+                <div class="section-label">SCALE</div>
+                <div class="button-grid scale-grid" id="scaleButtons">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- View Toggles -->
+            <section class="panel-section">
+                <div class="section-label">VIEW</div>
+                <div class="button-grid view-grid">
+                    <button class="display-toggle" id="displayToggle" onclick="fretboard.toggleDisplay()">
+                        <span class="toggle-led"></span>
+                        <span class="toggle-label">INT</span>
+                    </button>
+                    <button class="display-toggle" id="arpToggle" onclick="fretboard.toggleArpeggio()">
+                        <span class="toggle-led"></span>
+                        <span class="toggle-label">ARP</span>
+                    </button>
+                    <button class="display-toggle" id="shapeToggle" onclick="fretboard.toggleShape()">
+                        <span class="toggle-led"></span>
+                        <span class="toggle-label">BOX</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Fretboard -->
+            <section class="panel-section fretboard-section">
+                <div id="fretboard" class="fretboard">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="rack-footer">
+            <span class="footer-text">4-STRING BASS FRETBOARD</span>
+        </footer>
+    </div>
+    </div><!-- /rack-wrapper -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <script src="js/patterns.js"></script>
+    <script src="js/scales.js"></script>
     <script src="js/beatgen.js"></script>
+    <script src="js/fretboard.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

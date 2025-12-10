@@ -818,3 +818,363 @@ body {
         border-bottom: none;
     }
 }
+
+/* ===== BASSIST PANEL ===== */
+
+/* Rack wrapper for stacking panels */
+.rack-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+/* BASSIST panel - full width */
+.rack-bassist {
+    width: 1100px;  /* 800 + 280 + 20 gap */
+    flex-shrink: 0;
+}
+
+.rack-bassist .rack-header {
+    justify-content: center;
+    padding: 15px 40px;
+    position: relative;
+}
+
+/* Display Toggle Button (INT/ARP/BOX/ITA) */
+.display-toggle {
+    padding: 8px 12px;
+    border: none;
+    background: linear-gradient(180deg, #3a3a3a 0%, #252525 50%, #1a1a1a 100%);
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #444;
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: all 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.display-toggle:hover {
+    background: linear-gradient(180deg, #454545 0%, #303030 50%, #252525 100%);
+}
+
+.display-toggle:active {
+    transform: translateY(1px);
+}
+
+.display-toggle .toggle-led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--led-green-dim);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
+    transition: all 0.1s ease;
+}
+
+.display-toggle.active .toggle-led {
+    background: var(--led-green);
+    box-shadow:
+        0 0 8px var(--led-green),
+        0 0 16px rgba(51,255,51,0.4);
+}
+
+.display-toggle .toggle-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #666;
+}
+
+.display-toggle.active .toggle-label {
+    color: var(--led-green);
+}
+
+/* Right side toggles container */
+.header-toggles-right {
+    position: absolute;
+    right: 40px;
+    display: flex;
+    gap: 8px;
+}
+
+.bassist-panel {
+    padding: 20px 30px;
+}
+
+/* Root note button grid - 12 buttons (chromatic scale) */
+.root-grid {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 6px;
+}
+
+/* Scale button grid - 5 buttons */
+.scale-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+/* View toggle grid - 3 buttons */
+.view-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+/* Root and Scale buttons */
+.root-btn,
+.scale-btn {
+    padding: 10px 6px;
+    border: none;
+    background: linear-gradient(180deg, #3a3a3a 0%, #252525 50%, #1a1a1a 100%);
+    color: #888;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1px solid #444;
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: all 0.1s ease;
+}
+
+.root-btn:hover,
+.scale-btn:hover {
+    background: linear-gradient(180deg, #454545 0%, #303030 50%, #252525 100%);
+    color: #aaa;
+}
+
+.root-btn:active,
+.scale-btn:active {
+    transform: translateY(1px);
+}
+
+.root-btn.active,
+.scale-btn.active {
+    background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 50%, #0d0d0d 100%);
+    color: var(--display-orange);
+    border-color: var(--display-orange);
+    box-shadow:
+        inset 0 2px 6px rgba(0,0,0,0.5),
+        0 0 10px var(--display-glow);
+}
+
+/* ===== FRETBOARD ===== */
+.fretboard-section {
+    margin-top: 10px;
+}
+
+.fretboard {
+    background: #1a1a1a;
+    border-radius: 6px;
+    padding: 15px 20px;
+    border: 1px solid #333;
+    overflow-x: auto;
+}
+
+/* Fret numbers row */
+.fret-numbers {
+    display: flex;
+    padding-left: 50px;  /* Space for string labels */
+    margin-bottom: 8px;
+}
+
+.fret-num {
+    width: 70px;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+}
+
+/* String row */
+.string-row {
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+.string-label {
+    width: 50px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Frets container */
+.frets-container {
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+/* Individual fret */
+.fret {
+    width: 70px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-right: 2px solid #444;
+    background: linear-gradient(180deg, #2a2a2a 0%, #1f1f1f 50%, #1a1a1a 100%);
+}
+
+/* Nut (fret 0) */
+.fret.nut {
+    background: linear-gradient(90deg, #555 0%, #444 50%, #333 100%);
+    border-right: 4px solid #666;
+    width: 50px;
+}
+
+/* Fret markers background */
+.fret.marker {
+    background: linear-gradient(180deg, #2d2d2d 0%, #222 50%, #1d1d1d 100%);
+}
+
+/* String line */
+.fret::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(180deg, #888 0%, #666 50%, #444 100%);
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Note circle */
+.note {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: transparent;
+    background: transparent;
+    transition: all 0.15s ease;
+    z-index: 2;
+    cursor: default;
+}
+
+/* Note in scale */
+.note.in-scale {
+    background: var(--led-green-dim);
+    color: #fff;
+    border: 2px solid var(--led-green);
+    box-shadow:
+        0 0 8px rgba(51, 255, 51, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* Root note */
+.note.root {
+    background: var(--display-orange);
+    color: #000;
+    font-weight: 700;
+    border: 2px solid #ffaa00;
+    box-shadow:
+        0 0 12px var(--display-glow),
+        0 0 24px rgba(255, 102, 0, 0.4),
+        inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* Arpeggio notes (chord tones) - cyan/blue color */
+.note.in-arpeggio {
+    background: #1a4a5a;
+    color: #fff;
+    border: 2px solid #00ccff;
+    box-shadow:
+        0 0 8px rgba(0, 204, 255, 0.4),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* Note in scale but outside current box shape - dimmed */
+.note.out-of-shape {
+    background: #2a2a2a;
+    color: #555;
+    border: 1px dashed #444;
+    box-shadow: none;
+}
+
+/* Fret markers row */
+.markers-row {
+    display: flex;
+    padding-left: 50px;
+    margin-top: 8px;
+}
+
+.marker-dot-container {
+    width: 70px;
+    display: flex;
+    justify-content: center;
+}
+
+.marker-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #444;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.marker-dot.double {
+    width: 20px;
+    border-radius: 5px;
+}
+
+/* ===== BASSIST RESPONSIVE ===== */
+@media (max-width: 1150px) {
+    .rack-bassist {
+        width: 100%;
+        max-width: 800px;
+    }
+
+    .root-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .scale-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .fretboard {
+        overflow-x: scroll;
+    }
+}
+
+@media (max-width: 700px) {
+    .root-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .scale-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .fret-num,
+    .fret,
+    .marker-dot-container {
+        width: 55px;
+    }
+
+    .fret.nut {
+        width: 40px;
+    }
+}

@@ -1,16 +1,20 @@
-# DRUMMER
+# DRUMMER + BASSIST
 
-Beat Generator per Bassisti - Drum machine web in stile rack/flycase per esercitarsi al basso.
+Suite di strumenti web per bassisti - Drum machine + Visualizzatore scale in stile rack/flycase.
 
 **[Prova online](https://jackscampi-backup.github.io/Drummer)**
 
 ## Descrizione
 
-DRUMMER genera pattern di batteria in tempo reale usando Tone.js. Non richiede file audio esterni per i suoni di batteria: tutti i suoni sono sintetizzati nel browser. Include un loop di vinyl crackle opzionale per atmosfera lo-fi.
+Due moduli integrati per esercitarsi al basso:
 
-Interfaccia in stile **rack unit da tour flycase** con due moduli affiancati:
+1. **DRUMMER** - Genera pattern di batteria in tempo reale usando Tone.js
+2. **BASSIST** - Visualizza scale, arpeggi e box position sulla tastiera del basso
+
+Interfaccia in stile **rack unit da tour flycase** con tre moduli:
 - **DRUMMER** - Selezione generi e pattern
 - **AUDIO** - Controllo suoni e mixer
+- **BASSIST** - Tastiera basso interattiva (full-width)
 
 Design hardware professionale:
 - Display LED arancione (font DSEG7 a 7 segmenti)
@@ -74,6 +78,41 @@ Design hardware professionale:
 | **Reggae** | OneDrop, Rockers, Steppers, Ska, Dub, RootsSl., Dancehall, StepFast | |
 | **Electro** | Massive, Tricky, Fugees, DeLa, Slim, Portis, Morch, Hip-Hop | Trip-Hop |
 
+### Modulo BASSIST
+
+Visualizzatore interattivo per tastiera basso 4 corde (12 tasti).
+
+**Sezioni:**
+- **ROOT** - Seleziona la nota fondamentale (12 note cromatiche)
+- **SCALE** - Seleziona la scala da visualizzare
+- **VIEW** - Toggle per personalizzare la visualizzazione:
+  - **INT** - Mostra intervalli (R, b3, 5, b7) invece dei nomi note
+  - **ARP** - Mostra solo arpeggio (note dell'accordo: R, 3, 5, 7)
+  - **BOX** - Mostra solo la "box shape" (4-5 tasti) per posizione fissa
+- **Header** - Toggle **ITA** per notazione italiana (Do, Re, Mi)
+
+**Scale disponibili (ordinate per utilita' basso):**
+1. **Penta Min** - La regina del rock/blues/funk
+2. **Blues** - Pentatonica minore + blue note (b5)
+3. **Maggiore** - La scala "normale" di riferimento
+4. **Minore** - Per brani tristi/drammatici
+5. **Penta Maj** - Country, pop allegro
+
+**Arpeggi:**
+| Scala | Arpeggio | Note |
+|-------|----------|------|
+| Penta Min | Min7 | R, b3, 5, b7 |
+| Blues | Min7 | R, b3, 5, b7 |
+| Maggiore | Maj7 | R, 3, 5, 7 |
+| Minore | Min7 | R, b3, 5, b7 |
+| Penta Maj | Maj | R, 3, 5 |
+
+**Colori:**
+- **Arancione** - Root (nota fondamentale)
+- **Verde** - Note della scala
+- **Ciano** - Note dell'arpeggio (quando ARP attivo)
+- **Grigio tratteggiato** - Note fuori dal box (quando BOX attivo)
+
 ### Categoria DRILL
 
 Pattern da metronomo per esercizi tecnici:
@@ -97,6 +136,19 @@ Pattern da metronomo per esercizi tecnici:
    - Modificare un controllo disattiva AUTO
    - Premi AUTO per ripristinare i preset del genere
 
+### Come Usare BASSIST
+
+1. Scegli una **ROOT** (nota fondamentale) - es. E, A, G
+2. Scegli una **SCALE** - inizia con Penta Min
+3. Suona sul basso le note evidenziate (arancione = root, verde = scala)
+4. Usa i toggle per personalizzare la visualizzazione:
+   - **INT** on → vedi gli intervalli (R, b3, 4, 5, b7)
+   - **ARP** on → vedi solo le note dell'accordo (essenziali!)
+   - **BOX** on → limita a 4-5 tasti (una posizione della mano)
+   - **ITA** on → notazione italiana
+
+**Consiglio pratico:** Avvia un beat in DRUMMER, poi usa BASSIST per vedere quali note suonare. Le note evidenziate funzionano sempre!
+
 ## Struttura
 
 ```
@@ -105,15 +157,16 @@ DRUMMER/
 ├── css/
 │   └── style.css       # Stili rack unit
 ├── fonts/
-│   └── DSEG7Classic-Bold.ttf  # Font LED 7 segmenti
-├── dymo/
+│   ├── DSEG7Classic-Bold.ttf  # Font LED 7 segmenti
 │   └── Dymo.ttf        # Font Dymo per etichette
 ├── audio/
 │   └── vinyl-crackle.mp3  # Loop vinyl per effetto lo-fi
 └── js/
     ├── app.js          # Inizializzazione
-    ├── beatgen.js      # Generatore beat (Tone.js) + Audio controls
-    └── patterns.js     # 64 pattern di batteria
+    ├── beatgen.js      # DRUMMER - Generatore beat (Tone.js)
+    ├── patterns.js     # DRUMMER - 64 pattern di batteria
+    ├── scales.js       # BASSIST - Scale e arpeggi
+    └── fretboard.js    # BASSIST - Visualizzatore tastiera
 ```
 
 ## Tecnologie
