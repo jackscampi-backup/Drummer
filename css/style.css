@@ -924,6 +924,119 @@ body {
     gap: 8px;
 }
 
+/* Groove categories */
+.groove-categories {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.groove-cat-btn {
+    padding: 6px 10px;
+    border: 1px solid #444;
+    background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+    color: #888;
+    border-radius: 4px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.groove-cat-btn:hover {
+    color: #ccc;
+    border-color: #666;
+}
+
+.groove-cat-btn.active {
+    color: #fff;
+    border-color: var(--cat-color, #ff6600);
+    box-shadow: 0 0 8px var(--cat-color, #ff6600);
+}
+
+/* Groove controls */
+.groove-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.groove-select {
+    flex: 1;
+    padding: 10px 12px;
+    background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+    color: #ff8c00;
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.groove-select:focus {
+    outline: none;
+    border-color: #ff8c00;
+}
+
+.groove-select option {
+    background: #1a1a1a;
+    color: #ccc;
+}
+
+.groove-random-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #444;
+    background: linear-gradient(180deg, #3a3a3a 0%, #252525 50%, #1a1a1a 100%);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s ease;
+}
+
+.groove-random-btn:hover {
+    background: linear-gradient(180deg, #454545 0%, #303030 50%, #252525 100%);
+    border-color: #666;
+}
+
+.groove-random-btn:active {
+    transform: scale(0.95);
+}
+
+/* Groove info */
+.groove-info {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #888;
+    min-height: 20px;
+}
+
+.groove-info .groove-desc {
+    color: #aaa;
+}
+
+.groove-info .groove-difficulty {
+    float: right;
+    color: #ff8c00;
+}
+
+.groove-info .groove-hint {
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: #666;
+    font-style: italic;
+}
+
 /* Root and Scale buttons */
 .root-btn,
 .scale-btn {
@@ -1144,6 +1257,18 @@ body {
         0 0 20px rgba(255, 255, 255, 0.8),
         0 0 40px rgba(255, 140, 0, 0.6);
     z-index: 10;
+}
+
+/* Riff notes - magenta/purple highlight */
+.note.riff-note {
+    background: radial-gradient(circle, #ff00ff 0%, #cc00cc 70%, #990099 100%);
+    border-color: #ff66ff;
+    cursor: pointer;
+}
+
+.note.riff-note:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
 }
 
 /* Fret markers row */

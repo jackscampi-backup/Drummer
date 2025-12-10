@@ -9,7 +9,7 @@ Suite di strumenti web per bassisti - Drum machine + Visualizzatore scale in sti
 Due moduli integrati per esercitarsi al basso:
 
 1. **DRUMMER** - Genera pattern di batteria in tempo reale usando Tone.js
-2. **BASSIST** - Visualizza scale, arpeggi e box position sulla tastiera del basso
+2. **BASSIST** - Visualizza scale, arpeggi, grooves e box position sulla tastiera del basso
 
 Interfaccia in stile **rack unit da tour flycase** con tre moduli:
 - **DRUMMER** - Selezione generi e pattern
@@ -118,6 +118,16 @@ Visualizzatore interattivo per tastiera basso 4 corde (12 tasti).
 - **Verde** - Note della scala
 - **Ciano** - Note dell'arpeggio (quando ARP attivo)
 - **Grigio tratteggiato** - Note fuori dal box (quando BOX attivo)
+- **Magenta** - Note dei groove (quando GROOVE attivo)
+
+### Sezione GROOVES (BASSIST)
+
+15 pattern di basso originali per esercitarsi con loop:
+
+- **Filtri categoria**: ALL, ROOT, OCTAVE, PENTA, WALKING, FUNK
+- **Selezione**: Dropdown con difficolta' (⭐)
+- **🎲 Random**: Pesca un groove casuale
+- **PLAY**: Loop groove in sync col BPM di DRUMMER (se attivo)
 
 ### Categoria DRILL
 
@@ -164,6 +174,19 @@ Pattern da metronomo per esercizi tecnici:
 
 **Consiglio pratico:** Usa i pattern **DRILL** per esercizi con metronomo semplice. Ogni pattern ha un kick diverso - la scala seguira' quel ritmo!
 
+### Come Usare GROOVES
+
+1. Seleziona una **categoria** o lascia ALL
+2. Scegli un **groove** dal dropdown (⭐ = difficolta')
+3. Premi **🎲** per un groove random
+4. Premi **PLAY** per far partire il loop
+5. Le note del groove si illuminano sulla tastiera
+6. Suona insieme sul basso seguendo le note!
+
+**Sync con DRUMMER:**
+- Se DRUMMER sta suonando → il groove usa lo stesso BPM
+- Se DRUMMER e' fermo → il groove usa il suo BPM predefinito
+
 ## Struttura
 
 ```
@@ -183,7 +206,8 @@ DRUMMER/
     ├── patterns.js     # DRUMMER - 64 pattern di batteria
     ├── scales.js       # BASSIST - Scale e arpeggi
     ├── sounds.js       # BASSIST - Sintetizzatore basso
-    └── fretboard.js    # BASSIST - Visualizzatore tastiera + autoplay
+    ├── fretboard.js    # BASSIST - Visualizzatore tastiera + autoplay
+    └── riffs.js        # BASSIST - Libreria grooves (15 pattern originali)
 ```
 
 ## Tecnologie
@@ -251,6 +275,44 @@ Suono basso generato con Tone.js MonoSynth:
 - BASSIST legge il pattern corrente di DRUMMER (`window.beatGen.currentPattern`)
 - Suona una nota della scala ogni volta che c'e' un kick (`kick[i] === 1`)
 - Usa lo stesso `Tone.Transport` per sincronizzazione perfetta
+
+### Sezione GROOVES
+
+Libreria di pattern originali per esercitarsi. 15 grooves in 5 categorie:
+
+**Categorie:**
+| Categoria | Descrizione | Colore |
+|-----------|-------------|--------|
+| ROOT LOCK | Pattern sulla root - focus sul timing | Arancione |
+| OCTAVE | Salti di ottava stile disco | Magenta |
+| PENTA | Pattern pentatonici nel box | Verde |
+| WALKING | Walking bass jazz | Ciano |
+| FUNK | Sincope e ghost notes | Giallo |
+
+**Grooves disponibili:**
+- Root Quarters, Root Eighths, Root & Fifth
+- Octave Basic, Disco Pump, Octave Synco
+- Penta Climb, Penta Box, Penta Groove
+- Walk Basic, Walk Approach
+- Funk Basic, Funk Pocket, Funk 16ths
+
+**Sync BPM:**
+- Se DRUMMER sta suonando → groove segue il BPM di DRUMMER
+- Se DRUMMER e' fermo → groove usa il suo BPM predefinito
+
+---
+
+## TODO (prossima sessione)
+
+Miglioramenti UI per sezione GROOVES:
+
+- [ ] **Posizione**: Spostare GROOVES sotto la tastiera del basso (ora e' sopra)
+- [ ] **Colore note**: Cambiare il magenta delle note groove (troppo acceso)
+- [ ] **Filtri**: Allargare disposizione bottoni categoria (ora troppo stretti)
+- [ ] **UI Selezione**: Ripensare dropdown groove - forse bottoni invece di select?
+- [ ] **Info groove**: Mostrare BPM e bars in modo piu' chiaro
+
+---
 
 ## Licenza
 

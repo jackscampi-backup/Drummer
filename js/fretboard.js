@@ -17,6 +17,12 @@ class Fretboard {
         this.scaleSequence = null;
         this.currentNoteIndex = 0;
 
+        // Groove state
+        this.currentGroove = null;
+        this.isPlayingGroove = false;
+        this.grooveSequence = null;
+        this.selectedCategory = null;  // null = all categories
+
         this.init();
     }
 
@@ -45,6 +51,8 @@ class Fretboard {
         this.renderRootButtons();
         this.renderScaleButtons();
         this.renderFretboard();
+        this.renderGrooveCategories();
+        this.renderGrooveSelect();
         this.updateDisplay();
 
         // Set initial toggle button state
@@ -516,6 +524,259 @@ class Fretboard {
 
         // Clear highlight
         this.highlightPlayingNote(null);
+    }
+
+    // ==================== GROOVE METHODS ====================
+
+    /**
+     * Render category filter buttons
+     */
+    renderGrooveCategories() {
+        const container = document.getElementById('grooveCategories');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        // Add "ALL" button
+        const allBtn = document.createElement('button');
+        allBtn.className = 'groove-cat-btn active';
+        allBtn.textContent = 'ALL';
+        allBtn.style.setProperty('--cat-color', '#ff6600');
+        allBtn.onclick = () => this.filterByCategory(null);
+        container.appendChild(allBtn);
+
+        // Add category buttons
+        Object.entries(GROOVE_CATEGORIES).forEach(([key, cat]) => {
+            const btn = document.createElement('button');
+            btn.className = 'groove-cat-btn';
+            btn.textContent = cat.name;
+            btn.dataset.category = key;
+            btn.style.setProperty('--cat-color', cat.color);
+            btn.onclick = () => this.filterByCategory(key);
+            container.appendChild(btn);
+        });
+    }
+
+    /**
+     * Filter grooves by category
+     */
+    filterByCategory(category) {
+        this.selectedCategory = category;
+
+        // Update button states
+        document.querySelectorAll('.groove-cat-btn').forEach(btn => {
+            const isAll = !btn.dataset.category;
+            const isMatch = isAll ? !category : btn.dataset.category === category;
+            btn.classList.toggle('active', isMatch);
+        });
+
+        // Re-render dropdown
+        this.renderGrooveSelect();
+    }
+
+    /**
+     * Populate the groove dropdown
+     */
+    renderGrooveSelect() {
+        const select = document.getElementById('grooveSelect');
+        if (!select) return;
+
+        select.innerHTML = '<option value="">-- Seleziona Groove --</option>';
+
+        const grooves = this.selectedCategory
+            ? getGroovesByCategory(this.selectedCategory)
+            : getAllGrooves();
+
+        grooves.forEach(groove => {
+            const option = document.createElement('option');
+            option.value = groove.id;
+            const stars = '⭐'.repeat(groove.difficulty);
+            option.textContent = `${groove.name} ${stars}`;
+            select.appendChild(option);
+        });
+    }
+
+    /**
+     * Select a groove and display it
+     */
+    selectGroove(grooveId) {
+        if (!grooveId) {
+            this.currentGroove = null;
+            this.updateGrooveInfo();
+            this.updateDisplay();
+            return;
+        }
+
+        this.currentGroove = getGroove(grooveId);
+        if (this.currentGroove) {
+            console.log('BASSIST: Selected groove:', this.currentGroove.name);
+            this.displayGroove();
+            this.updateGrooveInfo();
+        }
+    }
+
+    /**
+     * Select random groove
+     */
+    randomGroove() {
+        const groove = getRandomGroove(this.selectedCategory);
+        if (groove) {
+            document.getElementById('grooveSelect').value = groove.id;
+            this.selectGroove(groove.id);
+        }
+    }
+
+    /**
+     * Update groove info panel
+     */
+    updateGrooveInfo() {
+        const info = document.getElementById('grooveInfo');
+        if (!info) return;
+
+        if (!this.currentGroove) {
+            info.innerHTML = '';
+            return;
+        }
+
+        const g = this.currentGroove;
+        const stars = '⭐'.repeat(g.difficulty);
+        info.innerHTML = `
+            <span class="groove-difficulty">${stars}</span>
+            <span class="groove-desc">${g.description}</span>
+            <div class="groove-hint">💡 ${g.bpm} BPM • ${g.bars} bar${g.bars > 1 ? 's' : ''} • ${g.genre}</div>
+        `;
+    }
+
+    /**
+     * Display groove notes on fretboard
+     */
+    displayGroove() {
+        if (!this.currentGroove) return;
+
+        // Clear previous highlights
+        document.querySelectorAll('.note').forEach(n => {
+            n.classList.remove('in-scale', 'root', 'in-arpeggio', 'riff-note');
+        });
+
+        // Highlight all notes used in this groove
+        const usedNotes = new Set();
+        this.currentGroove.steps.forEach(step => {
+            if (step) {
+                usedNotes.add(`${step.s}-${step.f}`);
+            }
+        });
+
+        usedNotes.forEach(key => {
+            const [string, fret] = key.split('-');
+            const noteEl = document.querySelector(`.note[data-string="${string}"][data-fret="${fret}"]`);
+            if (noteEl) {
+                noteEl.classList.add('riff-note');
+            }
+        });
+    }
+
+    /**
+     * Toggle groove playback
+     */
+    async toggleGroovePlay() {
+        if (!bassSound.isReady) {
+            await bassSound.init();
+        }
+
+        if (this.isPlayingGroove) {
+            this.stopGroovePlay();
+        } else {
+            this.startGroovePlay();
+        }
+    }
+
+    /**
+     * Start playing current groove
+     */
+    startGroovePlay() {
+        if (!this.currentGroove) {
+            alert('Seleziona un groove prima!');
+            return;
+        }
+
+        this.isPlayingGroove = true;
+
+        const btn = document.getElementById('groovePlayBtn');
+        if (btn) btn.classList.add('active');
+
+        // Sync with DRUMMER if playing, otherwise use groove's BPM
+        if (window.beatGen && window.beatGen.isPlaying) {
+            // DRUMMER is playing - it controls the tempo
+            console.log('BASSIST: Syncing with DRUMMER at', Tone.Transport.bpm.value, 'BPM');
+        } else {
+            // DRUMMER not playing - use groove's BPM
+            Tone.Transport.bpm.value = this.currentGroove.bpm;
+            console.log('BASSIST: Using groove BPM:', this.currentGroove.bpm);
+        }
+
+        const steps = this.currentGroove.steps;
+        const totalSteps = steps.length;
+
+        this.grooveSequence = new Tone.Sequence(
+            (time, stepIndex) => {
+                const step = steps[stepIndex];
+                if (step) {
+                    bassSound.play(null, step.s, step.f, '16n');
+                    Tone.Draw.schedule(() => {
+                        this.highlightGrooveNote(step);
+                    }, time);
+                } else {
+                    Tone.Draw.schedule(() => {
+                        this.highlightGrooveNote(null);
+                    }, time);
+                }
+            },
+            [...Array(totalSteps).keys()],
+            '16n'
+        );
+
+        this.grooveSequence.loop = true;
+        this.grooveSequence.start(0);
+
+        if (Tone.Transport.state !== 'started') {
+            Tone.Transport.start();
+        }
+    }
+
+    /**
+     * Stop groove playback
+     */
+    stopGroovePlay() {
+        this.isPlayingGroove = false;
+
+        const btn = document.getElementById('groovePlayBtn');
+        if (btn) btn.classList.remove('active');
+
+        if (this.grooveSequence) {
+            this.grooveSequence.stop();
+            this.grooveSequence.dispose();
+            this.grooveSequence = null;
+        }
+
+        this.highlightGrooveNote(null);
+    }
+
+    /**
+     * Highlight current groove note
+     */
+    highlightGrooveNote(step) {
+        document.querySelectorAll('.note.playing').forEach(el => {
+            el.classList.remove('playing');
+        });
+
+        if (step) {
+            const noteEl = document.querySelector(
+                `.note[data-string="${step.s}"][data-fret="${step.f}"]`
+            );
+            if (noteEl) {
+                noteEl.classList.add('playing');
+            }
+        }
     }
 }
 
