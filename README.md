@@ -65,12 +65,12 @@ Design hardware professionale:
 
 | Genere | Pattern | Note |
 |--------|---------|------|
-| **Rock** | Basic*, Hard, Pop, Half-Time, Shuffle, Punk, Ballad, Fill** | *2 bars, **4 bars con fill |
-| **Pop** | Basic, Dance, Ballad†, Upbeat, Motown, Synthpop, Funk, Modern | †6/8 |
+| **Rock** | Basic*, Hard, Pop, Half-Time, Shuffle†, Punk, Ballad, Fill** | *2 bars, **4 bars, †12/8 |
+| **Pop** | Basic, Disco, Ballad†, Upbeat, Motown, Synthpop, Funk, Modern | †6/8 |
 | **Funk** | Basic*, JB-Style, FunkyDr., BoomBap, Trap, Lo-Fi, N.Orleans, Breakbeat | *2 bars |
-| **Blues** | Shuffle, Slow*†, Chicago, Texas, 12/8†, Jump, Rock, Train | *2 bars, †12/8 |
+| **Blues** | Shuffle†, Slow*†, Chicago, Texas, 12/8†, Jump, Rock, Train | *2 bars, †12/8 |
 | **Drill** | 4ths, 8ths, 16ths, Shuffle, Accent, 2&4, Offbeat, Mixed | Metronomo |
-| **Latin** | Bossa, Samba, Salsa, Cha-Cha, AfroCuban, Mambo, Songo, BossaSl. | |
+| **Latin** | Cumbia, Samba, Salsa, Cha-Cha, AfroCuban, Mambo, Songo, Bossa | |
 | **Reggae** | OneDrop, Rockers, Steppers, Ska, Dub, RootsSl., Dancehall, StepFast | |
 | **Electro** | Massive, Tricky, Fugees, DeLa, Slim, Portis, Morch, Hip-Hop | Trip-Hop |
 

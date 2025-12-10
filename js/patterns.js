@@ -51,11 +51,14 @@ const PATTERNS = {
     rock_shuffle: {
         name: 'Shuffle',
         genre: 'Rock',
-        bpm: 120,
-        kick:  [1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,1,0],
-        snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
-        hihat: [1,0,0,1, 0,0,1,0, 1,0,0,1, 0,0,1,0],
-        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
+        bpm: 130,
+        timeSignature: '12/8',
+        // True shuffle feel - 12 steps (4 beats × 3 subdivisions)
+        // ZZ Top / Stevie Ray Vaughan style
+        kick:  [1,0,0, 0,0,1, 1,0,0, 0,0,1],
+        snare: [0,0,0, 1,0,0, 0,0,0, 1,0,0],
+        hihat: [1,0,1, 1,0,1, 1,0,1, 1,0,1],
+        rim:   [0,0,0, 0,0,0, 0,0,0, 0,0,0]
     },
     rock_punk: {
         name: 'Punk',
@@ -71,15 +74,6 @@ const PATTERNS = {
         genre: 'Rock',
         bpm: 70,
         kick:  [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,1,0],
-        snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
-        hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
-        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
-    },
-    rock_stadium: {
-        name: 'Stadium',
-        genre: 'Rock',
-        bpm: 135,
-        kick:  [1,0,0,0, 0,0,0,0, 1,0,1,0, 0,0,0,0],
         snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
         hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
@@ -118,14 +112,15 @@ const PATTERNS = {
         hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     },
-    pop_dance: {
-        name: 'Dance',
+    pop_disco: {
+        name: 'Disco',
         genre: 'Pop',
-        bpm: 122,
+        bpm: 115,
+        // Classic disco 1977-1980 - four on the floor, open hi-hat on offbeats
         kick:  [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
         snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
-        hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
-        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
+        hihat: [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1],
+        rim:   [0,0,1,0, 0,0,1,0, 0,0,1,0, 0,0,1,0]
     },
     pop_ballad: {
         name: 'Ballad',
@@ -151,9 +146,10 @@ const PATTERNS = {
         name: 'Motown',
         genre: 'Pop',
         bpm: 112,
-        kick:  [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
-        snare: [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
-        hihat: [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1],
+        // Classic Motown: strong backbeat on 2&4, tambourine feel on hi-hat
+        kick:  [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0],
+        snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
+        hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     },
     pop_synthpop: {
@@ -269,11 +265,13 @@ const PATTERNS = {
     blues_shuffle: {
         name: 'Shuffle',
         genre: 'Blues',
-        bpm: 100,
-        kick:  [1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,1,0],
-        snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
-        hihat: [1,0,0,1, 0,0,1,0, 1,0,0,1, 0,0,1,0],
-        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
+        bpm: 120,
+        timeSignature: '12/8',
+        // True blues shuffle in 12/8 - BB King style
+        kick:  [1,0,0, 0,0,1, 1,0,0, 0,0,1],
+        snare: [0,0,0, 1,0,0, 0,0,0, 1,0,0],
+        hihat: [1,0,1, 1,0,1, 1,0,1, 1,0,1],
+        rim:   [0,0,0, 0,0,0, 0,0,0, 0,0,0]
     },
     blues_slow: {
         name: 'Slow',
@@ -294,10 +292,11 @@ const PATTERNS = {
     blues_chicago: {
         name: 'Chicago',
         genre: 'Blues',
-        bpm: 110,
-        kick:  [1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,1,0],
+        bpm: 95,
+        // Chicago blues - Muddy Waters style, more laid back
+        kick:  [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,1,0],
         snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
-        hihat: [1,0,0,1, 0,0,1,0, 1,0,0,1, 0,0,1,0],
+        hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     },
     blues_texas: {
@@ -431,14 +430,15 @@ const PATTERNS = {
     },
 
     // ========== LATIN (8 patterns) ==========
-    latin_bossa: {
-        name: 'Bossa',
+    latin_cumbia: {
+        name: 'Cumbia',
         genre: 'Latin',
-        bpm: 135,
-        kick:  [1,0,0,0, 0,0,1,0, 0,0,0,0, 1,0,0,0],
-        snare: [0,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,1,0],
+        bpm: 95,
+        // Colombian Cumbia - hypnotic groove
+        kick:  [1,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0],
+        snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
         hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
-        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
+        rim:   [0,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0]
     },
     latin_samba: {
         name: 'Samba',
@@ -452,7 +452,7 @@ const PATTERNS = {
     latin_salsa: {
         name: 'Salsa',
         genre: 'Latin',
-        bpm: 185,
+        bpm: 165,
         kick:  [1,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0],
         snare: [0,0,0,1, 0,0,0,0, 1,0,0,1, 0,0,0,0],
         hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
@@ -479,7 +479,7 @@ const PATTERNS = {
     latin_mambo: {
         name: 'Mambo',
         genre: 'Latin',
-        bpm: 195,
+        bpm: 175,
         kick:  [1,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0],
         snare: [0,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
         hihat: [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1],
@@ -494,14 +494,15 @@ const PATTERNS = {
         hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     },
-    latin_bossa_slow: {
-        name: 'BossaSl.',
+    latin_bossa: {
+        name: 'Bossa',
         genre: 'Latin',
-        bpm: 100,
-        kick:  [1,0,0,0, 0,0,1,0, 0,0,0,0, 1,0,0,0],
-        snare: [0,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,1,0],
+        bpm: 130,
+        // Bossa Nova - Joao Gilberto style
+        kick:  [1,0,0,0, 0,0,1,0, 0,0,1,0, 0,0,0,0],
+        snare: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
         hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
-        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
+        rim:   [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0]
     },
 
     // ========== REGGAE (8 patterns) ==========
@@ -563,7 +564,8 @@ const PATTERNS = {
         name: 'Dancehall',
         genre: 'Reggae',
         bpm: 100,
-        kick:  [1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,1,0],
+        // Dembow riddim - classic dancehall pattern
+        kick:  [1,0,0,0, 0,0,0,0, 0,0,1,0, 1,0,0,0],
         snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
         hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
@@ -669,7 +671,7 @@ const GENRES = {
     },
     pop: {
         name: 'Pop',
-        patterns: ['pop_basic', 'pop_dance', 'pop_ballad', 'pop_upbeat', 'pop_motown', 'pop_synthpop', 'pop_funk', 'pop_modern']
+        patterns: ['pop_basic', 'pop_disco', 'pop_ballad', 'pop_upbeat', 'pop_motown', 'pop_synthpop', 'pop_funk', 'pop_modern']
     },
     funk: {
         name: 'Funk',
@@ -685,7 +687,7 @@ const GENRES = {
     },
     latin: {
         name: 'Latin',
-        patterns: ['latin_bossa', 'latin_samba', 'latin_salsa', 'latin_chacha', 'latin_afrocuban', 'latin_mambo', 'latin_songo', 'latin_bossa_slow']
+        patterns: ['latin_cumbia', 'latin_samba', 'latin_salsa', 'latin_chacha', 'latin_afrocuban', 'latin_mambo', 'latin_songo', 'latin_bossa']
     },
     reggae: {
         name: 'Reggae',

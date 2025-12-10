@@ -22,8 +22,8 @@ npx live-server
 - **index.html** - Main HTML structure
 - **css/style.css** - Vintage drum machine styling (dark theme, LED effects, hardware-inspired UI)
 - **js/patterns.js** - Pattern definitions and genre configuration
-  - `PATTERNS` object: all drum patterns (40 total across 8 genres)
-  - `GENRES` object: groups patterns by genre
+  - `PATTERNS` object: all drum patterns (64 total across 8 genres)
+  - `GENRES` object: groups patterns by genre (8 patterns each)
 - **js/beatgen.js** - `BeatGenerator` class
   - Manages Tone.js synthesizers (kick, snare, hihat)
   - Handles sequencing with `Tone.Sequence`
@@ -51,7 +51,7 @@ npx live-server
 
 ### Pattern Format
 
-Each pattern is 16 steps (16th notes in 4/4):
+**4/4 standard** - 16 steps per bar (16th notes):
 ```javascript
 {
     name: 'Pattern Name',
@@ -59,7 +59,38 @@ Each pattern is 16 steps (16th notes in 4/4):
     bpm: 120,
     kick:  [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],  // 1=hit, 0=silence
     snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
-    hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0]
+    hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
+    rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
+}
+```
+
+**12/8 (triplets)** - 12 steps per bar (4 beats x 3):
+```javascript
+{
+    timeSignature: '12/8',
+    kick:  [1,0,0, 0,0,0, 1,0,0, 0,0,0],
+    snare: [0,0,0, 1,0,0, 0,0,0, 1,0,0],
+    hihat: [1,0,1, 1,0,1, 1,0,1, 1,0,1]  // true shuffle!
+}
+```
+
+**6/8** - 6 steps per bar (2 beats x 3):
+```javascript
+{
+    timeSignature: '6/8',
+    kick:  [1,0,0, 0,0,0],
+    snare: [0,0,0, 1,0,0],
+    hihat: [1,0,1, 1,0,1]
+}
+```
+
+**Multi-bar** - 2 or 4 bars with variations:
+```javascript
+{
+    bars: 2,
+    kick:  [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0,   // bar 1
+            1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,0,0],  // bar 2 (variation)
+    ...
 }
 ```
 

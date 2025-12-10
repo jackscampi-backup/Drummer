@@ -38,11 +38,11 @@ const GENRE_AUDIO_PRESETS = {
         vinyl: 0
     },
     latin: {
-        bpm: 105,
-        kick: { type: 'acoustic', volume: 70, decay: 35 },
-        snare: { type: 'rim', volume: 70, decay: 30 },
-        hihat: { type: 'shaker', volume: 65, decay: 35 },
-        vinyl: 10
+        bpm: 100,
+        kick: { type: 'acoustic', volume: 70, decay: 40 },
+        snare: { type: 'rim', volume: 65, decay: 35 },
+        hihat: { type: 'shaker', volume: 60, decay: 30 },
+        vinyl: 5
     },
     reggae: {
         bpm: 80,
@@ -194,13 +194,10 @@ class BeatGenerator {
         this.masterVolumeSlider = document.getElementById('masterVolume');
         this.vinylAmountSlider = document.getElementById('vinylAmount');
         this.kickVolumeSlider = document.getElementById('kickVolume');
-        this.kickDecaySlider = document.getElementById('kickDecay');
         this.kickTypeSelect = document.getElementById('kickType');
         this.snareVolumeSlider = document.getElementById('snareVolume');
-        this.snareDecaySlider = document.getElementById('snareDecay');
         this.snareTypeSelect = document.getElementById('snareType');
         this.hihatVolumeSlider = document.getElementById('hihatVolume');
-        this.hihatDecaySlider = document.getElementById('hihatDecay');
         this.hihatTypeSelect = document.getElementById('hihatType');
 
         this.init();
@@ -345,14 +342,6 @@ class BeatGenerator {
             this.kickVol.volume.value = db;
         });
 
-        this.kickDecaySlider.addEventListener('input', () => {
-            this.disableAutoMode();
-            const value = parseInt(this.kickDecaySlider.value) / 100;
-            const decay = 0.1 + value * 0.9; // 0.1 to 1.0
-            this.kick.envelope.decay = decay;
-            this.kick.envelope.release = decay;
-        });
-
         this.kickTypeSelect.addEventListener('change', () => {
             this.disableAutoMode();
             this.kickType = this.kickTypeSelect.value;
@@ -367,14 +356,6 @@ class BeatGenerator {
             this.snareVol.volume.value = db;
         });
 
-        this.snareDecaySlider.addEventListener('input', () => {
-            this.disableAutoMode();
-            const value = parseInt(this.snareDecaySlider.value) / 100;
-            const decay = 0.05 + value * 0.45; // 0.05 to 0.5
-            this.snare.envelope.decay = decay;
-            this.snare.envelope.release = decay * 0.5;
-        });
-
         this.snareTypeSelect.addEventListener('change', () => {
             this.disableAutoMode();
             this.snareType = this.snareTypeSelect.value;
@@ -387,14 +368,6 @@ class BeatGenerator {
             const value = parseInt(this.hihatVolumeSlider.value);
             const db = value === 0 ? -Infinity : (value - 100) * 0.6;
             this.hihatVol.volume.value = db;
-        });
-
-        this.hihatDecaySlider.addEventListener('input', () => {
-            this.disableAutoMode();
-            const value = parseInt(this.hihatDecaySlider.value) / 100;
-            const decay = 0.02 + value * 0.48; // 0.02 to 0.5
-            this.hihat.envelope.decay = decay;
-            this.hihat.envelope.release = decay * 0.5;
         });
 
         this.hihatTypeSelect.addEventListener('change', () => {
@@ -441,10 +414,6 @@ class BeatGenerator {
                 release: 0.01
             }
         }).connect(this.kickClickFilter);
-
-        // Sync slider to preset decay value (decay range: 0.1 to 1.0)
-        const sliderValue = Math.round(((preset.envelope.decay - 0.1) / 0.9) * 100);
-        this.kickDecaySlider.value = sliderValue;
     }
 
     rebuildSnare() {
@@ -453,10 +422,6 @@ class BeatGenerator {
         }
         const preset = SNARE_PRESETS[this.snareType];
         this.snare = new Tone.NoiseSynth(preset).connect(this.snareVol);
-
-        // Sync slider to preset decay value (decay range: 0.05 to 0.5)
-        const sliderValue = Math.round(((preset.envelope.decay - 0.05) / 0.45) * 100);
-        this.snareDecaySlider.value = sliderValue;
     }
 
     rebuildHihat() {
@@ -472,10 +437,6 @@ class BeatGenerator {
             noise: preset.noise,
             envelope: preset.envelope
         }).connect(this.hihatFilter);
-
-        // Sync slider to preset decay value (decay range: 0.02 to 0.5)
-        const sliderValue = Math.round(((preset.envelope.decay - 0.02) / 0.48) * 100);
-        this.hihatDecaySlider.value = sliderValue;
     }
 
     applyGenreAudioPreset(genreKey) {

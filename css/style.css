@@ -550,8 +550,8 @@ body {
 }
 
 .audio-section {
-    margin-bottom: 15px;
-    padding-bottom: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
     border-bottom: 1px solid #252525;
 }
 
@@ -561,11 +561,44 @@ body {
     border-bottom: none;
 }
 
+/* Instrument row - label + select on first line, slider below */
+.instrument-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+}
+
+.instrument-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 55px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #aaa;
+}
+
+.instrument-row .audio-select {
+    flex: 1;
+    font-family: 'DSEG7Classic', monospace;
+    font-size: 1.2rem;
+    padding: 8px 12px;
+    text-transform: uppercase;
+}
+
+.instrument-row .audio-slider {
+    width: calc(100% - 70px);
+    flex: none;
+    margin-top: 12px;
+    margin-left: 70px;
+}
+
 .audio-control {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .audio-control:last-child {

@@ -135,75 +135,49 @@
                     <span class="control-name">Vol</span>
                     <input type="range" class="audio-slider" id="masterVolume" min="0" max="100" value="80">
                 </div>
-                <div class="audio-control">
-                    <span class="control-name">Vinyl</span>
-                    <input type="range" class="audio-slider" id="vinylAmount" min="0" max="100" value="0">
-                </div>
             </section>
 
             <!-- Kick Section -->
-            <section class="panel-section audio-section">
-                <div class="section-label">KICK</div>
-                <div class="audio-control">
-                    <span class="control-name">Type</span>
-                    <select class="audio-select" id="kickType">
-                        <option value="deep">Deep</option>
-                        <option value="punchy">Punchy</option>
-                        <option value="808">808</option>
-                        <option value="acoustic">Acoustic</option>
-                    </select>
-                </div>
-                <div class="audio-control">
-                    <span class="control-name">Vol</span>
-                    <input type="range" class="audio-slider" id="kickVolume" min="0" max="100" value="70">
-                </div>
-                <div class="audio-control">
-                    <span class="control-name">Decay</span>
-                    <input type="range" class="audio-slider" id="kickDecay" min="0" max="100" value="50">
-                </div>
+            <section class="panel-section audio-section instrument-row">
+                <span class="instrument-label">KICK</span>
+                <select class="audio-select" id="kickType">
+                    <option value="deep">Deep</option>
+                    <option value="punchy">Punchy</option>
+                    <option value="808">808</option>
+                    <option value="acoustic">Acoustic</option>
+                </select>
+                <input type="range" class="audio-slider" id="kickVolume" min="0" max="100" value="70">
             </section>
 
             <!-- Snare Section -->
-            <section class="panel-section audio-section">
-                <div class="section-label">SNARE</div>
-                <div class="audio-control">
-                    <span class="control-name">Type</span>
-                    <select class="audio-select" id="snareType">
-                        <option value="tight">Tight</option>
-                        <option value="fat">Fat</option>
-                        <option value="rim">Rim</option>
-                        <option value="clap">Clap</option>
-                    </select>
-                </div>
-                <div class="audio-control">
-                    <span class="control-name">Vol</span>
-                    <input type="range" class="audio-slider" id="snareVolume" min="0" max="100" value="70">
-                </div>
-                <div class="audio-control">
-                    <span class="control-name">Decay</span>
-                    <input type="range" class="audio-slider" id="snareDecay" min="0" max="100" value="50">
-                </div>
+            <section class="panel-section audio-section instrument-row">
+                <span class="instrument-label">SNARE</span>
+                <select class="audio-select" id="snareType">
+                    <option value="tight">Tight</option>
+                    <option value="fat">Fat</option>
+                    <option value="rim">Rim</option>
+                    <option value="clap">Clap</option>
+                </select>
+                <input type="range" class="audio-slider" id="snareVolume" min="0" max="100" value="70">
             </section>
 
             <!-- Hi-Hat Section -->
+            <section class="panel-section audio-section instrument-row">
+                <span class="instrument-label">HI-HAT</span>
+                <select class="audio-select" id="hihatType">
+                    <option value="closed">Closed</option>
+                    <option value="open">Open</option>
+                    <option value="shaker">Shaker</option>
+                    <option value="ride">Ride</option>
+                </select>
+                <input type="range" class="audio-slider" id="hihatVolume" min="0" max="100" value="60">
+            </section>
+
+            <!-- Vinyl Section -->
             <section class="panel-section audio-section">
-                <div class="section-label">HI-HAT</div>
                 <div class="audio-control">
-                    <span class="control-name">Type</span>
-                    <select class="audio-select" id="hihatType">
-                        <option value="closed">Closed</option>
-                        <option value="open">Open</option>
-                        <option value="shaker">Shaker</option>
-                        <option value="ride">Ride</option>
-                    </select>
-                </div>
-                <div class="audio-control">
-                    <span class="control-name">Vol</span>
-                    <input type="range" class="audio-slider" id="hihatVolume" min="0" max="100" value="60">
-                </div>
-                <div class="audio-control">
-                    <span class="control-name">Decay</span>
-                    <input type="range" class="audio-slider" id="hihatDecay" min="0" max="100" value="30">
+                    <span class="control-name">Vinyl</span>
+                    <input type="range" class="audio-slider" id="vinylAmount" min="0" max="100" value="0">
                 </div>
             </section>
 
