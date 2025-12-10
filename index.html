@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="rack-unit">
+    <div class="rack-container">
+    <!-- DRUMMER Unit -->
+    <div class="rack-unit rack-main">
         <!-- Viti angolari -->
         <div class="rack-screw top-left"></div>
         <div class="rack-screw top-right"></div>
@@ -18,14 +20,8 @@
         <header class="rack-header">
             <button class="header-play-btn" id="beatPlayBtn">
                 <span class="play-led"></span>
-                <span class="play-icon" id="beatPlayIcon">▶</span>
             </button>
             <div class="logo-display">DRUMMER</div>
-            <div class="header-bpm">
-                <button class="bpm-btn" id="bpmMinus">-</button>
-                <input type="text" class="bpm-input" id="bpmDisplay" value="120" maxlength="3">
-                <button class="bpm-btn" id="bpmPlus">+</button>
-            </div>
         </header>
 
         <!-- Main Panel -->
@@ -97,6 +93,125 @@
             <span class="footer-text">SPACE = PLAY/STOP</span>
         </footer>
     </div>
+
+    <!-- AUDIO Panel Unit -->
+    <div class="rack-unit rack-audio">
+        <!-- Viti angolari -->
+        <div class="rack-screw top-left"></div>
+        <div class="rack-screw top-right"></div>
+        <div class="rack-screw bottom-left"></div>
+        <div class="rack-screw bottom-right"></div>
+
+        <!-- Header -->
+        <header class="rack-header">
+            <div class="logo-display">AUDIO</div>
+        </header>
+
+        <!-- Main Panel -->
+        <main class="rack-panel audio-panel">
+
+            <!-- Master Section -->
+            <section class="panel-section audio-section">
+                <div class="section-label">MASTER</div>
+                <div class="audio-control">
+                    <span class="control-name">Auto</span>
+                    <button class="auto-btn" id="autoModeBtn">
+                        <span class="auto-led"></span>
+                        <span class="auto-label">AUTO</span>
+                    </button>
+                </div>
+                <div class="audio-control">
+                    <span class="control-name">Bpm</span>
+                    <div class="bpm-control">
+                        <button class="bpm-btn" id="bpmMinus">-</button>
+                        <input type="text" class="bpm-input" id="bpmDisplay" value="120" maxlength="3">
+                        <button class="bpm-btn" id="bpmPlus">+</button>
+                    </div>
+                </div>
+                <div class="audio-control">
+                    <span class="control-name">Vol</span>
+                    <input type="range" class="audio-slider" id="masterVolume" min="0" max="100" value="80">
+                </div>
+                <div class="audio-control">
+                    <span class="control-name">Vinyl</span>
+                    <input type="range" class="audio-slider" id="vinylAmount" min="0" max="100" value="0">
+                </div>
+            </section>
+
+            <!-- Kick Section -->
+            <section class="panel-section audio-section">
+                <div class="section-label">KICK</div>
+                <div class="audio-control">
+                    <span class="control-name">Type</span>
+                    <select class="audio-select" id="kickType">
+                        <option value="deep">Deep</option>
+                        <option value="punchy">Punchy</option>
+                        <option value="808">808</option>
+                        <option value="acoustic">Acoustic</option>
+                    </select>
+                </div>
+                <div class="audio-control">
+                    <span class="control-name">Vol</span>
+                    <input type="range" class="audio-slider" id="kickVolume" min="0" max="100" value="70">
+                </div>
+                <div class="audio-control">
+                    <span class="control-name">Decay</span>
+                    <input type="range" class="audio-slider" id="kickDecay" min="0" max="100" value="50">
+                </div>
+            </section>
+
+            <!-- Snare Section -->
+            <section class="panel-section audio-section">
+                <div class="section-label">SNARE</div>
+                <div class="audio-control">
+                    <span class="control-name">Type</span>
+                    <select class="audio-select" id="snareType">
+                        <option value="tight">Tight</option>
+                        <option value="fat">Fat</option>
+                        <option value="rim">Rim</option>
+                        <option value="clap">Clap</option>
+                    </select>
+                </div>
+                <div class="audio-control">
+                    <span class="control-name">Vol</span>
+                    <input type="range" class="audio-slider" id="snareVolume" min="0" max="100" value="70">
+                </div>
+                <div class="audio-control">
+                    <span class="control-name">Decay</span>
+                    <input type="range" class="audio-slider" id="snareDecay" min="0" max="100" value="50">
+                </div>
+            </section>
+
+            <!-- Hi-Hat Section -->
+            <section class="panel-section audio-section">
+                <div class="section-label">HI-HAT</div>
+                <div class="audio-control">
+                    <span class="control-name">Type</span>
+                    <select class="audio-select" id="hihatType">
+                        <option value="closed">Closed</option>
+                        <option value="open">Open</option>
+                        <option value="shaker">Shaker</option>
+                        <option value="ride">Ride</option>
+                    </select>
+                </div>
+                <div class="audio-control">
+                    <span class="control-name">Vol</span>
+                    <input type="range" class="audio-slider" id="hihatVolume" min="0" max="100" value="60">
+                </div>
+                <div class="audio-control">
+                    <span class="control-name">Decay</span>
+                    <input type="range" class="audio-slider" id="hihatDecay" min="0" max="100" value="30">
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="rack-footer">
+            <span class="footer-text">SOUND CONTROL</span>
+        </footer>
+    </div>
+    </div><!-- /rack-container -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <script src="js/patterns.js"></script>

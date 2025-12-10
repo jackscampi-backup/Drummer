@@ -6,22 +6,57 @@ Beat Generator per Bassisti - Drum machine web in stile rack/flycase per esercit
 
 ## Descrizione
 
-DRUMMER genera pattern di batteria in tempo reale usando Tone.js. Non richiede file audio esterni: tutti i suoni sono sintetizzati nel browser.
+DRUMMER genera pattern di batteria in tempo reale usando Tone.js. Non richiede file audio esterni per i suoni di batteria: tutti i suoni sono sintetizzati nel browser. Include un loop di vinyl crackle opzionale per atmosfera lo-fi.
 
-Interfaccia in stile **rack unit da tour flycase**:
+Interfaccia in stile **rack unit da tour flycase** con due moduli affiancati:
+- **DRUMMER** - Selezione generi e pattern
+- **AUDIO** - Controllo suoni e mixer
+
+Design hardware professionale:
 - Display LED arancione (font DSEG7 a 7 segmenti)
 - Etichette stile Dymo sui bottoni
 - LED verdi per selezione attiva
 - Viti angolari decorative
-- Estetica hardware professionale
+- Slider e controlli stile mixer
 
 ## Funzionalita'
 
+### Modulo DRUMMER
 - **8 generi musicali** con **64 pattern totali** (8 per genere)
-- Controllo BPM editabile (40-220)
 - Visualizzazione pattern step sequencer (16 step con LED)
 - Beat counter visivo (1-2-3-4)
 - Shortcut tastiera: Spazio per Play/Pause
+- Bottone play con LED di stato
+
+### Modulo AUDIO
+- **AUTO mode**: regola automaticamente i preset audio in base al genere
+- **BPM**: controllo tempo con +/- e input diretto (40-220)
+- **Master Volume**: volume generale
+- **Vinyl**: loop di crackle per atmosfera lo-fi/vintage
+- **Per ogni strumento** (Kick, Snare, Hi-Hat):
+  - Type: seleziona il tipo di suono
+  - Vol: volume individuale
+  - Decay: durata del suono (si sincronizza col preset)
+
+### Tipi di Suono
+
+**Kick:**
+- Deep - basso profondo con punch
+- Punchy - attacco veloce e definito
+- 808 - sub bass lungo stile trap
+- Acoustic - suono naturale
+
+**Snare:**
+- Tight - corto e snappy
+- Fat - piu' corpo e riverbero
+- Rim - metallico, meno noise
+- Clap - aperto e largo
+
+**Hi-Hat:**
+- Closed - corto e secco
+- Open - lungo e sostenuto
+- Shaker - morbido e filtrato
+- Ride - metallico con coda
 
 ## Generi e Pattern
 
@@ -31,18 +66,33 @@ Interfaccia in stile **rack unit da tour flycase**:
 | **Pop** | Basic, Dance, Ballad, Upbeat, Motown, Synthpop, Funk, Modern |
 | **Funk** | Basic, JB-Style, FunkyDr., BoomBap, Trap, Lo-Fi, N.Orleans, Breakbeat |
 | **Blues** | Shuffle, Slow, Chicago, Texas, 12/8Feel, Jump, Rock, Train |
-| **Jazz** | Swing, Bebop, Ballad, Waltz, SlowSw., Med-Up, Fusion, Brushes |
+| **Drill** | 4ths, 8ths, 16ths, Triplet, Accent, 2&4, Offbeat, Mixed |
 | **Latin** | Bossa, Samba, Salsa, Cha-Cha, AfroCuban, Mambo, Songo, BossaSl. |
 | **Reggae** | OneDrop, Rockers, Steppers, Ska, Dub, RootsSl., Dancehall, StepFast |
 | **Electro** | Massive, Tricky, Fugees, DeLa, Slim, Portis, Morch, Hip-Hop |
 
+### Categoria DRILL
+
+Pattern da metronomo per esercizi tecnici:
+- **4ths** - click sui quarti (metronomo classico)
+- **8ths** - ottavi
+- **16ths** - sedicesimi
+- **Shuffle** - feel swing/blues (lungo-corto)
+- **Accent** - accento sul primo battito
+- **2&4** - backbeat su 2 e 4
+- **Offbeat** - solo levare
+- **Mixed** - pattern misto per coordinazione
+
 ## Come Usare
 
 1. Apri l'app nel browser
-2. Scegli un genere (bottoni con etichetta Dymo)
-3. Scegli una variazione pattern
-4. Premi Play o Spazio
-5. Modifica il BPM cliccando sul display
+2. Il bottone **AUTO** e' attivo di default (LED verde)
+3. Scegli un genere - i preset audio si adattano automaticamente
+4. Scegli una variazione pattern
+5. Premi il bottone play (o Spazio) per avviare
+6. Regola i controlli nel pannello AUDIO se vuoi personalizzare
+   - Modificare un controllo disattiva AUTO
+   - Premi AUTO per ripristinare i preset del genere
 
 ## Struttura
 
@@ -55,9 +105,11 @@ DRUMMER/
 │   └── DSEG7Classic-Bold.ttf  # Font LED 7 segmenti
 ├── dymo/
 │   └── Dymo.ttf        # Font Dymo per etichette
+├── audio/
+│   └── vinyl-crackle.mp3  # Loop vinyl per effetto lo-fi
 └── js/
     ├── app.js          # Inizializzazione
-    ├── beatgen.js      # Generatore beat (Tone.js)
+    ├── beatgen.js      # Generatore beat (Tone.js) + Audio controls
     └── patterns.js     # 64 pattern di batteria
 ```
 
@@ -70,11 +122,11 @@ DRUMMER/
 
 ## Note Tecniche
 
+### Pattern
 I pattern sono array di 16 step (sedicesimi in 4/4):
 - `1` = colpo
 - `0` = silenzio
 
-Esempio:
 ```javascript
 {
     kick:  [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0],
@@ -83,10 +135,18 @@ Esempio:
 }
 ```
 
+### Sintesi Audio
 Suoni generati con Tone.js:
-- **Kick**: MembraneSynth (sine wave con pitch decay)
-- **Snare**: NoiseSynth (white noise)
-- **Hi-Hat**: NoiseSynth con filtro highpass 8kHz
+- **Kick**: MembraneSynth (sine wave con pitch decay) + NoiseSynth (click layer per attacco)
+- **Snare**: NoiseSynth (white/pink noise)
+- **Hi-Hat**: NoiseSynth con filtro highpass variabile
+
+### AUTO Mode
+Ogni genere ha un preset audio associato che include:
+- BPM di default
+- Tipo di suono per ogni strumento
+- Livelli di volume
+- Quantita' di vinyl crackle
 
 ## Licenza
 

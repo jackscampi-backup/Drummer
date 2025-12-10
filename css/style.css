@@ -51,10 +51,22 @@ body {
     padding: 20px;
 }
 
+/* ===== RACK CONTAINER (dual unit layout) ===== */
+.rack-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+@media (max-width: 1100px) {
+    .rack-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
 /* ===== RACK UNIT CONTAINER ===== */
 .rack-unit {
-    width: 100%;
-    max-width: 800px;
     background: var(--panel-bg);
     border-radius: 8px;
     position: relative;
@@ -63,6 +75,46 @@ body {
         inset 0 1px 0 rgba(255,255,255,0.05),
         inset 0 -1px 0 rgba(0,0,0,0.5);
     border: 3px solid #2a2a2a;
+}
+
+.rack-main {
+    width: 800px;
+    flex-shrink: 0;
+}
+
+.rack-audio {
+    width: 280px;
+    flex-shrink: 0;
+}
+
+/* Equal height for both rack units */
+.rack-container {
+    align-items: stretch;
+}
+
+.rack-audio {
+    display: flex;
+    flex-direction: column;
+}
+
+.rack-audio .rack-panel {
+    flex: 1;
+}
+
+@media (max-width: 1100px) {
+    .rack-container {
+        align-items: center;
+    }
+
+    .rack-main {
+        width: 100%;
+        max-width: 800px;
+    }
+
+    .rack-audio {
+        width: 100%;
+        max-width: 800px;
+    }
 }
 
 /* ===== RACK SCREWS ===== */
@@ -104,11 +156,12 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
+    min-height: 72px;
 }
 
 .logo-display {
     font-family: 'DSEG7', monospace;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     color: var(--display-orange);
     text-shadow:
         0 0 20px var(--display-glow),
@@ -116,21 +169,28 @@ body {
     letter-spacing: 4px;
 }
 
-/* Header Play Button - positioned left */
+/* Main unit header - title centered */
+.rack-main .rack-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+    position: relative;
+}
+
+/* Header Play Button - simple round with LED */
 .header-play-btn {
     position: absolute;
-    left: 40px;
-    width: 42px;
-    height: 42px;
+    left: 20px;
+    width: 36px;
+    height: 36px;
     border: none;
     border-radius: 50%;
     background: linear-gradient(180deg, #4a4a4a 0%, #333 30%, #222 70%, #1a1a1a 100%);
     cursor: pointer;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2px;
     border: 2px solid #555;
     box-shadow:
         0 4px 8px rgba(0,0,0,0.6),
@@ -147,16 +207,11 @@ body {
 }
 
 .header-play-btn .play-led {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background: var(--led-red-dim);
+    background: var(--led-green-dim);
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
-}
-
-.header-play-btn .play-icon {
-    font-size: 1rem;
-    color: #999;
 }
 
 .header-play-btn.active {
@@ -170,17 +225,12 @@ body {
         0 0 20px rgba(51,255,51,0.5);
 }
 
-.header-play-btn.active .play-icon {
-    color: var(--led-green);
-}
-
-/* Header BPM Controls - positioned right */
+/* Header BPM Controls */
 .header-bpm {
-    position: absolute;
-    right: 40px;
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
 }
 
 .bpm-btn {
@@ -460,7 +510,217 @@ body {
     letter-spacing: 2px;
 }
 
+/* ===== AUDIO PANEL ===== */
+.rack-audio .logo-display {
+    font-size: 2.2rem;
+}
+
+.audio-panel {
+    padding: 15px 20px;
+}
+
+.audio-section {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #252525;
+}
+
+.audio-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.audio-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.audio-control:last-child {
+    margin-bottom: 0;
+}
+
+.audio-control .control-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    min-width: 50px;
+    text-align: right;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+}
+
+/* Audio Slider */
+.audio-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    background: #0a0a0a;
+    border-radius: 4px;
+    border: 1px solid #333;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+    cursor: pointer;
+}
+
+.audio-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(180deg, #555 0%, #333 50%, #222 100%);
+    border-radius: 50%;
+    border: 2px solid #666;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.audio-slider::-webkit-slider-thumb:hover {
+    background: linear-gradient(180deg, #666 0%, #444 50%, #333 100%);
+}
+
+.audio-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(180deg, #555 0%, #333 50%, #222 100%);
+    border-radius: 50%;
+    border: 2px solid #666;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Audio Select (dropdown) */
+.audio-select {
+    flex: 1;
+    padding: 6px 10px;
+    background: #0a0a0a;
+    border: 2px solid #333;
+    border-radius: 4px;
+    color: var(--display-orange);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.audio-select:focus {
+    outline: none;
+    border-color: var(--display-orange);
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.8),
+        0 0 8px var(--display-glow);
+}
+
+.audio-select option {
+    background: #1a1a1a;
+    color: var(--display-orange);
+}
+
+/* Auto Button */
+.auto-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: linear-gradient(180deg, #3a3a3a 0%, #252525 50%, #1a1a1a 100%);
+    border: 1px solid #444;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow:
+        0 2px 4px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: all 0.1s ease;
+}
+
+.auto-btn:hover {
+    background: linear-gradient(180deg, #454545 0%, #303030 50%, #252525 100%);
+}
+
+.auto-btn:active {
+    transform: translateY(1px);
+}
+
+.auto-btn .auto-led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--led-green-dim);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.auto-btn .auto-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #666;
+}
+
+.auto-btn.active {
+    background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 50%, #0d0d0d 100%);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.auto-btn.active .auto-led {
+    background: var(--led-green);
+    box-shadow:
+        0 0 8px var(--led-green),
+        0 0 16px rgba(51,255,51,0.4);
+}
+
+.auto-btn.active .auto-label {
+    color: var(--led-green);
+}
+
+/* BPM Control in Audio Panel */
+.bpm-control {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.bpm-control .bpm-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.bpm-control .bpm-input {
+    flex: 1;
+    min-width: 0;
+    padding: 4px 6px;
+    font-size: 1.1rem;
+}
+
 /* ===== RESPONSIVE ===== */
+@media (max-width: 1100px) {
+    .rack-audio .audio-panel {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .rack-audio .audio-section {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+        border-right: 1px solid #252525;
+        padding-right: 15px;
+    }
+
+    .rack-audio .audio-section:nth-child(2n) {
+        border-right: none;
+        padding-right: 0;
+    }
+}
+
 @media (max-width: 700px) {
     .button-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -478,5 +738,20 @@ body {
 
     .logo-display {
         font-size: 2rem;
+    }
+
+    .rack-audio .audio-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .rack-audio .audio-section {
+        border-right: none;
+        border-bottom: 1px solid #252525;
+        padding-right: 0;
+        padding-bottom: 15px;
+    }
+
+    .rack-audio .audio-section:last-child {
+        border-bottom: none;
     }
 }

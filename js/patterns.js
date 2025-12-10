@@ -300,77 +300,85 @@ const PATTERNS = {
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     },
 
-    // ========== JAZZ (8 patterns) ==========
-    jazz_swing: {
-        name: 'Swing',
-        genre: 'Jazz',
-        bpm: 140,
-        kick:  [1,0,0,0, 0,0,0,0, 0,0,1,0, 0,0,0,0],
-        snare: [0,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0],
-        hihat: [1,0,0,1, 0,0,1,0, 1,0,0,1, 0,0,1,0],
-        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
-    },
-    jazz_bebop: {
-        name: 'Bebop',
-        genre: 'Jazz',
-        bpm: 220,
-        kick:  [1,0,0,0, 0,0,0,0, 0,1,0,0, 0,0,0,0],
-        snare: [0,0,1,0, 0,0,0,1, 0,0,0,0, 1,0,0,0],
-        hihat: [1,0,0,1, 0,0,1,0, 1,0,0,1, 0,0,1,0],
-        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
-    },
-    jazz_ballad: {
-        name: 'Ballad',
-        genre: 'Jazz',
-        bpm: 65,
-        kick:  [1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,1,0],
-        snare: [0,1,0,1, 0,1,0,1, 0,1,0,1, 0,1,0,1],
-        hihat: [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
-        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
-    },
-    jazz_waltz: {
-        name: 'Waltz',
-        genre: 'Jazz',
-        bpm: 155,
-        kick:  [1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
-        snare: [0,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,0],
-        hihat: [1,0,0,1, 0,0,1,0, 0,1,0,0, 0,0,0,0],
-        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
-    },
-    jazz_slow_swing: {
-        name: 'SlowSw.',
-        genre: 'Jazz',
+    // ========== DRILL (8 patterns) - Metronome/Practice ==========
+    drill_quarters: {
+        name: '4ths',
+        genre: 'Drill',
         bpm: 100,
-        kick:  [1,0,0,0, 0,0,0,0, 0,0,1,0, 0,0,0,0],
-        snare: [0,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0],
-        hihat: [1,0,0,1, 0,0,1,0, 1,0,0,1, 0,0,1,0],
+        // Click su ogni quarto - metronomo classico
+        kick:  [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
+        snare: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        hihat: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     },
-    jazz_medium_up: {
-        name: 'Med-Up',
-        genre: 'Jazz',
-        bpm: 175,
-        kick:  [1,0,0,0, 0,0,0,0, 0,0,0,0, 0,1,0,0],
-        snare: [0,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0],
-        hihat: [1,0,0,1, 0,0,1,0, 1,0,0,1, 0,0,1,0],
+    drill_eighths: {
+        name: '8ths',
+        genre: 'Drill',
+        bpm: 80,
+        // Ottavi - due click per beat
+        kick:  [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
+        snare: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        hihat: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     },
-    jazz_fusion: {
-        name: 'Fusion',
-        genre: 'Jazz',
-        bpm: 115,
-        kick:  [1,0,0,0, 0,0,1,0, 0,0,0,0, 0,1,0,0],
-        snare: [0,0,0,0, 1,0,0,0, 0,0,1,0, 1,0,0,0],
-        hihat: [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1],
+    drill_sixteenths: {
+        name: '16ths',
+        genre: 'Drill',
+        bpm: 60,
+        // Sedicesimi - quattro click per beat
+        kick:  [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1],
+        snare: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        hihat: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     },
-    jazz_brushes: {
-        name: 'Brushes',
-        genre: 'Jazz',
-        bpm: 120,
-        kick:  [1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,1,0],
-        snare: [0,1,0,1, 0,1,0,1, 0,1,0,1, 0,1,0,1],
-        hihat: [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
+    drill_shuffle: {
+        name: 'Shuffle',
+        genre: 'Drill',
+        bpm: 90,
+        // Shuffle feel - lungo-corto (swing/blues)
+        kick:  [1,0,0,1, 1,0,0,1, 1,0,0,1, 1,0,0,1],
+        snare: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        hihat: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
+    },
+    drill_accent: {
+        name: 'Accent',
+        genre: 'Drill',
+        bpm: 100,
+        // Accento forte sul primo battito, leggeri sugli altri
+        kick:  [1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        snare: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        hihat: [0,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
+        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
+    },
+    drill_backbeat: {
+        name: '2&4',
+        genre: 'Drill',
+        bpm: 100,
+        // Accenti su 2 e 4 - feel backbeat
+        kick:  [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0],
+        snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
+        hihat: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
+    },
+    drill_offbeat: {
+        name: 'Offbeat',
+        genre: 'Drill',
+        bpm: 90,
+        // Solo levare - per esercitare il timing
+        kick:  [0,0,1,0, 0,0,1,0, 0,0,1,0, 0,0,1,0],
+        snare: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        hihat: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
+    },
+    drill_mixed: {
+        name: 'Mixed',
+        genre: 'Drill',
+        bpm: 85,
+        // Pattern misto per coordinazione
+        kick:  [1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,1,0],
+        snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
+        hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     },
 
@@ -623,9 +631,9 @@ const GENRES = {
         name: 'Blues',
         patterns: ['blues_shuffle', 'blues_slow', 'blues_chicago', 'blues_texas', 'blues_12_8', 'blues_jump', 'blues_rock', 'blues_train']
     },
-    jazz: {
-        name: 'Jazz',
-        patterns: ['jazz_swing', 'jazz_bebop', 'jazz_ballad', 'jazz_waltz', 'jazz_slow_swing', 'jazz_medium_up', 'jazz_fusion', 'jazz_brushes']
+    drill: {
+        name: 'Drill',
+        patterns: ['drill_quarters', 'drill_eighths', 'drill_sixteenths', 'drill_shuffle', 'drill_accent', 'drill_backbeat', 'drill_offbeat', 'drill_mixed']
     },
     latin: {
         name: 'Latin',
