@@ -694,7 +694,7 @@ const GENRES = {
         patterns: ['reggae_onedrop', 'reggae_rockers', 'reggae_steppers', 'reggae_ska', 'reggae_dub', 'reggae_roots_slow', 'reggae_dancehall', 'reggae_steppers_fast']
     },
     electronic: {
-        name: 'Electro',
+        name: 'Electronic',
         patterns: ['electronic_massive', 'electronic_tricky', 'electronic_fugees', 'electronic_delasoui', 'electronic_slim', 'electronic_portis', 'electronic_morcheeba', 'electronic_hiphop']
     }
 };

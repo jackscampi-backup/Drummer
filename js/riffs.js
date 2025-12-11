@@ -8,7 +8,8 @@ const GROOVE_CATEGORIES = {
     rock: { name: 'ROCK', color: '#ff6600' },
     blues: { name: 'BLUES', color: '#6666ff' },
     funk: { name: 'FUNK', color: '#ffff00' },
-    disco: { name: 'DISCO', color: '#ff00ff' }
+    disco: { name: 'DISCO', color: '#ff00ff' },
+    triphop: { name: 'TRIP-HOP', color: '#9966ff' }
 };
 
 const GROOVES = {
@@ -783,6 +784,101 @@ const GROOVES = {
             {s:'A',f:0}, null, {s:'G',f:2}, {s:'G',f:2},
             {s:'E',f:0}, null, {s:'D',f:2}, null,
             {s:'E',f:0}, {s:'E',f:2}, {s:'E',f:4}, {s:'A',f:0}
+        ]
+    },
+
+    // ==================== TRIP-HOP ====================
+    // Bristol style: slow, hypnotic, deep bass, sparse
+
+    'trip-deep': {
+        id: 'trip-deep',
+        name: 'Deep Space',
+        category: 'triphop',
+        difficulty: 2,
+        bpm: 68,
+        bars: 2,
+        drumPattern: 'electronic_massive',
+        description: 'Sparse hypnotic groove',
+        steps: [
+            // Bar 1 - molto sparse, root e ottava
+            {s:'E',f:0}, null, null, null,
+            null, null, null, null,
+            null, null, {s:'D',f:2}, null,
+            null, null, null, null,
+            // Bar 2 - aggiunge b7
+            {s:'E',f:0}, null, null, null,
+            null, null, {s:'E',f:3}, null,
+            null, null, {s:'D',f:2}, null,
+            null, null, null, null
+        ]
+    },
+
+    'trip-shadow': {
+        id: 'trip-shadow',
+        name: 'Shadow Walk',
+        category: 'triphop',
+        difficulty: 2,
+        bpm: 72,
+        bars: 2,
+        drumPattern: 'electronic_portis',
+        description: 'Dark with chromatic walk',
+        steps: [
+            // Bar 1 - discesa cromatica dalla b3
+            {s:'E',f:0}, null, null, null,
+            null, null, {s:'E',f:3}, null,
+            {s:'E',f:2}, null, {s:'E',f:1}, null,
+            {s:'E',f:0}, null, null, null,
+            // Bar 2 - root e quinta
+            {s:'E',f:0}, null, null, null,
+            null, null, {s:'A',f:2}, null,
+            null, null, {s:'E',f:0}, null,
+            null, null, null, null
+        ]
+    },
+
+    'trip-angel': {
+        id: 'trip-angel',
+        name: 'Fallen Angel',
+        category: 'triphop',
+        difficulty: 3,
+        bpm: 75,
+        bars: 2,
+        drumPattern: 'electronic_tricky',
+        description: 'Melodic minor groove',
+        steps: [
+            // Bar 1 - root, b3, 5
+            {s:'E',f:0}, null, null, null,
+            null, {s:'E',f:3}, null, null,
+            {s:'A',f:2}, null, null, null,
+            null, null, {s:'E',f:0}, null,
+            // Bar 2 - aggiunge b7 e ottava
+            {s:'E',f:0}, null, null, {s:'E',f:3},
+            null, null, {s:'A',f:0}, null,
+            {s:'D',f:2}, null, null, null,
+            null, {s:'A',f:2}, null, null
+        ]
+    },
+
+    'trip-heat': {
+        id: 'trip-heat',
+        name: 'Heat Wave',
+        category: 'triphop',
+        difficulty: 3,
+        bpm: 82,
+        bars: 2,
+        drumPattern: 'electronic_morcheeba',
+        description: 'Warmer with octaves',
+        steps: [
+            // Bar 1 - root e ottava pulsanti
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            null, null, {s:'E',f:0}, null,
+            {s:'D',f:2}, null, null, null,
+            null, {s:'E',f:3}, {s:'E',f:0}, null,
+            // Bar 2 - quinta e variazione
+            {s:'A',f:2}, null, {s:'E',f:0}, null,
+            null, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, null, {s:'E',f:3},
+            null, {s:'A',f:2}, {s:'E',f:0}, null
         ]
     }
 };
