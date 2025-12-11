@@ -19,9 +19,12 @@
 
         <!-- Header Panel -->
         <header class="rack-header">
-            <button class="header-play-btn" id="beatPlayBtn">
-                <span class="play-led"></span>
-            </button>
+            <div class="header-toggles-left">
+                <button class="display-toggle" id="beatPlayBtn">
+                    <span class="toggle-led"></span>
+                    <span class="toggle-label">ON</span>
+                </button>
+            </div>
             <div class="logo-display">DRUMMER</div>
             <div class="bar-indicator" id="barIndicator">
                 <!-- Populated dynamically for multi-bar patterns -->
@@ -325,6 +328,7 @@
             <span class="footer-text">4-STRING BASS FRETBOARD</span>
         </footer>
     </div>
+
     </div><!-- /rack-wrapper -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>

@@ -4,7 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-DRUMMER is a browser-based drum beat generator for bass practice. It uses Tone.js to synthesize drum sounds in real-time - no audio files needed. Works offline by opening `index.html` directly.
+DRUMMER is a browser-based drum beat generator for bass practice. It includes:
+- **DRUMMER** - Drum machine with 64 patterns across 8 genres
+- **AUDIO** - Sound controls (volumes, presets, vinyl effect)
+- **BASSIST** - 4-string fretboard with scales, arpeggios, and grooves
+- **CORSO** - Bass course with theory and exercises
+
+Uses Tone.js to synthesize all sounds in real-time - no audio files needed. Works offline by opening `index.html` directly.
 
 ## Development
 
@@ -19,111 +25,99 @@ npx live-server
 
 ### Core Files
 
-- **index.html** - Main HTML structure
-- **css/style.css** - Vintage drum machine styling (dark theme, LED effects, hardware-inspired UI)
-- **js/patterns.js** - Pattern definitions and genre configuration
-  - `PATTERNS` object: all drum patterns (64 total across 8 genres)
-  - `GENRES` object: groups patterns by genre (8 patterns each)
-- **js/beatgen.js** - `BeatGenerator` class
-  - Manages Tone.js synthesizers (kick, snare, hihat)
-  - Handles sequencing with `Tone.Sequence`
-  - Renders genre/variation buttons dynamically
-  - Mute functionality per instrument
-  - Visual beat counter (1-2-3-4)
-- **js/app.js** - Entry point, initializes BeatGenerator
+- **index.html** - Main HTML structure (4 rack units)
+- **css/style.css** - Vintage rack/flycase styling (dark theme, LED effects)
+- **js/patterns.js** - Drum pattern definitions and genre configuration
+- **js/beatgen.js** - `BeatGenerator` class for drum sequencing
+- **js/scales.js** - Scale definitions (major, minor, pentatonic, etc.)
+- **js/sounds.js** - Bass sound synthesis
+- **js/riffs.js** - Groove patterns for bass (GROOVES library)
+- **js/fretboard.js** - `Fretboard` class for bass visualization and playback
+- **js/course.js** - `Course` class for bass lessons
+- **js/app.js** - Entry point
 
-### UI Components
+### DRUMMER (Drum Machine)
 
-1. **Header** - Title "DRUMMER" with LED glow effect
-2. **Genre Buttons** - 8 genres in a 4x2 grid with green LED indicators
-3. **Variation Buttons** - Pattern variations with BPM badges
-4. **Beat Controls** - Play button + BPM display + slider with preset ticks (60-170)
-5. **Pattern Display** - 16-step sequencer grid with mute buttons per instrument
-6. **Beat Counter** - Visual metronome showing beats 1-2-3-4
+- 8 genres: Rock, Pop, Funk, Blues, Jazz, Latin, Electronic, World
+- 8 patterns per genre (64 total)
+- Supports 4/4, 12/8, 6/8 time signatures
+- Multi-bar patterns (2 or 4 bars)
+- Per-instrument mute and volume
+- AUTO mode applies genre-specific sound presets
 
-### Data Flow
+### BASSIST (Fretboard)
 
-1. `GENRES` defines which patterns belong to each genre
-2. `BeatGenerator.selectGenre()` renders variation buttons
-3. `BeatGenerator.selectPattern()` updates BPM and pattern display
-4. `Tone.Sequence` triggers synths based on pattern arrays (respects mute states)
-5. `updateBeatCounter()` highlights current beat (1-4)
+- 12 root notes (chromatic)
+- 5 scales: Major, Minor, Pentatonic, Blues, Dorian
+- View modes: Scale degrees, Intervals, Arpeggio, Box shape
+- GROOVES mode: Practice patterns that sync with DRUMMER
+- Transposition: Grooves follow selected root
 
-### Pattern Format
+### CORSO (Bass Course)
 
-**4/4 standard** - 16 steps per bar (16th notes):
+- 5 modules: Foundation, Rock, Blues, Funk, Disco
+- Lessons with analytical content (intervals, scales, patterns)
+- Exercises link to GROOVES and DRUM patterns
+- Minimal UI: green LEDs, dropdown selection, monospace content
+
+### Data Formats
+
+**Drum Pattern:**
 ```javascript
 {
     name: 'Pattern Name',
-    genre: 'Genre Name',
+    genre: 'Rock',
     bpm: 120,
-    kick:  [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],  // 1=hit, 0=silence
+    timeSignature: '4/4',  // or '12/8', '6/8'
+    bars: 1,  // or 2, 4
+    kick:  [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
     snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
-    hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
-    rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
+    hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0]
 }
 ```
 
-**12/8 (triplets)** - 12 steps per bar (4 beats x 3):
+**Bass Groove:**
 ```javascript
 {
-    timeSignature: '12/8',
-    kick:  [1,0,0, 0,0,0, 1,0,0, 0,0,0],
-    snare: [0,0,0, 1,0,0, 0,0,0, 1,0,0],
-    hihat: [1,0,1, 1,0,1, 1,0,1, 1,0,1]  // true shuffle!
+    id: 'groove-id',
+    name: 'Groove Name',
+    category: 'root',  // root, octave, penta, walking, funk
+    bpm: 100,
+    bars: 1,
+    steps: [
+        {s:'E',f:0}, null, null, null,  // s=string, f=fret, null=rest
+        {s:'A',f:2}, null, null, null,
+        // ... 16 steps per bar
+    ]
 }
 ```
 
-**6/8** - 6 steps per bar (2 beats x 3):
+**Course Lesson:**
 ```javascript
 {
-    timeSignature: '6/8',
-    kick:  [1,0,0, 0,0,0],
-    snare: [0,0,0, 1,0,0],
-    hihat: [1,0,1, 1,0,1]
+    id: 'lesson-id',
+    module: 'foundation',
+    title: 'Lesson Title',
+    content: `Markdown-like content with tables and code blocks`,
+    exercises: [
+        { name: 'Exercise', groove: 'groove-id', drumPattern: 'pattern_key' }
+    ]
 }
 ```
 
-**Multi-bar** - 2 or 4 bars with variations:
-```javascript
-{
-    bars: 2,
-    kick:  [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0,   // bar 1
-            1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,0,0],  // bar 2 (variation)
-    ...
-}
-```
+### Adding Content
 
-### Adding New Patterns
+**New drum pattern:** Add to `PATTERNS` in `js/patterns.js`, add key to `GENRES`
 
-1. Add pattern object to `PATTERNS` in `js/patterns.js`
-2. Add pattern key to appropriate genre in `GENRES` object
-3. New genre? Add entry to `GENRES` with name and patterns array
+**New groove:** Add to `GROOVES` in `js/riffs.js`, categorize appropriately
 
-### Synth Configuration
-
-Defined in `BeatGenerator.setupSounds()`:
-- Kick: `Tone.MembraneSynth` - sine wave with pitch decay
-- Snare: `Tone.NoiseSynth` - white noise
-- Hi-Hat: `Tone.NoiseSynth` with 8kHz highpass filter
-
-### BPM Preset Ticks
-
-Standard tempo reference points on the slider:
-- 60: Slow Blues
-- 75: Trip-Hop
-- 90: Funk
-- 105: Latin
-- 120: Disco
-- 135: Rock
-- 150: Fast
-- 170: Bebop
+**New lesson:** Add to `LESSONS` in `js/course.js`, add to module in `COURSE_STRUCTURE`
 
 ### Styling
 
-Vintage drum machine aesthetic:
+Vintage rack/flycase aesthetic:
 - Dark background (#1a1a1a)
-- Orange accent color (#ff8c00) for displays
-- Green/red LED indicators
-- Hardware-style buttons with bevel effects
-- Monospace font (Courier New) throughout
+- Orange displays (#ff6600)
+- Green LEDs for active states
+- Hardware-style buttons with bevels
+- Monospace fonts (Share Tech Mono, Oswald)

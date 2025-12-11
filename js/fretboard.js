@@ -112,7 +112,10 @@ class Fretboard {
 
         // Listen for DRUMMER genre changes to reset fretboard
         window.addEventListener('drummerGenreChange', () => {
-            this.clearFretboard();
+            // Don't clear fretboard if groove mode is active (groove controls display)
+            if (!this.grooveModeActive) {
+                this.clearFretboard();
+            }
         });
     }
 
@@ -896,6 +899,54 @@ class Fretboard {
             console.log('BASSIST: Selected groove:', this.currentGroove.name);
             this.displayGroove();
             this.updateGroovePatternDisplay();
+
+            // Sync DRUMMER to matching genre/pattern
+            this.syncDrummerToGroove();
+        }
+    }
+
+    /**
+     * Sync DRUMMER to current groove's drum pattern
+     * Uses groove's specific drumPattern if available
+     */
+    syncDrummerToGroove() {
+        if (!this.currentGroove || !window.beatGen) return;
+
+        // Get pattern from groove, or fallback to category mapping
+        let patternKey = this.currentGroove.drumPattern;
+
+        if (!patternKey) {
+            // Fallback to category-based default
+            const categoryToPattern = {
+                'foundation': 'rock_basic',
+                'rock': 'rock_basic',
+                'blues': 'blues_shuffle',
+                'funk': 'funk_basic',
+                'disco': 'pop_disco'
+            };
+            patternKey = categoryToPattern[this.currentGroove.category] || 'rock_basic';
+        }
+
+        // Get pattern info to find genre
+        const pattern = PATTERNS[patternKey];
+        if (pattern) {
+            // Find genre key from pattern's genre name
+            const genreKey = Object.keys(GENRES).find(key =>
+                GENRES[key].name.toLowerCase() === pattern.genre.toLowerCase()
+            );
+
+            if (genreKey) {
+                // Select genre (this updates the UI buttons)
+                window.beatGen.selectGenre(genreKey);
+            }
+
+            // Select pattern (this updates the UI buttons)
+            window.beatGen.selectPattern(patternKey);
+
+            // Set BPM from groove
+            window.beatGen.setBPM(this.currentGroove.bpm);
+
+            console.log('BASSIST: Synced DRUMMER to', patternKey, 'at', this.currentGroove.bpm, 'BPM');
         }
     }
 
@@ -993,9 +1044,10 @@ class Fretboard {
         this.grooveSequence.loop = true;
         this.grooveSequence.start(0);
 
-        // Add simple drum accompaniment if DRUMMER not playing
-        if (!window.beatGen || !window.beatGen.isPlaying) {
-            this.startDrumAccompaniment();
+        // Start DRUMMER if it has a pattern selected
+        if (window.beatGen && window.beatGen.currentPattern && !window.beatGen.isPlaying) {
+            window.beatGen.play();
+            console.log('BASSIST: Started DRUMMER');
         }
 
         if (Tone.Transport.state !== 'started') {
@@ -1064,11 +1116,17 @@ class Fretboard {
             this.grooveSequence = null;
         }
 
-        // Stop drum accompaniment
+        // Stop drum accompaniment (if using internal drums)
         if (this.drumSequence) {
             this.drumSequence.stop();
             this.drumSequence.dispose();
             this.drumSequence = null;
+        }
+
+        // Stop DRUMMER if it was started by groove
+        if (window.beatGen && window.beatGen.isPlaying) {
+            window.beatGen.stop();
+            console.log('BASSIST: Stopped DRUMMER');
         }
 
         this.highlightGrooveNote(null);

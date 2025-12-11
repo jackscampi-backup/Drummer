@@ -11,6 +11,11 @@
     src: url('../fonts/DSEG7Classic-Bold.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: '7LED';
+    src: url('../fonts/7LEDitalic.ttf') format('truetype');
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Share+Tech+Mono&display=swap');
 
 /* ===== VARIABLES ===== */
@@ -160,13 +165,17 @@ body {
 }
 
 .logo-display {
-    font-family: 'DSEG7', monospace;
+    font-family: '7LED', monospace;
     font-size: 2.2rem;
     color: var(--display-orange);
+    background: #000;
+    padding: 8px 20px;
+    border-radius: 4px;
     text-shadow:
         0 0 20px var(--display-glow),
         0 0 40px var(--display-glow);
-    letter-spacing: 4px;
+    letter-spacing: 0;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
 }
 
 /* Main unit header - title centered */
@@ -178,52 +187,6 @@ body {
     position: relative;
 }
 
-/* Header Play Button - simple round with LED */
-.header-play-btn {
-    position: absolute;
-    left: 20px;
-    width: 36px;
-    height: 36px;
-    border: none;
-    border-radius: 50%;
-    background: linear-gradient(180deg, #4a4a4a 0%, #333 30%, #222 70%, #1a1a1a 100%);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #555;
-    box-shadow:
-        0 4px 8px rgba(0,0,0,0.6),
-        inset 0 1px 0 rgba(255,255,255,0.1);
-    transition: all 0.1s ease;
-}
-
-.header-play-btn:hover {
-    background: linear-gradient(180deg, #555 0%, #3a3a3a 30%, #2a2a2a 70%, #222 100%);
-}
-
-.header-play-btn:active {
-    transform: scale(0.95);
-}
-
-.header-play-btn .play-led {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--led-green-dim);
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
-}
-
-.header-play-btn.active {
-    background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 30%, #1a1a1a 70%, #111 100%);
-}
-
-.header-play-btn.active .play-led {
-    background: var(--led-green);
-    box-shadow:
-        0 0 10px var(--led-green),
-        0 0 20px rgba(51,255,51,0.5);
-}
 
 /* Bar Indicator - shows current bar in multi-bar patterns */
 .bar-indicator {
@@ -264,9 +227,9 @@ body {
     border: none;
     border-radius: 4px;
     background: linear-gradient(180deg, #4a4a4a 0%, #333 30%, #222 70%, #1a1a1a 100%);
-    color: var(--display-orange);
-    font-family: 'DSEG7', monospace;
-    font-size: 1.2rem;
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4rem;
     cursor: pointer;
     border: 2px solid #444;
     box-shadow:
@@ -290,18 +253,20 @@ body {
 }
 
 .bpm-input {
-    width: 90px;
-    background: #0a0a0a;
-    padding: 6px 10px;
+    width: 100px;
+    height: 55px;
+    background: #000;
+    padding: 0;
     border-radius: 4px;
     border: 2px solid #333;
     box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
-    font-family: 'DSEG7', monospace;
-    font-size: 1.6rem;
+    font-family: '7LED', monospace;
+    font-size: 38px !important;
     color: var(--display-orange);
     text-shadow: 0 0 15px var(--display-glow);
     text-align: center;
     outline: none;
+    line-height: 55px;
 }
 
 .bpm-input:focus {
@@ -581,7 +546,7 @@ body {
 
 .instrument-row .audio-select {
     flex: 1;
-    font-family: 'DSEG7Classic', monospace;
+    font-family: '7LED', monospace;
     font-size: 1.2rem;
     padding: 8px 12px;
     text-transform: uppercase;
@@ -892,6 +857,14 @@ body {
 
 .display-toggle.active .toggle-label {
     color: var(--led-green);
+}
+
+/* Left side toggles container */
+.header-toggles-left {
+    position: absolute;
+    left: 40px;
+    display: flex;
+    gap: 8px;
 }
 
 /* Right side toggles container */
@@ -1337,5 +1310,335 @@ body {
 
     .fret.nut {
         width: 40px;
+    }
+}
+
+/* ===== CORSO SECTION ===== */
+
+.rack-corso {
+    width: 1100px;
+    flex-shrink: 0;
+}
+
+.rack-corso .rack-header {
+    justify-content: center;
+    padding: 15px 40px;
+}
+
+.corso-panel {
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Module buttons grid */
+.module-grid {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.module-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px 16px;
+    border: 1px solid #444;
+    background: linear-gradient(180deg, #3a3a3a 0%, #252525 50%, #1a1a1a 100%);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.15s ease;
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.module-btn:hover {
+    background: linear-gradient(180deg, #454545 0%, #303030 50%, #252525 100%);
+    border-color: #555;
+}
+
+.module-btn.active {
+    border-color: #666;
+    box-shadow:
+        0 1px 3px rgba(0,0,0,0.5),
+        inset 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.module-led {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--led-green-dim);
+    transition: all 0.15s ease;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.module-btn.active .module-led {
+    background: var(--led-green);
+    box-shadow:
+        0 0 8px var(--led-green),
+        0 0 16px rgba(51,255,51,0.4);
+}
+
+.module-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #888;
+    transition: color 0.15s ease;
+}
+
+.module-btn.active .module-name {
+    color: #ddd;
+}
+
+/* Lesson select */
+.lesson-select {
+    width: 100%;
+    padding: 10px 15px;
+    font-family: '7LED', monospace;
+    font-size: 1.2rem;
+    background: #000;
+    color: var(--display-orange);
+    border: 2px solid #333;
+    text-transform: uppercase;
+}
+
+/* Lesson display area - LCD STYLE */
+.lesson-section {
+    flex: 1;
+}
+
+.lesson-display {
+    background: #000;
+    border: 2px solid #333;
+    border-radius: 4px;
+    padding: 20px;
+    min-height: 350px;
+    max-height: 500px;
+    overflow-y: auto;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+}
+
+.lesson-placeholder {
+    color: var(--display-orange);
+    text-align: center;
+    padding: 80px 20px;
+    font-family: '7LED', monospace;
+    font-size: 1.2rem;
+    opacity: 0.5;
+}
+
+/* Lesson header - LCD title */
+.lesson-header {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.lesson-title {
+    font-family: '7LED', monospace;
+    font-size: 1.6rem;
+    color: var(--display-orange);
+    text-shadow: 0 0 10px var(--display-glow);
+    letter-spacing: 0;
+}
+
+/* Lesson content - LCD style */
+.lesson-content {
+    margin-bottom: 20px;
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--display-orange);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.lesson-content p {
+    margin-bottom: 10px;
+}
+
+.lesson-content h4 {
+    font-family: '7LED', monospace;
+    font-size: 1.1rem;
+    color: var(--display-orange);
+    margin: 15px 0 8px;
+    text-shadow: 0 0 8px var(--display-glow);
+}
+
+.lesson-content h5 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    color: var(--display-orange);
+    margin: 12px 0 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.lesson-content strong {
+    color: #fff;
+}
+
+.lesson-content code {
+    background: transparent;
+    padding: 0;
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--led-green);
+    font-size: 1em;
+}
+
+.lesson-content .code-block {
+    background: #0a0a0a;
+    border: 1px solid #222;
+    border-radius: 2px;
+    padding: 10px 12px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--led-green);
+    white-space: pre;
+    line-height: 1.3;
+    text-shadow: 0 0 5px rgba(51,255,51,0.3);
+}
+
+.lesson-content blockquote {
+    border-left: 2px solid var(--display-orange);
+    padding-left: 10px;
+    margin: 10px 0;
+    color: var(--display-orange);
+    opacity: 0.8;
+}
+
+.lesson-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 0.8rem;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.lesson-table td {
+    padding: 6px 10px;
+    border: 1px solid #222;
+    color: var(--display-orange);
+}
+
+.lesson-table tr:first-child td {
+    background: #111;
+    color: var(--led-green);
+    font-weight: normal;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+
+.lesson-table tr:nth-child(even) {
+    background: rgba(255,102,0,0.03);
+}
+
+/* Exercises section - Physical buttons */
+.lesson-exercises {
+    border-top: 1px solid #333;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.exercise-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+}
+
+.exercise-name {
+    color: var(--display-orange);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    min-width: 140px;
+    text-shadow: 0 0 5px var(--display-glow);
+}
+
+/* Physical rack buttons for exercises */
+.exercise-btn {
+    padding: 10px 16px;
+    background: linear-gradient(180deg, #3a3a3a 0%, #252525 50%, #1a1a1a 100%);
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #888;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.exercise-btn:hover {
+    background: linear-gradient(180deg, #454545 0%, #303030 50%, #252525 100%);
+    color: #fff;
+    border-color: #555;
+}
+
+.exercise-btn:active {
+    transform: translateY(1px);
+    box-shadow:
+        0 1px 3px rgba(0,0,0,0.5),
+        inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Scrollbar styling for lesson display */
+.lesson-display::-webkit-scrollbar {
+    width: 6px;
+}
+
+.lesson-display::-webkit-scrollbar-track {
+    background: #000;
+}
+
+.lesson-display::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+}
+
+.lesson-display::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
+/* ===== CORSO RESPONSIVE ===== */
+@media (max-width: 1150px) {
+    .rack-corso {
+        width: 100%;
+        max-width: 800px;
+    }
+
+    .module-grid {
+        flex-wrap: wrap;
+    }
+
+    .module-btn {
+        min-width: 45%;
+    }
+}
+
+@media (max-width: 600px) {
+    .module-btn {
+        min-width: 100%;
+    }
+
+    .lesson-display {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+
+    .exercise-item {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

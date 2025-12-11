@@ -4,29 +4,67 @@
 // Step format: null (rest) or {s: string, f: fret}
 
 const GROOVE_CATEGORIES = {
-    root: { name: 'ROOT LOCK', color: '#ff6600' },
-    octave: { name: 'OCTAVE', color: '#ff00ff' },
-    penta: { name: 'PENTA', color: '#00ff00' },
-    walking: { name: 'WALKING', color: '#00ffff' },
-    funk: { name: 'FUNK', color: '#ffff00' }
+    foundation: { name: 'FOUNDATION', color: '#ffffff' },
+    rock: { name: 'ROCK', color: '#ff6600' },
+    blues: { name: 'BLUES', color: '#6666ff' },
+    funk: { name: 'FUNK', color: '#ffff00' },
+    disco: { name: 'DISCO', color: '#ff00ff' }
 };
 
 const GROOVES = {
-    // ==================== ROOT LOCK ====================
-    // Simple root-based patterns - focus on timing
+    // ==================== FOUNDATION ====================
+    // Basic patterns for all styles - focus on timing and fundamentals
 
-    'root-quarters': {
-        id: 'root-quarters',
-        name: 'Root Quarters',
-        category: 'root',
-        genre: 'rock',
+    'found-whole': {
+        id: 'found-whole',
+        name: 'Whole Notes',
+        category: 'foundation',
         difficulty: 1,
-        bpm: 100,
-        bars: 1,
-        description: 'Quarter notes on root',
-        drummerMatch: ['rock_basic', 'rock_steady'],
+        bpm: 70,
+        bars: 2,
+        drumPattern: 'rock_ballad',
+        description: 'One note per bar',
         steps: [
-            // Beat 1, 2, 3, 4 - quarter notes on E root
+            // Bar 1
+            {s:'E',f:0}, null, null, null,
+            null, null, null, null,
+            null, null, null, null,
+            null, null, null, null,
+            // Bar 2
+            {s:'E',f:0}, null, null, null,
+            null, null, null, null,
+            null, null, null, null,
+            null, null, null, null
+        ]
+    },
+
+    'found-half': {
+        id: 'found-half',
+        name: 'Half Notes',
+        category: 'foundation',
+        difficulty: 1,
+        bpm: 80,
+        bars: 1,
+        drumPattern: 'rock_halftime',
+        description: 'Two notes per bar',
+        steps: [
+            {s:'E',f:0}, null, null, null,
+            null, null, null, null,
+            {s:'E',f:0}, null, null, null,
+            null, null, null, null
+        ]
+    },
+
+    'found-quarters': {
+        id: 'found-quarters',
+        name: 'Quarter Lock',
+        category: 'foundation',
+        difficulty: 1,
+        bpm: 90,
+        bars: 1,
+        drumPattern: 'drill_backbeat',
+        description: 'Quarter notes on root',
+        steps: [
             {s:'E',f:0}, null, null, null,
             {s:'E',f:0}, null, null, null,
             {s:'E',f:0}, null, null, null,
@@ -34,16 +72,15 @@ const GROOVES = {
         ]
     },
 
-    'root-eighths': {
-        id: 'root-eighths',
-        name: 'Root Eighths',
-        category: 'root',
-        genre: 'rock',
-        difficulty: 1,
-        bpm: 110,
+    'found-eighths': {
+        id: 'found-eighths',
+        name: 'Eighth Drive',
+        category: 'foundation',
+        difficulty: 2,
+        bpm: 100,
         bars: 1,
-        description: 'Eighth notes drive',
-        drummerMatch: ['rock_basic', 'rock_driving'],
+        drumPattern: 'rock_basic',
+        description: 'Eighth notes steady',
         steps: [
             {s:'E',f:0}, null, {s:'E',f:0}, null,
             {s:'E',f:0}, null, {s:'E',f:0}, null,
@@ -52,16 +89,15 @@ const GROOVES = {
         ]
     },
 
-    'root-fifth': {
-        id: 'root-fifth',
-        name: 'Root & Fifth',
-        category: 'root',
-        genre: 'rock',
+    'found-r5': {
+        id: 'found-r5',
+        name: 'Root-Fifth',
+        category: 'foundation',
         difficulty: 2,
-        bpm: 120,
+        bpm: 100,
         bars: 1,
-        description: 'Root to fifth, classic rock',
-        drummerMatch: ['rock_basic', 'rock_steady'],
+        drumPattern: 'rock_basic',
+        description: 'Root to fifth alternation',
         steps: [
             {s:'E',f:0}, null, null, null,
             {s:'A',f:2}, null, null, null,
@@ -70,124 +106,171 @@ const GROOVES = {
         ]
     },
 
-    // ==================== OCTAVE PUMP ====================
-    // Disco/funk octave patterns
-
-    'octave-basic': {
-        id: 'octave-basic',
-        name: 'Octave Basic',
-        category: 'octave',
-        genre: 'disco',
-        difficulty: 2,
-        bpm: 115,
-        bars: 1,
-        description: 'Simple octave disco style',
-        drummerMatch: ['disco_classic', 'disco_basic'],
-        steps: [
-            {s:'E',f:0}, null, {s:'D',f:2}, null,
-            {s:'E',f:0}, null, {s:'D',f:2}, null,
-            {s:'E',f:0}, null, {s:'D',f:2}, null,
-            {s:'E',f:0}, null, {s:'D',f:2}, null
-        ]
-    },
-
-    'octave-pump': {
-        id: 'octave-pump',
-        name: 'Disco Pump',
-        category: 'octave',
-        genre: 'disco',
-        difficulty: 2,
-        bpm: 120,
-        bars: 2,
-        description: 'Classic disco pump with variation',
-        drummerMatch: ['disco_classic', 'disco_hihat'],
-        steps: [
-            // Bar 1
-            {s:'E',f:0}, null, {s:'D',f:2}, null,
-            {s:'E',f:0}, null, {s:'D',f:2}, null,
-            {s:'E',f:0}, null, {s:'D',f:2}, null,
-            {s:'E',f:0}, {s:'E',f:0}, {s:'D',f:2}, null,
-            // Bar 2 - variation
-            {s:'A',f:0}, null, {s:'G',f:2}, null,
-            {s:'A',f:0}, null, {s:'G',f:2}, null,
-            {s:'E',f:0}, null, {s:'D',f:2}, null,
-            {s:'E',f:0}, null, {s:'D',f:2}, {s:'D',f:2}
-        ]
-    },
-
-    'octave-synco': {
-        id: 'octave-synco',
-        name: 'Octave Synco',
-        category: 'octave',
-        genre: 'disco',
-        difficulty: 3,
-        bpm: 118,
-        bars: 1,
-        description: 'Syncopated octaves',
-        drummerMatch: ['disco_classic', 'funk_basic'],
-        steps: [
-            {s:'E',f:0}, null, {s:'D',f:2}, null,
-            {s:'E',f:0}, null, null, {s:'D',f:2},
-            null, {s:'E',f:0}, null, {s:'D',f:2},
-            {s:'E',f:0}, null, {s:'D',f:2}, null
-        ]
-    },
-
-    // ==================== PENTA JAM ====================
-    // Pentatonic patterns in box position
-
-    'penta-climb': {
-        id: 'penta-climb',
-        name: 'Penta Climb',
-        category: 'penta',
-        genre: 'blues',
-        difficulty: 2,
-        bpm: 90,
-        bars: 2,
-        description: 'Minor pentatonic climb, E box',
-        drummerMatch: ['blues_shuffle', 'blues_slow'],
-        steps: [
-            // Bar 1 - climb up
-            {s:'E',f:0}, null, null, null,
-            {s:'E',f:3}, null, null, null,
-            {s:'A',f:0}, null, null, null,
-            {s:'A',f:2}, null, null, null,
-            // Bar 2 - continue and back
-            {s:'D',f:0}, null, null, null,
-            {s:'D',f:2}, null, null, null,
-            {s:'A',f:2}, null, null, null,
-            {s:'E',f:0}, null, null, null
-        ]
-    },
-
-    'penta-box': {
-        id: 'penta-box',
-        name: 'Penta Box',
-        category: 'penta',
-        genre: 'rock',
+    'found-r8': {
+        id: 'found-r8',
+        name: 'Root-Octave',
+        category: 'foundation',
         difficulty: 2,
         bpm: 100,
         bars: 1,
-        description: '4 note box loop',
-        drummerMatch: ['rock_basic', 'blues_rock'],
+        drumPattern: 'rock_basic',
+        description: 'Root to octave jump',
         steps: [
-            {s:'E',f:0}, null, {s:'E',f:3}, null,
-            {s:'A',f:0}, null, {s:'A',f:2}, null,
-            {s:'A',f:0}, null, {s:'E',f:3}, null,
+            {s:'E',f:0}, null, null, null,
+            {s:'D',f:2}, null, null, null,
+            {s:'E',f:0}, null, null, null,
+            {s:'D',f:2}, null, null, null
+        ]
+    },
+
+    'found-r5-8': {
+        id: 'found-r5-8',
+        name: 'R-5-8 Climb',
+        category: 'foundation',
+        difficulty: 3,
+        bpm: 95,
+        bars: 1,
+        drumPattern: 'rock_pop',
+        description: 'Root, fifth, octave pattern',
+        steps: [
+            {s:'E',f:0}, null, null, null,
+            {s:'A',f:2}, null, null, null,
+            {s:'D',f:2}, null, null, null,
+            {s:'A',f:2}, null, null, null
+        ]
+    },
+
+    'found-walkup': {
+        id: 'found-walkup',
+        name: 'Scale Walkup',
+        category: 'foundation',
+        difficulty: 3,
+        bpm: 90,
+        bars: 1,
+        drumPattern: 'blues_chicago',
+        description: 'Four note scale climb',
+        steps: [
+            {s:'E',f:0}, null, null, null,
+            {s:'E',f:2}, null, null, null,
+            {s:'E',f:4}, null, null, null,
+            {s:'A',f:0}, null, null, null
+        ]
+    },
+
+    // ==================== ROCK ====================
+    // Rock patterns from basic to heavy
+
+    'rock-lock': {
+        id: 'rock-lock',
+        name: 'Rock Lock',
+        category: 'rock',
+        difficulty: 1,
+        bpm: 110,
+        bars: 1,
+        drumPattern: 'rock_pop',
+        description: 'Solid root quarters',
+        steps: [
+            {s:'E',f:0}, null, null, null,
+            {s:'E',f:0}, null, null, null,
+            {s:'E',f:0}, null, null, null,
             {s:'E',f:0}, null, null, null
         ]
     },
 
-    'penta-groove': {
-        id: 'penta-groove',
-        name: 'Penta Groove',
-        category: 'penta',
-        genre: 'rock',
+    'rock-eighths': {
+        id: 'rock-eighths',
+        name: 'Rock Eighths',
+        category: 'rock',
+        difficulty: 2,
+        bpm: 120,
+        bars: 1,
+        drumPattern: 'rock_basic',
+        description: 'Driving eighth notes',
+        steps: [
+            {s:'E',f:0}, null, {s:'E',f:0}, null,
+            {s:'E',f:0}, null, {s:'E',f:0}, null,
+            {s:'E',f:0}, null, {s:'E',f:0}, null,
+            {s:'E',f:0}, null, {s:'E',f:0}, null
+        ]
+    },
+
+    'rock-r5': {
+        id: 'rock-r5',
+        name: 'Power R5',
+        category: 'rock',
+        difficulty: 2,
+        bpm: 120,
+        bars: 1,
+        drumPattern: 'rock_basic',
+        description: 'Power root-fifth',
+        steps: [
+            {s:'E',f:0}, null, {s:'E',f:0}, null,
+            {s:'A',f:2}, null, {s:'A',f:2}, null,
+            {s:'E',f:0}, null, {s:'E',f:0}, null,
+            {s:'A',f:2}, null, {s:'A',f:2}, null
+        ]
+    },
+
+    'rock-shuffle': {
+        id: 'rock-shuffle',
+        name: 'Rock Shuffle',
+        category: 'rock',
+        difficulty: 2,
+        bpm: 130,
+        bars: 1,
+        drumPattern: 'rock_shuffle',
+        description: 'Light shuffle feel',
+        steps: [
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:0}, null, null, {s:'E',f:0}
+        ]
+    },
+
+    'rock-fill1': {
+        id: 'rock-fill1',
+        name: 'Walkup Fill',
+        category: 'rock',
         difficulty: 3,
-        bpm: 105,
+        bpm: 120,
+        bars: 1,
+        drumPattern: 'rock_fill',
+        description: 'Chromatic walkup fill',
+        steps: [
+            {s:'E',f:0}, null, {s:'E',f:0}, null,
+            {s:'E',f:0}, null, {s:'E',f:0}, null,
+            {s:'E',f:0}, null, {s:'E',f:2}, null,
+            {s:'E',f:3}, null, {s:'E',f:4}, null
+        ]
+    },
+
+    'rock-fill2': {
+        id: 'rock-fill2',
+        name: 'Walkdown Fill',
+        category: 'rock',
+        difficulty: 3,
+        bpm: 120,
+        bars: 1,
+        drumPattern: 'rock_fill',
+        description: 'Chromatic walkdown fill',
+        steps: [
+            {s:'E',f:0}, null, {s:'E',f:0}, null,
+            {s:'E',f:0}, null, {s:'E',f:0}, null,
+            {s:'A',f:2}, null, {s:'A',f:1}, null,
+            {s:'A',f:0}, null, {s:'E',f:4}, null
+        ]
+    },
+
+    'rock-penta': {
+        id: 'rock-penta',
+        name: 'Penta Rock',
+        category: 'rock',
+        difficulty: 3,
+        bpm: 115,
         bars: 2,
-        description: 'Rock groove with pentatonic',
-        drummerMatch: ['rock_driving', 'rock_heavy'],
+        drumPattern: 'rock_basic',
+        description: 'Pentatonic rock groove',
         steps: [
             // Bar 1
             {s:'E',f:0}, null, {s:'E',f:0}, {s:'E',f:3},
@@ -202,88 +285,307 @@ const GROOVES = {
         ]
     },
 
-    // ==================== WALKING ====================
-    // Walking bass patterns
-
-    'walk-basic': {
-        id: 'walk-basic',
-        name: 'Walk Basic',
-        category: 'walking',
-        genre: 'jazz',
-        difficulty: 2,
-        bpm: 100,
+    'rock-heavy': {
+        id: 'rock-heavy',
+        name: 'Heavy Drive',
+        category: 'rock',
+        difficulty: 4,
+        bpm: 130,
         bars: 2,
-        description: 'Simple walking, one per beat',
-        drummerMatch: ['jazz_swing', 'jazz_brushes'],
+        drumPattern: 'rock_hard',
+        description: 'Heavy eighths with variations',
         steps: [
-            // Bar 1 - C chord area (on A string)
-            {s:'A',f:3}, null, null, null,
-            {s:'A',f:5}, null, null, null,
-            {s:'D',f:2}, null, null, null,
-            {s:'D',f:4}, null, null, null,
-            // Bar 2 - back down
-            {s:'D',f:5}, null, null, null,
-            {s:'D',f:2}, null, null, null,
-            {s:'A',f:5}, null, null, null,
-            {s:'A',f:3}, null, null, null
+            // Bar 1
+            {s:'E',f:0}, null, {s:'E',f:0}, null,
+            {s:'E',f:0}, {s:'E',f:0}, {s:'E',f:0}, null,
+            {s:'A',f:2}, null, {s:'A',f:2}, null,
+            {s:'E',f:0}, null, {s:'E',f:3}, {s:'E',f:0},
+            // Bar 2
+            {s:'E',f:0}, null, {s:'E',f:0}, null,
+            {s:'E',f:0}, null, {s:'E',f:0}, {s:'E',f:3},
+            {s:'A',f:0}, null, {s:'A',f:2}, null,
+            {s:'E',f:4}, {s:'E',f:3}, {s:'E',f:2}, {s:'E',f:0}
         ]
     },
 
-    'walk-approach': {
-        id: 'walk-approach',
-        name: 'Walk Approach',
-        category: 'walking',
-        genre: 'jazz',
-        difficulty: 3,
-        bpm: 110,
+    // ==================== BLUES ====================
+    // Blues patterns with shuffle and feel
+
+    'blues-slow': {
+        id: 'blues-slow',
+        name: 'Slow Blues',
+        category: 'blues',
+        difficulty: 1,
+        bpm: 65,
+        bars: 1,
+        drumPattern: 'blues_slow',
+        description: 'Slow quarters with space',
+        steps: [
+            {s:'E',f:0}, null, null, null,
+            {s:'E',f:0}, null, null, null,
+            {s:'E',f:0}, null, null, null,
+            {s:'E',f:0}, null, null, null
+        ]
+    },
+
+    'blues-shuffle': {
+        id: 'blues-shuffle',
+        name: 'Blues Shuffle',
+        category: 'blues',
+        difficulty: 2,
+        bpm: 85,
+        bars: 1,
+        drumPattern: 'blues_shuffle',
+        description: 'Classic shuffle pattern',
+        steps: [
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:0}, null, null, {s:'E',f:0}
+        ]
+    },
+
+    'blues-walk': {
+        id: 'blues-walk',
+        name: 'Blues Walk',
+        category: 'blues',
+        difficulty: 2,
+        bpm: 80,
         bars: 2,
-        description: 'Chromatic approach notes',
-        drummerMatch: ['jazz_swing', 'jazz_medium'],
+        drumPattern: 'blues_chicago',
+        description: 'Simple walking blues',
         steps: [
             // Bar 1
             {s:'E',f:0}, null, null, null,
             {s:'E',f:2}, null, null, null,
             {s:'E',f:4}, null, null, null,
             {s:'A',f:0}, null, null, null,
-            // Bar 2 - chromatic approach
+            // Bar 2
             {s:'A',f:2}, null, null, null,
-            {s:'A',f:4}, null, null, null,
+            {s:'A',f:0}, null, null, null,
+            {s:'E',f:4}, null, null, null,
+            {s:'E',f:0}, null, null, null
+        ]
+    },
+
+    'blues-turna': {
+        id: 'blues-turna',
+        name: 'Turnaround',
+        category: 'blues',
+        difficulty: 3,
+        bpm: 80,
+        bars: 2,
+        drumPattern: 'blues_chicago',
+        description: 'V-IV-I turnaround',
+        steps: [
+            // Bar 1 - V chord (B)
+            {s:'A',f:2}, null, null, null,
+            {s:'A',f:2}, null, null, null,
+            // IV chord (A)
+            {s:'A',f:0}, null, null, null,
+            {s:'A',f:0}, null, null, null,
+            // Bar 2 - I chord (E)
+            {s:'E',f:0}, null, null, null,
+            {s:'E',f:0}, null, null, null,
+            // V chord lead-in
+            {s:'E',f:4}, null, {s:'A',f:0}, null,
+            {s:'A',f:1}, null, {s:'A',f:2}, null
+        ]
+    },
+
+    'blues-climb': {
+        id: 'blues-climb',
+        name: 'Blues Climb',
+        category: 'blues',
+        difficulty: 3,
+        bpm: 75,
+        bars: 2,
+        drumPattern: 'blues_slow',
+        description: 'Blues scale climb',
+        steps: [
+            // Bar 1 - climb up
+            {s:'E',f:0}, null, null, null,
+            {s:'E',f:3}, null, null, null,
+            {s:'A',f:0}, null, null, null,
+            {s:'A',f:1}, null, null, null,
+            // Bar 2 - continue and back
+            {s:'A',f:2}, null, null, null,
             {s:'D',f:0}, null, null, null,
-            {s:'D',f:1}, null, null, null
+            {s:'A',f:2}, null, null, null,
+            {s:'E',f:0}, null, null, null
+        ]
+    },
+
+    'blues-12bar': {
+        id: 'blues-12bar',
+        name: '12 Bar Comp',
+        category: 'blues',
+        difficulty: 3,
+        bpm: 80,
+        bars: 4,
+        drumPattern: 'blues_shuffle',
+        description: 'First 4 bars of 12-bar blues',
+        steps: [
+            // Bar 1 - I (E)
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:0}, null, null, {s:'E',f:4},
+            {s:'A',f:0}, null, null, {s:'A',f:0},
+            {s:'E',f:4}, null, null, {s:'E',f:0},
+            // Bar 2 - I (E)
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:0}, null, null, {s:'E',f:4},
+            {s:'A',f:0}, null, null, {s:'A',f:0},
+            {s:'E',f:4}, null, null, {s:'E',f:0},
+            // Bar 3 - I (E)
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:0}, null, null, {s:'E',f:4},
+            {s:'A',f:0}, null, null, {s:'A',f:0},
+            {s:'E',f:4}, null, null, {s:'E',f:0},
+            // Bar 4 - I (E)
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:0}, null, null, {s:'E',f:4},
+            {s:'A',f:0}, null, null, {s:'A',f:2},
+            {s:'E',f:4}, null, {s:'A',f:0}, {s:'E',f:0}
+        ]
+    },
+
+    'blues-texas': {
+        id: 'blues-texas',
+        name: 'Texas Shuffle',
+        category: 'blues',
+        difficulty: 4,
+        bpm: 130,
+        bars: 2,
+        drumPattern: 'blues_texas',
+        description: 'Fast shuffle with fills',
+        steps: [
+            // Bar 1
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:4}, null, null, {s:'A',f:0},
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:4}, null, {s:'A',f:0}, {s:'E',f:0},
+            // Bar 2
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            {s:'E',f:4}, null, null, {s:'A',f:0},
+            {s:'E',f:3}, null, {s:'E',f:2}, null,
+            {s:'E',f:0}, {s:'E',f:0}, {s:'E',f:3}, {s:'E',f:0}
         ]
     },
 
     // ==================== FUNK ====================
     // Syncopated funk patterns
 
-    'funk-basic': {
-        id: 'funk-basic',
-        name: 'Funk Basic',
+    'funk-one': {
+        id: 'funk-one',
+        name: 'On The One',
         category: 'funk',
-        genre: 'funk',
+        difficulty: 1,
+        bpm: 95,
+        bars: 1,
+        drumPattern: 'funk_basic',
+        description: 'Focus on beat 1',
+        steps: [
+            {s:'E',f:0}, null, null, null,
+            null, null, null, null,
+            {s:'E',f:0}, null, null, null,
+            null, null, null, null
+        ]
+    },
+
+    'funk-simple': {
+        id: 'funk-simple',
+        name: 'Funk Simple',
+        category: 'funk',
         difficulty: 2,
         bpm: 95,
         bars: 1,
-        description: 'Basic funk 16ths groove',
-        drummerMatch: ['funk_basic', 'funk_tight'],
+        drumPattern: 'funk_basic',
+        description: 'Basic 16ths groove',
         steps: [
             {s:'E',f:0}, null, {s:'E',f:0}, null,
-            null, {s:'E',f:0}, null, {s:'E',f:3},
+            null, {s:'E',f:0}, null, null,
             {s:'E',f:0}, null, null, {s:'E',f:0},
+            null, null, {s:'E',f:0}, null
+        ]
+    },
+
+    'funk-synco1': {
+        id: 'funk-synco1',
+        name: 'Synco Light',
+        category: 'funk',
+        difficulty: 2,
+        bpm: 92,
+        bars: 1,
+        drumPattern: 'funk_basic',
+        description: 'Light syncopation',
+        steps: [
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            null, null, {s:'E',f:0}, null,
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            null, null, {s:'E',f:0}, null
+        ]
+    },
+
+    'funk-synco2': {
+        id: 'funk-synco2',
+        name: 'Synco Heavy',
+        category: 'funk',
+        difficulty: 3,
+        bpm: 90,
+        bars: 1,
+        drumPattern: 'funk_boombap',
+        description: 'Heavy syncopation',
+        steps: [
+            {s:'E',f:0}, null, null, {s:'E',f:0},
+            null, {s:'E',f:3}, null, {s:'E',f:0},
+            null, null, {s:'E',f:0}, null,
+            {s:'E',f:3}, null, null, {s:'E',f:0}
+        ]
+    },
+
+    'funk-ghost': {
+        id: 'funk-ghost',
+        name: 'Ghost Groove',
+        category: 'funk',
+        difficulty: 3,
+        bpm: 88,
+        bars: 1,
+        drumPattern: 'funk_lofi',
+        description: 'With ghost notes feel',
+        steps: [
+            {s:'E',f:0}, {s:'E',f:0}, null, {s:'E',f:0},
+            null, {s:'E',f:0}, {s:'E',f:0}, null,
+            {s:'E',f:0}, {s:'E',f:0}, null, {s:'E',f:0},
             null, {s:'E',f:3}, {s:'E',f:0}, null
         ]
     },
 
     'funk-slap': {
         id: 'funk-slap',
-        name: 'Funk Pocket',
+        name: 'Slap Basic',
         category: 'funk',
-        genre: 'funk',
         difficulty: 3,
         bpm: 92,
+        bars: 1,
+        drumPattern: 'funk_drummer',
+        description: 'Basic slap pattern',
+        steps: [
+            {s:'E',f:0}, null, null, null,
+            {s:'D',f:2}, null, {s:'E',f:0}, null,
+            null, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null
+        ]
+    },
+
+    'funk-jb': {
+        id: 'funk-jb',
+        name: 'JB Style',
+        category: 'funk',
+        difficulty: 4,
+        bpm: 108,
         bars: 2,
-        description: 'Deep in the pocket',
-        drummerMatch: ['funk_basic', 'funk_groove'],
+        drumPattern: 'funk_jb',
+        description: 'James Brown pocket',
         steps: [
             // Bar 1
             {s:'E',f:0}, null, null, null,
@@ -298,21 +600,189 @@ const GROOVES = {
         ]
     },
 
-    'funk-16ths': {
-        id: 'funk-16ths',
-        name: 'Funk 16ths',
+    'funk-larry': {
+        id: 'funk-larry',
+        name: 'Larry Style',
         category: 'funk',
-        genre: 'funk',
         difficulty: 4,
-        bpm: 88,
-        bars: 1,
-        description: 'Busy 16ths funk',
-        drummerMatch: ['funk_tight', 'funk_groove'],
+        bpm: 96,
+        bars: 2,
+        drumPattern: 'funk_drummer',
+        description: 'Larry Graham slap style',
         steps: [
-            {s:'E',f:0}, {s:'E',f:0}, null, {s:'E',f:3},
-            {s:'E',f:0}, null, {s:'A',f:0}, {s:'A',f:2},
-            null, {s:'E',f:0}, {s:'E',f:3}, {s:'E',f:0},
-            null, {s:'A',f:2}, {s:'A',f:0}, null
+            // Bar 1
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, null, {s:'D',f:2},
+            null, {s:'E',f:0}, {s:'D',f:2}, null,
+            {s:'E',f:0}, {s:'E',f:0}, {s:'D',f:2}, null,
+            // Bar 2
+            {s:'E',f:0}, null, {s:'D',f:2}, {s:'D',f:2},
+            null, {s:'E',f:0}, null, {s:'D',f:2},
+            {s:'E',f:0}, null, null, {s:'D',f:2},
+            {s:'E',f:3}, {s:'E',f:0}, {s:'D',f:2}, null
+        ]
+    },
+
+    // ==================== DISCO ====================
+    // Disco octave patterns
+
+    'disco-basic': {
+        id: 'disco-basic',
+        name: 'Disco Basic',
+        category: 'disco',
+        difficulty: 1,
+        bpm: 115,
+        bars: 1,
+        drumPattern: 'pop_disco',
+        description: 'Simple R-8 octaves',
+        steps: [
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null
+        ]
+    },
+
+    'disco-pump': {
+        id: 'disco-pump',
+        name: 'Disco Pump',
+        category: 'disco',
+        difficulty: 2,
+        bpm: 118,
+        bars: 1,
+        drumPattern: 'pop_disco',
+        description: 'Classic pump pattern',
+        steps: [
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, {s:'D',f:2},
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, {s:'E',f:0}, {s:'D',f:2}, null
+        ]
+    },
+
+    'disco-8ths': {
+        id: 'disco-8ths',
+        name: 'Disco Eighths',
+        category: 'disco',
+        difficulty: 2,
+        bpm: 120,
+        bars: 1,
+        drumPattern: 'pop_disco',
+        description: 'Full eighth notes octave',
+        steps: [
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null
+        ]
+    },
+
+    'disco-synco': {
+        id: 'disco-synco',
+        name: 'Disco Synco',
+        category: 'disco',
+        difficulty: 3,
+        bpm: 118,
+        bars: 1,
+        drumPattern: 'pop_disco',
+        description: 'Syncopated octaves',
+        steps: [
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, null, {s:'D',f:2},
+            null, {s:'E',f:0}, null, {s:'D',f:2},
+            {s:'E',f:0}, null, {s:'D',f:2}, null
+        ]
+    },
+
+    'disco-chic': {
+        id: 'disco-chic',
+        name: 'Chic Style',
+        category: 'disco',
+        difficulty: 3,
+        bpm: 115,
+        bars: 2,
+        drumPattern: 'pop_disco',
+        description: 'Bernard Edwards style',
+        steps: [
+            // Bar 1
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, {s:'D',f:2},
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            // Bar 2
+            {s:'A',f:0}, null, {s:'G',f:2}, null,
+            {s:'A',f:0}, null, {s:'G',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, {s:'E',f:3}, {s:'D',f:2}, null
+        ]
+    },
+
+    'disco-run': {
+        id: 'disco-run',
+        name: 'Disco Run',
+        category: 'disco',
+        difficulty: 3,
+        bpm: 120,
+        bars: 2,
+        drumPattern: 'pop_upbeat',
+        description: 'With scalar runs',
+        steps: [
+            // Bar 1
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'E',f:2}, {s:'E',f:4},
+            // Bar 2
+            {s:'A',f:0}, null, {s:'G',f:2}, null,
+            {s:'A',f:0}, null, {s:'G',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'D',f:2}, {s:'A',f:4}, {s:'A',f:2}, {s:'A',f:0}
+        ]
+    },
+
+    'disco-slap': {
+        id: 'disco-slap',
+        name: 'Disco Slap',
+        category: 'disco',
+        difficulty: 4,
+        bpm: 115,
+        bars: 2,
+        drumPattern: 'pop_disco',
+        description: 'Octaves with slap feel',
+        steps: [
+            // Bar 1
+            {s:'E',f:0}, null, {s:'D',f:2}, {s:'D',f:2},
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, {s:'E',f:0}, {s:'D',f:2}, {s:'D',f:2},
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            // Bar 2
+            {s:'E',f:0}, null, {s:'D',f:2}, {s:'D',f:2},
+            null, {s:'E',f:0}, {s:'D',f:2}, null,
+            {s:'E',f:0}, {s:'E',f:0}, {s:'D',f:2}, null,
+            {s:'E',f:3}, {s:'E',f:0}, {s:'D',f:2}, {s:'D',f:2}
+        ]
+    },
+
+    'disco-full': {
+        id: 'disco-full',
+        name: 'Full Disco',
+        category: 'disco',
+        difficulty: 4,
+        bpm: 120,
+        bars: 2,
+        drumPattern: 'pop_upbeat',
+        description: 'Complete disco groove',
+        steps: [
+            // Bar 1
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, null, {s:'D',f:2}, {s:'D',f:2},
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, {s:'E',f:0}, {s:'D',f:2}, {s:'A',f:0},
+            // Bar 2
+            {s:'A',f:0}, null, {s:'G',f:2}, null,
+            {s:'A',f:0}, null, {s:'G',f:2}, {s:'G',f:2},
+            {s:'E',f:0}, null, {s:'D',f:2}, null,
+            {s:'E',f:0}, {s:'E',f:2}, {s:'E',f:4}, {s:'A',f:0}
         ]
     }
 };

@@ -89,8 +89,8 @@ Visualizzatore interattivo per tastiera basso 4 corde (12 tasti).
   - **ARP** - Mostra solo arpeggio (note dell'accordo: R, 3, 5, 7)
   - **BOX** - Mostra solo la "box shape" (4-5 tasti) per posizione fissa
   - **INT** - Mostra intervalli (R, b3, 5, b7) invece dei nomi note
-  - **GROOVE** - Attiva la modalità groove (PLAY suona il groove invece della scala)
-  - **PLAY** - Autoplay scala/groove sincronizzato col kick di DRUMMER
+  - **GROOVE** - Attiva la modalita' groove con sync DRUMMER
+  - **PLAY** - Autoplay scala/groove sincronizzato col DRUMMER
 - **Pattern Display** - Griglia 16 step sotto la fretboard che mostra il groove corrente (LED verde = nota)
 - **Header** - Toggle **ITA** per notazione italiana (Do, Re, Mi)
 
@@ -123,15 +123,29 @@ Visualizzatore interattivo per tastiera basso 4 corde (12 tasti).
 
 ### Sezione GROOVES (BASSIST)
 
-15 pattern di basso originali per esercitarsi con loop:
+**40 pattern di basso** per esercitarsi con loop, organizzati in 5 categorie:
 
-- **Filtri categoria**: ALL, ROOT LOCK, OCTAVE, PENTA, WALKING, FUNK
-- **Selezione**: Dropdown stile audio panel con difficolta' (★)
+| Categoria | Grooves | Descrizione |
+|-----------|---------|-------------|
+| **FOUNDATION** | 8 | Esercizi base: whole notes, quarters, eighths, root-fifth, root-octave |
+| **ROCK** | 8 | Rock lock, eighths, power chords, shuffle, fills, pentatonic, heavy |
+| **BLUES** | 7 | Slow blues, shuffle, walking, turnaround, 12-bar, Texas shuffle |
+| **FUNK** | 8 | On the one, syncopation, ghost notes, slap, JB style, Larry Graham |
+| **DISCO** | 9 | Octave pump, Chic style, disco runs, slap disco |
+
+**Funzionalita':**
+- **Filtri categoria**: ALL, FOUNDATION, ROCK, BLUES, FUNK, DISCO
+- **Selezione**: Dropdown con difficolta' (1-4 stelle)
 - **Trasposizione automatica**: I groove si adattano alla ROOT selezionata!
 - **Auto-restart**: Cambiando ROOT durante il playback, il groove riparte trasposto
-- **Reset automatico**: Cambiando genere in DRUMMER la fretboard si resetta
 - **Pattern Display**: Griglia LED identica a DRUMMER che mostra le note del groove
-- **Drum accompaniment**: Beat semplice automatico quando DRUMMER e' fermo
+
+**Sync DRUMMER ↔ BASSIST:**
+- Selezionando un groove, DRUMMER si imposta automaticamente sul pattern drum abbinato
+- Ogni groove ha un `drumPattern` specifico (es. JB Style → funk_jb, Texas Shuffle → blues_texas)
+- BPM si sincronizza automaticamente
+- Premendo PLAY partono insieme basso e batteria
+- Cambiando BPM nel pannello AUDIO, cambiano entrambi
 
 ### Categoria DRILL
 
@@ -168,29 +182,28 @@ Pattern da metronomo per esercizi tecnici:
    - **BOX** on → limita a 4-5 tasti (una posizione della mano)
    - **ITA** on → notazione italiana
 
-### Autoplay Scala (PLAY)
-
-1. Seleziona un **genere** e **pattern** in DRUMMER
-2. Seleziona **ROOT** e **SCALE** in BASSIST
-3. Premi **PLAY** in BASSIST → la scala suona in sync col kick!
-4. La nota corrente si illumina sulla tastiera
-5. Premi di nuovo PLAY per fermare
-
-**Consiglio pratico:** Usa i pattern **DRILL** per esercizi con metronomo semplice. Ogni pattern ha un kick diverso - la scala seguira' quel ritmo!
-
 ### Come Usare GROOVES
 
 1. Seleziona una **ROOT** (il groove si trasporta automaticamente!)
-2. Seleziona una **categoria** o lascia ALL
-3. Scegli un **groove** dal dropdown (★ = difficolta')
-4. Attiva **GROOVE** nella sezione VIEW
-5. Premi **PLAY** per far partire il loop
-6. Le note del groove si illuminano sulla tastiera
-7. Suona insieme sul basso seguendo le note!
+2. Attiva **GROOVE** nella sezione VIEW
+3. Scegli una **categoria** o lascia ALL
+4. Scegli un **groove** dal dropdown
+5. → DRUMMER si imposta automaticamente sul pattern abbinato!
+6. Premi **PLAY** per far partire basso + batteria insieme
+7. Le note del groove si illuminano sulla tastiera
+8. Suona insieme sul basso seguendo le note!
+9. Cambia BPM nel pannello AUDIO per rallentare/accelerare
 
-**Sync con DRUMMER:**
-- Se DRUMMER sta suonando → il groove usa lo stesso BPM
-- Se DRUMMER e' fermo → parte un beat semplice di accompagnamento (kick 1-3, snare 2-4)
+**Abbinamenti Groove → Drum Pattern:**
+| Groove | Drum Pattern |
+|--------|--------------|
+| JB Style | Funk > JB-Style |
+| Texas Shuffle | Blues > Texas |
+| Rock Shuffle | Rock > Shuffle |
+| Disco Chic | Pop > Disco |
+| Blues Walk | Blues > Chicago |
+| Funk Ghost | Funk > Lo-Fi |
+| ... | (40 abbinamenti totali) |
 
 ## Struttura
 
@@ -204,15 +217,14 @@ DRUMMER/
 │   └── Dymo.ttf        # Font Dymo per etichette
 ├── audio/
 │   └── vinyl-crackle.mp3  # Loop vinyl per effetto lo-fi
-├── SBL/                # PDF di Scott's Bass Lessons (riff futuri)
 └── js/
     ├── app.js          # Inizializzazione
     ├── beatgen.js      # DRUMMER - Generatore beat (Tone.js)
     ├── patterns.js     # DRUMMER - 64 pattern di batteria
     ├── scales.js       # BASSIST - Scale e arpeggi
     ├── sounds.js       # BASSIST - Sintetizzatore basso
-    ├── fretboard.js    # BASSIST - Visualizzatore tastiera + autoplay
-    └── riffs.js        # BASSIST - Libreria grooves (15 pattern originali)
+    ├── fretboard.js    # BASSIST - Visualizzatore tastiera + sync DRUMMER
+    └── riffs.js        # BASSIST - Libreria grooves (40 pattern con drum match)
 ```
 
 ## Tecnologie
@@ -256,6 +268,19 @@ I pattern sono array di step (`1` = colpo, `0` = silenzio):
 }
 ```
 
+### Groove con Drum Pattern
+Ogni groove ha un campo `drumPattern` che specifica il pattern DRUMMER abbinato:
+```javascript
+{
+    id: 'funk-jb',
+    name: 'JB Style',
+    category: 'funk',
+    drumPattern: 'funk_jb',  // → DRUMMER si imposta su Funk > JB-Style
+    bpm: 108,
+    steps: [...]
+}
+```
+
 ### Sintesi Audio
 Suoni generati con Tone.js:
 - **Kick**: MembraneSynth (sine wave con pitch decay) + NoiseSynth (click layer per attacco)
@@ -277,33 +302,10 @@ Suono basso generato con Tone.js MonoSynth:
 - **Frequenze**: E1 (41Hz) - G3 (196Hz)
 
 ### Sync DRUMMER ↔ BASSIST
-- BASSIST legge il pattern corrente di DRUMMER (`window.beatGen.currentPattern`)
-- Suona una nota della scala ogni volta che c'e' un kick (`kick[i] === 1`)
-- Usa lo stesso `Tone.Transport` per sincronizzazione perfetta
-
-### Sezione GROOVES
-
-Libreria di pattern originali per esercitarsi. 15 grooves in 5 categorie:
-
-**Categorie:**
-| Categoria | Descrizione |
-|-----------|-------------|
-| ROOT LOCK | Pattern sulla root - focus sul timing |
-| OCTAVE | Salti di ottava stile disco |
-| PENTA | Pattern pentatonici nel box |
-| WALKING | Walking bass jazz |
-| FUNK | Sincope e ghost notes |
-
-**Grooves disponibili:**
-- Root Quarters, Root Eighths, Root & Fifth
-- Octave Basic, Disco Pump, Octave Synco
-- Penta Climb, Penta Box, Penta Groove
-- Walk Basic, Walk Approach
-- Funk Basic, Funk Pocket, Funk 16ths
-
-**Sync BPM:**
-- Se DRUMMER sta suonando → groove segue il BPM di DRUMMER
-- Se DRUMMER e' fermo → groove usa il suo BPM predefinito
+- Selezionando un groove, `syncDrummerToGroove()` imposta genere, pattern e BPM
+- DRUMMER e BASSIST usano lo stesso `Tone.Transport` per sincronizzazione perfetta
+- Premendo PLAY in BASSIST, parte anche DRUMMER automaticamente
+- Fermando il groove, si ferma anche DRUMMER
 
 ---
 
