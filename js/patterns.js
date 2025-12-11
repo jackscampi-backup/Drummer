@@ -419,13 +419,13 @@ const PATTERNS = {
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     },
     drill_mixed: {
-        name: 'Mixed',
+        name: 'Metro',
         genre: 'Drill',
-        bpm: 85,
-        // Pattern misto per coordinazione
-        kick:  [1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,1,0],
-        snare: [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
-        hihat: [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
+        bpm: 100,
+        // Metronomo puro - click sui quarti (snare)
+        kick:  [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        snare: [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
+        hihat: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
         rim:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     },
 

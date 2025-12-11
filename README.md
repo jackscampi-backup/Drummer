@@ -73,7 +73,7 @@ Design hardware professionale:
 | **Pop** | Basic, Disco, Ballad†, Upbeat, Motown, Synthpop, Funk, Modern | †6/8 |
 | **Funk** | Basic*, JB-Style, FunkyDr., BoomBap, Trap, Lo-Fi, N.Orleans, Breakbeat | *2 bars |
 | **Blues** | Shuffle†, Slow*†, Chicago, Texas, 12/8†, Jump, Rock, Train | *2 bars, †12/8 |
-| **Drill** | 4ths, 8ths, 16ths, Shuffle, Accent, 2&4, Offbeat, Mixed | Metronomo |
+| **Drill** | 4ths, 8ths, 16ths, Shuffle, Accent, 2&4, Offbeat, Metro | Metronomo |
 | **Latin** | Cumbia, Samba, Salsa, Cha-Cha, AfroCuban, Mambo, Songo, Bossa | |
 | **Reggae** | OneDrop, Rockers, Steppers, Ska, Dub, RootsSl., Dancehall, StepFast | |
 | **Electro** | Massive, Tricky, Fugees, DeLa, Slim, Portis, Morch, Hip-Hop | Trip-Hop |
@@ -90,9 +90,11 @@ Visualizzatore interattivo per tastiera basso 4 corde (12 tasti).
   - **BOX** - Mostra solo la "box shape" (4-5 tasti) per posizione fissa
   - **INT** - Mostra intervalli (R, b3, 5, b7) invece dei nomi note
   - **GROOVE** - Attiva la modalita' groove con sync DRUMMER
-  - **PLAY** - Autoplay scala/groove sincronizzato col DRUMMER
 - **Pattern Display** - Griglia 16 step sotto la fretboard che mostra il groove corrente (LED verde = nota)
-- **Header** - Toggle **ITA** per notazione italiana (Do, Re, Mi)
+- **BPM Control** - Display LED con bottoni +/- per regolare il tempo (sincronizzato con DRUMMER)
+- **Header**:
+  - **ON** - Bottone play/stop per avviare scala/groove (a sinistra)
+  - **ITA** - Toggle per notazione italiana Do, Re, Mi (a destra)
 
 **Audio:**
 - **Click sulle note** - Clicca su qualsiasi nota evidenziata per sentirla
@@ -150,14 +152,14 @@ Visualizzatore interattivo per tastiera basso 4 corde (12 tasti).
 ### Categoria DRILL
 
 Pattern da metronomo per esercizi tecnici:
-- **4ths** - click sui quarti (metronomo classico)
+- **4ths** - click sui quarti (kick)
 - **8ths** - ottavi
 - **16ths** - sedicesimi
 - **Shuffle** - feel swing/blues (lungo-corto)
 - **Accent** - accento sul primo battito
 - **2&4** - backbeat su 2 e 4
 - **Offbeat** - solo levare
-- **Mixed** - pattern misto per coordinazione
+- **Metro** - metronomo puro (snare sui quarti)
 
 ## Come Usare
 
@@ -214,7 +216,8 @@ DRUMMER/
 │   └── style.css       # Stili rack unit
 ├── fonts/
 │   ├── DSEG7Classic-Bold.ttf  # Font LED 7 segmenti
-│   └── Dymo.ttf        # Font Dymo per etichette
+│   ├── 7LEDitalic.ttf         # Font LED per display BPM
+│   └── Dymo.ttf               # Font Dymo per etichette
 ├── audio/
 │   └── vinyl-crackle.mp3  # Loop vinyl per effetto lo-fi
 └── js/

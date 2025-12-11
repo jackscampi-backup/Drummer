@@ -204,6 +204,12 @@
 
         <!-- Header -->
         <header class="rack-header">
+            <div class="header-toggles-left">
+                <button class="display-toggle" id="scalePlayBtn" onclick="fretboard.togglePlay()">
+                    <span class="toggle-led"></span>
+                    <span class="toggle-label">ON</span>
+                </button>
+            </div>
             <div class="logo-display">BASS</div>
             <div class="header-toggles-right">
                 <button class="display-toggle" id="notationToggle" onclick="fretboard.toggleNotation()">
@@ -234,7 +240,7 @@
             <!-- View Toggles -->
             <section class="panel-section">
                 <div class="section-label">VIEW</div>
-                <div class="button-grid view-grid">
+                <div class="button-grid view-grid-4">
                     <button class="display-toggle" id="arpToggle" onclick="fretboard.toggleArpeggio()">
                         <span class="toggle-led"></span>
                         <span class="toggle-label">ARP</span>
@@ -250,10 +256,6 @@
                     <button class="display-toggle" id="grooveToggle" onclick="fretboard.toggleGrooveMode()">
                         <span class="toggle-led"></span>
                         <span class="toggle-label">GROOVE</span>
-                    </button>
-                    <button class="display-toggle play-toggle" id="scalePlayBtn" onclick="fretboard.togglePlay()">
-                        <span class="toggle-led"></span>
-                        <span class="toggle-label">PLAY</span>
                     </button>
                 </div>
             </section>
@@ -317,7 +319,11 @@
                     </div>
                     <!-- Control Box (right side) -->
                     <div class="bassist-control-box">
-                        <!-- Space for future controls -->
+                        <div class="bassist-bpm-control">
+                            <button class="bpm-btn" id="bassBpmMinus">-</button>
+                            <span class="bpm-display" id="bassBpmDisplay">120</span>
+                            <button class="bpm-btn" id="bassBpmPlus">+</button>
+                        </div>
                     </div>
                 </div>
             </section>

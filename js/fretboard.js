@@ -702,7 +702,7 @@ class Fretboard {
         console.log('BASSIST: scaleNotes =', scaleNotes);
         if (scaleNotes.length === 0) {
             console.warn('BASSIST: No scale notes to play!');
-            alert('Select a scale first!');
+            alert('Select a Scale or Groove first!');
             return;
         }
 

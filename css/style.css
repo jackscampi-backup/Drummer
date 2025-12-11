@@ -891,9 +891,9 @@ body {
     gap: 8px;
 }
 
-/* View toggle grid - 5 buttons */
-.view-grid {
-    grid-template-columns: repeat(5, 1fr);
+/* View toggle grid - 4 buttons */
+.view-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
     gap: 8px;
 }
 
@@ -1000,14 +1000,82 @@ body {
 
 .bassist-control-box {
     flex: 1;
+    display: flex;
     background: var(--panel-surface);
     border-radius: 6px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
     border: 1px solid #252525;
 }
+
+/* BPM Control in BASSIST Panel - Analog Style */
+.bassist-bpm-control {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Analog rotary-style buttons */
+.bassist-bpm-control .bpm-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50%;
+    background:
+        radial-gradient(ellipse at 30% 20%, #555 0%, #333 40%, #1a1a1a 100%);
+    color: #888;
+    cursor: pointer;
+    box-shadow:
+        0 3px 8px rgba(0,0,0,0.6),
+        inset 0 1px 1px rgba(255,255,255,0.1),
+        inset 0 -2px 4px rgba(0,0,0,0.4);
+    transition: all 0.1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.bassist-bpm-control .bpm-btn:hover {
+    background:
+        radial-gradient(ellipse at 30% 20%, #666 0%, #444 40%, #252525 100%);
+    color: #ccc;
+}
+
+.bassist-bpm-control .bpm-btn:active {
+    transform: scale(0.95);
+    box-shadow:
+        0 1px 4px rgba(0,0,0,0.6),
+        inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* LED-style 7-segment display */
+.bassist-bpm-control .bpm-display {
+    width: 100px;
+    height: 50px;
+    background: #000;
+    border-radius: 4px;
+    border: 3px solid #222;
+    box-shadow:
+        inset 0 0 20px rgba(0,0,0,0.9),
+        inset 0 0 5px rgba(255,102,0,0.1),
+        0 1px 0 rgba(255,255,255,0.05);
+    font-family: '7LED', monospace;
+    font-size: 36px;
+    color: var(--display-orange);
+    text-shadow:
+        0 0 10px var(--display-glow),
+        0 0 20px var(--display-glow),
+        0 0 30px rgba(255,102,0,0.3);
+    text-align: center;
+    line-height: 44px;
+    display: inline-block;
+    position: relative;
+}
+
 
 /* Root and Scale buttons */
 .root-btn,
